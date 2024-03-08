@@ -1,8 +1,10 @@
 package com.example.java_19_headhunter.models;
 
-import java.util.Date;
+import lombok.Data;
 
-public class JobApplicantResponse {
+import java.util.Date;
+@Data
+public class Message {
     private long id;
     private User responsedUser;
     private Vacancy vacancy;
