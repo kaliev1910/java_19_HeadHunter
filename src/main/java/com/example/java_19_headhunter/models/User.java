@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.models;
 
-import com.example.headhunter.enums.UserType;
+import com.example.java_19_headhunter.enums.UserType;
 import lombok.Data;
 
 @Data
