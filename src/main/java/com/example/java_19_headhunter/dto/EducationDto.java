@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.models;
+package com.example.java_19_headhunter.dto;
 
 
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.sql.Date;
 
 @Builder
-public class Education {
+public class EducationDto {
     private int id;
     private int resumeId;
     private String institution;

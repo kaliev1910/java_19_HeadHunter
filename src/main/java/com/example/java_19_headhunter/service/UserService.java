@@ -1,4 +1,9 @@
 package com.example.java_19_headhunter.service;
 
-public class UserService {
+import org.springframework.stereotype.Service;
+
+@Service
+public interface UserService {
+
+
 }
