@@ -1,12 +1,10 @@
 package com.example.java_19_headhunter.models;
 
-import lombok.Data;
+import java.sql.Timestamp;
 
-import java.util.Date;
-@Data
 public class Message {
-    private long id;
-    private User responsedUser;
-    private Vacancy vacancy;
-    protected Date responseDate;
+    private int id;
+    private int respondedApplicantsId;
+    private String content;
+    private Timestamp timestamp;
 }
