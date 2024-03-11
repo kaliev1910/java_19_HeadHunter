@@ -1,9 +1,9 @@
-package com.example.java_19_headhunter.models;
+package com.example.java_19_headhunter.dto;
 
 import lombok.Data;
 
 @Data
-public class User {
+public class UserDto {
 
     private int id;
     private String name;

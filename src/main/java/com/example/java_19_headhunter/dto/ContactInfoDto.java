@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.models;
+package com.example.java_19_headhunter.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class ContactInfo {
+public class ContactInfoDto {
     private int id;
     private int resumeId;
     private int typeId;

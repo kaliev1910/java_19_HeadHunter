@@ -1,8 +1,8 @@
-package com.example.java_19_headhunter.models;
+package com.example.java_19_headhunter.dto;
 
 import java.sql.Timestamp;
 
-public class Message {
+public class MessageDto {
     private int id;
     private int respondedApplicantsId;
     private String content;

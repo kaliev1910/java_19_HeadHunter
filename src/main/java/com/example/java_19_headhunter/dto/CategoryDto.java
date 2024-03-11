@@ -1,9 +1,9 @@
-package com.example.java_19_headhunter.models;
+package com.example.java_19_headhunter.dto;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class Category {
+public class CategoryDto {
 
     private int id;
     private int parentId;

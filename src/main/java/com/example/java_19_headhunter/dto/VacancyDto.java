@@ -1,11 +1,11 @@
-package com.example.java_19_headhunter.models;
+package com.example.java_19_headhunter.dto;
 
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-public class Vacancy {
+public class VacancyDto {
     private int id;
     private int authorId;
     private String name;

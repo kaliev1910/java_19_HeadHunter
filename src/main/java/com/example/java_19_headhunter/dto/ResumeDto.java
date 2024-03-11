@@ -1,11 +1,11 @@
-package com.example.java_19_headhunter.models;
+package com.example.java_19_headhunter.dto;
 
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class Resume {
+public class ResumeDto {
     private long id;
     private long applicantId;
     private String name;
