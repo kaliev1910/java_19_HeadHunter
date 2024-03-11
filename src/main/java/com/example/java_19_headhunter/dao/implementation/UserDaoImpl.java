@@ -2,27 +2,57 @@ package com.example.java_19_headhunter.dao.implementation;
 
 import com.example.java_19_headhunter.dao.UserDao;
 import com.example.java_19_headhunter.models.User;
+import lombok.AllArgsConstructor;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Optional;
+
 @Component
+@AllArgsConstructor
 public class UserDaoImpl implements UserDao {
+    private final JdbcTemplate jdbcTemplate;
+
     @Override
-    public User findByEmail(String email) {
-        return null;
+    public List<User> getUsers() {
+        String sql = """
+                select * from users
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
     @Override
-    public User findByPhoneNumber(String phoneNumber) {
-        return null;
+    public Optional<User> findByEmail(String email) {
+        String sql = """
+                select * from users where email like ?;
+                """;
+        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), email)));
     }
 
     @Override
-    public User findByFullName(String firstName, String lastName) {
-        return null;
+    public Optional<User> findByPhoneNumber(String phoneNumber) {
+        String sql = """
+
+            SELECT u.* FROM users u JOIN contacts_info ci ON u.id = ci.resume_id 
+            WHERE ci.contact_value = ? AND ci.type_id = (SELECT id FROM contact_types WHERE type = 'Phone');
+                     """;
+        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber)));
     }
 
+    @Override
+    public Optional<User> findByName(String name) {
+        String sql = """
+                SELECT * FROM users WHERE name LIKE ?;
+                    """;
+        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), name)));
+    }
     @Override
     public boolean userExists(String email) {
-        return false;
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        return count != null && count > 0;
     }
 }
