@@ -1,11 +1,11 @@
 package com.example.java_19_headhunter.enums;
 
-public enum UserType {
+public enum AccountType {
     APPLICANT("Applicant"), EMPLOYER("Employer");
 
     private final String value;
 
-    UserType(String value) {
+    AccountType(String value) {
         this.value = value;
     }
 

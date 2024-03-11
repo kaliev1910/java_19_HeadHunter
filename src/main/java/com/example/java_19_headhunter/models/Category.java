@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class Category {
-    private long id;
-    private final String name;
+
+    private int id;
+    private int parentId;
+    private String name;
 
 }

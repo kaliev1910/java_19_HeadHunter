@@ -7,13 +7,10 @@ import lombok.Data;
 @Builder
 @Data
 public class ContactInfo {
-    private long id;
-    private long userId;
-    private String telegram;
-    private String email;
-    private Integer phoneNumber;
-    private String facebook;
-    private String linkedin;
+    private int id;
+    private int resumeId;
+    private int typeId;
+    private String contactValue;
 
 
 }

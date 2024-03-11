@@ -1,14 +1,20 @@
 package com.example.java_19_headhunter.models;
 
-import com.example.java_19_headhunter.enums.UserType;
+import com.example.java_19_headhunter.enums.AccountType;
 import lombok.Data;
+
+import java.sql.Timestamp;
 
 @Data
 public class User {
-    private long id;
-    private String username;
+
+    private int id;
+    private String name;
+    private String surname;
+    private byte age; // TINYINT maps to byte in Java
     private String email;
-    private UserType userType;
     private String password;
+    private String avatar;
+    private String accountType;
 
 }

@@ -2,13 +2,20 @@ package com.example.java_19_headhunter.models;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 public class Vacancy {
-    private long id;
+    private int id;
+    private int authorId;
     private String name;
-    private long userId;
-    private int salary;
     private String description;
-    private String requiredExperience;
-    private long categoryId;
+    private int categoryId;
+    private int salary;
+    private int expFrom;
+    private int expTo;
+    private boolean isActive;
+    private Timestamp createdDate;
+    private Timestamp updateTime;
+
 }
