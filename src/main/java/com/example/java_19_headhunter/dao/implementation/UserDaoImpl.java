@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         String sql = """
-                select * from users where email like ?;
+                select * from users where email = ?;
                 """;
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), email)));
     }
