@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 9
+      author: kaliev1910
+      changes:
+        - createTable:
+            tableName: responded_applicants
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: resume_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: vacancy_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: confirmation
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+        - addForeignKeyConstraint:
+            baseTableName: responded_applicants
+            baseColumnNames: resume_id
+            constraintName: fk_resp_resume_id
+            referencedTableName: resumes
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: responded_applicants
+            baseColumnNames: vacancy_id
+            constraintName: fk_resp_vacancy_id
+            referencedTableName: vacancies
+            referencedColumnNames: id
