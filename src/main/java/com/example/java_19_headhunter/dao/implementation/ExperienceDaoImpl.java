@@ -3,11 +3,10 @@ package com.example.java_19_headhunter.dao.implementation;
 import com.example.java_19_headhunter.dao.interfaces.ExperienceDao;
 import com.example.java_19_headhunter.models.Experience;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-
+@Component
 public class ExperienceDaoImpl extends BasicDaoImpl implements ExperienceDao {
     @Override
     public void insert(Experience experience) {
