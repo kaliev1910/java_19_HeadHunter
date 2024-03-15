@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.dao.implementation;
 
-import com.example.java_19_headhunter.dao.UserDao;
+import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.models.User;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
@@ -17,6 +17,21 @@ public class UserDaoImpl implements UserDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
+    public void updateUser(User user) {
+        String sql = "UPDATE users SET name = ?, surname = ?, age = ?, email = ?, password = ?, avatar = ?, account_type = ? WHERE id = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getAge(),
+                user.getEmail(), user.getPassword(), user.getAvatar(), user.getAccountType(), user.getId());
+    }
+
+    @Override
+    public void createUser(User user) {
+        String sql = "INSERT INTO users (name, surname, age, email, password, avatar, account_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getAge(),
+                user.getEmail(), user.getPassword(), user.getAvatar(), user.getAccountType());
+    }
+
+
+    @Override
     public List<User> getUsers() {
         String sql = """
                 select * from users
@@ -27,7 +42,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         String sql = """
-                select * from users where email like ?;
+                select * from users where email = ?;
                 """;
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), email)));
     }
@@ -36,9 +51,9 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByPhoneNumber(String phoneNumber) {
         String sql = """
 
-            SELECT u.* FROM users u JOIN contacts_info ci ON u.id = ci.resume_id 
-            WHERE ci.contact_value = ? AND ci.type_id = (SELECT id FROM contact_types WHERE type = 'Phone');
-                     """;
+                SELECT u.* FROM users u JOIN contacts_info ci ON u.id = ci.resume_id 
+                WHERE ci.contact_value = ? AND ci.type_id = (SELECT id FROM contact_types WHERE type = 'Phone');
+                         """;
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber)));
     }
 
@@ -49,10 +64,25 @@ public class UserDaoImpl implements UserDao {
                     """;
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), name)));
     }
+
     @Override
     public boolean userExists(String email) {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
         return count != null && count > 0;
     }
+
 }
+//@Data
+//public class User {
+//
+//    private int id;
+//    private String name;
+//    private String surname;
+//    private byte age;
+//    private String email;
+//    private String password;
+//    private String avatar;
+//    private String accountType;
+//
+//}
