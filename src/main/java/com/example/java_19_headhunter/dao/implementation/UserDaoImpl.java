@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.dao.implementation;
 
-import com.example.java_19_headhunter.dao.UserDao;
+import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.models.User;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;

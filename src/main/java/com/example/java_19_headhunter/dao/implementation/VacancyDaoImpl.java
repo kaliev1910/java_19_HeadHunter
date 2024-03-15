@@ -1,7 +1,6 @@
 package com.example.java_19_headhunter.dao.implementation;
 
-import com.example.java_19_headhunter.dao.BasicDaoImpl;
-import com.example.java_19_headhunter.dao.VacancyDao;
+import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

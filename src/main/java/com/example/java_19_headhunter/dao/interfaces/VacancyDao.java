@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.dao;
+package com.example.java_19_headhunter.dao.interfaces;
 
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;

@@ -1,7 +1,6 @@
 package com.example.java_19_headhunter.dao.implementation;
 
-import com.example.java_19_headhunter.dao.BasicDaoImpl;
-import com.example.java_19_headhunter.dao.ResumeDao;
+import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.models.Resume;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Component;
@@ -30,23 +29,23 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     }
 
     @Override
-    public int insert(Resume resume) {
+    public void insert(Resume resume) {
         String sql = "INSERT INTO resumes (id, applicant_id, name, expected_salary,  created_date, update_time) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, resume.getId(), resume.getApplicantId(), resume.getName(),
+         jdbcTemplate.update(sql, resume.getId(), resume.getApplicantId(), resume.getName(),
                 resume.getExpectedSalary(), resume.getCreatedTime(), resume.getUpdatedTime());
     }
 
     @Override
-    public int update(Resume resume) {
+    public void update(Resume resume) {
         String sql = "UPDATE resumes SET applicant_id = ?, name = ?, expected_salary = ?,  created_date = ?, update_time = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, resume.getApplicantId(), resume.getName(), resume.getExpectedSalary(),
+         jdbcTemplate.update(sql, resume.getApplicantId(), resume.getName(), resume.getExpectedSalary(),
                 resume.getCreatedTime(), resume.getUpdatedTime(), resume.getId());
     }
 
     @Override
-    public int deleteById(int id) {
+    public void deleteById(int id) {
         String sql = "DELETE FROM resumes WHERE id = ?";
-        return jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql, id);
     }
 }
