@@ -18,13 +18,18 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateUser(User user) {
-
+        String sql = "UPDATE users SET name = ?, surname = ?, age = ?, email = ?, password = ?, avatar = ?, account_type = ? WHERE id = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getAge(),
+                user.getEmail(), user.getPassword(), user.getAvatar(), user.getAccountType(), user.getId());
     }
 
     @Override
     public void createUser(User user) {
-
+        String sql = "INSERT INTO users (name, surname, age, email, password, avatar, account_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getAge(),
+                user.getEmail(), user.getPassword(), user.getAvatar(), user.getAccountType());
     }
+
 
     @Override
     public List<User> getUsers() {
@@ -68,3 +73,16 @@ public class UserDaoImpl implements UserDao {
     }
 
 }
+//@Data
+//public class User {
+//
+//    private int id;
+//    private String name;
+//    private String surname;
+//    private byte age;
+//    private String email;
+//    private String password;
+//    private String avatar;
+//    private String accountType;
+//
+//}
