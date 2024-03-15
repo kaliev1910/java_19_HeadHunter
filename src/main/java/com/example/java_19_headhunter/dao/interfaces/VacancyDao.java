@@ -10,4 +10,8 @@ public interface VacancyDao {
     List<Vacancy> findByCategory(int categoryId);
     List<Vacancy> findByApplicantId(int applicantId);
     List<User> findRespondedApplicantsForVacancy(int vacancyId);
+    List<Vacancy> findActiveVacancies();
+    List<Vacancy> findVacanciesBySalaryRange(int salaryFrom, int salaryTo);
+    void updateVacancy(Vacancy vacancy);
+    void createVacancy(Vacancy vacancy);
 }
