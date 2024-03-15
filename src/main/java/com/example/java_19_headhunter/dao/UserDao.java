@@ -8,6 +8,9 @@ import java.util.Optional;
 
 public interface UserDao {
     public List<User> getUsers();
+    public void updateUser(User user);
+    public void createUser(User user);
+
     Optional<User> findByEmail(String email);
     Optional<User> findByPhoneNumber(String phoneNumber);
     Optional<User> findByName(String name);

@@ -17,6 +17,16 @@ public class UserDaoImpl implements UserDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
+    public void updateUser(User user) {
+
+    }
+
+    @Override
+    public void createUser(User user) {
+
+    }
+
+    @Override
     public List<User> getUsers() {
         String sql = """
                 select * from users
@@ -36,9 +46,9 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByPhoneNumber(String phoneNumber) {
         String sql = """
 
-            SELECT u.* FROM users u JOIN contacts_info ci ON u.id = ci.resume_id 
-            WHERE ci.contact_value = ? AND ci.type_id = (SELECT id FROM contact_types WHERE type = 'Phone');
-                     """;
+                SELECT u.* FROM users u JOIN contacts_info ci ON u.id = ci.resume_id 
+                WHERE ci.contact_value = ? AND ci.type_id = (SELECT id FROM contact_types WHERE type = 'Phone');
+                         """;
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber)));
     }
 
@@ -49,10 +59,12 @@ public class UserDaoImpl implements UserDao {
                     """;
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), name)));
     }
+
     @Override
     public boolean userExists(String email) {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
         return count != null && count > 0;
     }
+
 }

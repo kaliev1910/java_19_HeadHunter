@@ -10,9 +10,6 @@ public class Resume {
     private long applicantId;
     private String name;
     private Integer expectedSalary;
-    private int experienceId;
-    private int educationId;
-    private  long contactId;
     private LocalDate createdTime;
     private LocalDate updatedTime;
 
