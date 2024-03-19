@@ -29,7 +29,7 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     }
 
     @Override
-    public void insert(Resume resume) {
+    public void create(Resume resume) {
         String sql = "INSERT INTO resumes (id, applicant_id, name, expected_salary,  created_date, update_time) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
          jdbcTemplate.update(sql, resume.getId(), resume.getApplicantId(), resume.getName(),

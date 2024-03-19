@@ -1,8 +1,10 @@
 package com.example.java_19_headhunter.dto;
 
+import lombok.Builder;
 import lombok.Data;
-
+@Builder
 @Data
+
 public class UserDto {
 
     private int id;

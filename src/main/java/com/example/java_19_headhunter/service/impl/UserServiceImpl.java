@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,69 +15,119 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
+
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
     @Override
     public void updateUser(UserDto userDto) {
-        User user = fromDto(userDto);
-        userDao.updateUser(user);
+        User user;
+        try {
+            user = fromDto(userDto);
+            userDao.updateUser(user);
+            log.info("User with id {} has been updated", userDto.getId());
+        } catch (Exception e) {
+            log.error("Error while trying to update user with id {}", userDto.getId(), e);
+            throw e;
+
+        }
     }
 
     @Override
     public void createUser(UserDto userDto) {
-        User user = fromDto(userDto);
-        userDao.createUser(user);
+        User user;
+        try {
+            user = fromDto(userDto);
+            userDao.createUser(user);
+            log.info("User with email {} has been created", userDto.getEmail());
+        } catch (Exception e) {
+            log.error("Error while trying to create user", e);
+            throw e;
+        }
     }
 
     @Override
     public List<UserDto> getUsers() {
-        return userDao.getUsers().stream().map(this::toDto).collect(Collectors.toList());
+        try {
+            var users = userDao.getUsers();
+            log.info("Retrieved {} users", users.size());
+            return users.stream().map(this::toDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error while trying to get users", e);
+            throw e;
+        }
     }
 
     @Override
     public Optional<UserDto> findByEmail(String email) {
-        return userDao.findByEmail(email).map(this::toDto);
+        try {
+            var user = userDao.findByEmail(email);
+            log.info("Retrieved user by email: {}", email);
+            return user.map(this::toDto);
+        } catch (Exception e) {
+            log.error("Error while trying to find user by email: {}", email, e);
+            throw e;
+        }
     }
 
     @Override
     public Optional<UserDto> findByPhoneNumber(String phoneNumber) {
-        return userDao.findByPhoneNumber(phoneNumber).map(this::toDto);
+        try {
+            var user = userDao.findByPhoneNumber(phoneNumber);
+            log.info("Retrieved user by phone number: {}", phoneNumber);
+            return user.map(this::toDto);
+        } catch (Exception e) {
+            log.error("Error while trying to find user by phone number: {}", phoneNumber, e);
+            throw e;
+        }
     }
 
     @Override
     public Optional<UserDto> findByName(String name) {
-        return userDao.findByName(name).map(this::toDto);
+        try {
+            var user = userDao.findByName(name);
+            log.info("Retrieved user by name: {}", name);
+            return user.map(this::toDto);
+        } catch (Exception e) {
+            log.error("Error while trying to find user by name: {}", name, e);
+            throw e;
+        }
     }
 
     @Override
     public boolean userExists(String email) {
-        return userDao.userExists(email);
+        try {
+            var exists = userDao.userExists(email);
+            log.info("Checked if user exists by email: {}", email);
+            return exists;
+        } catch (Exception e) {
+            log.error("Error while trying to check if user exists by email: {}", email, e);
+            throw e;
+        }
     }
 
     private UserDto toDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setSurname(user.getSurname());
-        userDto.setEmail(user.getEmail());
-        userDto.setPassword(user.getPassword());
-        userDto.setAge(user.getAge());
-        userDto.setAvatar(user.getAvatar());
-        userDto.setAccountType(user.getAccountType());
-        return userDto;
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .age(user.getAge())
+                .avatar(user.getAvatar())
+                .accountType(user.getAccountType())
+                .build();
     }
 
     private User fromDto(UserDto userDto) {
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setAge(userDto.getAge());
-        user.setAvatar(userDto.getAvatar());
-        user.setAccountType(userDto.getAccountType());
-        return user;
+        return User.builder()
+                .name(userDto.getName())
+                .surname(userDto.getSurname())
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
+                .age(userDto.getAge())
+                .avatar(userDto.getAvatar())
+                .accountType(userDto.getAccountType())
+                .build();
     }
-}
+    }
