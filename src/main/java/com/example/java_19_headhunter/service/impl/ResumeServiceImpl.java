@@ -1,11 +1,15 @@
 package com.example.java_19_headhunter.service.impl;
 
+import com.example.java_19_headhunter.dao.implementation.ResumeDaoImpl;
 import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.dto.ResumeDto;
 import com.example.java_19_headhunter.models.Resume;
 import com.example.java_19_headhunter.service.ResumeService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,32 +17,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+
+
+@AllArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
 
-    @Autowired
-    private ResumeDao resumeDao;
-
-    private ResumeDto toDto(Resume resume) {
-        return ResumeDto.builder()
-                .id(resume.getId())
-                .applicantId(resume.getApplicantId())
-                .name(resume.getName())
-                .expectedSalary(resume.getExpectedSalary())
-                .createdTime(resume.getCreatedTime())
-                .updatedTime(resume.getUpdatedTime())
-                .build();
-    }
-
-    private Resume fromDto(ResumeDto resumeDto) {
-        return Resume.builder()
-                .id(resumeDto.getId())
-                .applicantId(resumeDto.getApplicantId())
-                .name(resumeDto.getName())
-                .expectedSalary(resumeDto.getExpectedSalary())
-                .createdTime(resumeDto.getCreatedTime())
-                .updatedTime(resumeDto.getUpdatedTime())
-                .build();
-    }
+    @NonNull
+    private final
+     ResumeDao resumeDao;
 
     @Override
     public List<ResumeDto> findByCategory(int category) {
@@ -46,6 +32,16 @@ public class ResumeServiceImpl implements ResumeService {
             return resumeDao.findByCategory(category).stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error finding Resumes by category: {}", category, e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<ResumeDto> getAll() {
+        try {
+            return resumeDao.getAll().stream().map(this::toDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error finding all Resumes ", e);
             throw e;
         }
     }
@@ -59,7 +55,6 @@ public class ResumeServiceImpl implements ResumeService {
             throw e;
         }
     }
-
     @Override
     public ResumeDto findById(int id) {
         try {
@@ -98,5 +93,31 @@ public class ResumeServiceImpl implements ResumeService {
             log.error("Error deleting Resume by id: {}", id, e);
             throw e;
         }
+    }
+
+    private Resume fromDto(ResumeDto resumeDto) {
+        return Resume.builder()
+                .id(resumeDto.getId())
+                .applicantId(resumeDto.getApplicantId())
+                .categoryId(resumeDto.getCategoryId())
+                .isActive(resumeDto.isActive())
+                .name(resumeDto.getName())
+                .expectedSalary(resumeDto.getExpectedSalary())
+                .createdTime(resumeDto.getCreatedTime())
+                .updatedTime(resumeDto.getUpdatedTime())
+                .build();
+    }
+
+    private ResumeDto toDto(Resume resume) {
+        return ResumeDto.builder()
+                .id(resume.getId())
+                .applicantId(resume.getApplicantId())
+                .categoryId(resume.getCategoryId())
+                .isActive(resume.isActive())
+                .name(resume.getName())
+                .expectedSalary(resume.getExpectedSalary())
+                .createdTime(resume.getCreatedTime())
+                .updatedTime(resume.getUpdatedTime())
+                .build();
     }
 }

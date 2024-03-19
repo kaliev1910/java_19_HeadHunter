@@ -5,6 +5,8 @@ import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -106,6 +108,33 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean getUserType(User user) {
+        try {
+            boolean isApplicant = "applicant".equalsIgnoreCase(user.getAccountType());
+            log.info("Is user an applicant: {}", isApplicant);
+            return isApplicant;
+        } catch (Exception e) {
+            log.error("Error while trying to retrieve user type: {}", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public boolean getUserType(UserDto userDto) {
+        try {
+            boolean isApplicant = "applicant".equalsIgnoreCase(userDto.getAccountType());
+            log.info("Is user an applicant: {}", isApplicant);
+            return isApplicant;
+        } catch (Exception e) {
+            log.error("Error while trying to retrieve user type: {}", e);
+            throw e;
+        }
+    }
+     boolean isAccountApplicant(UserDto userDto){
+        return "applicant".equalsIgnoreCase(userDto.getAccountType());
+    }
+
     private UserDto toDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
@@ -130,4 +159,4 @@ public class UserServiceImpl implements UserService {
                 .accountType(userDto.getAccountType())
                 .build();
     }
-    }
+}

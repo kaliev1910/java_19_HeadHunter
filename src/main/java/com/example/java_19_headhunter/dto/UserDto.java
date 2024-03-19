@@ -1,10 +1,14 @@
 package com.example.java_19_headhunter.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 @Builder
 @Data
-
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserDto {
 
     private int id;

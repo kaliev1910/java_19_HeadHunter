@@ -11,10 +11,14 @@ import java.util.List;
 public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     @Override
     public List<Resume> findByCategory(int category) {
-        String sql = "SELECT * FROM resumes WHERE category_id = ?";
+        String sql = "SELECT * FROM resumes WHERE category_id like ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), category);
     }
-
+    @Override
+    public List<Resume> getAll() {
+        String sql = "SELECT * FROM resumes";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class));
+    }
     @Override
     public List<Resume> findByUserId(int userId) {
         String sql = "SELECT * FROM resumes WHERE applicant_id = ?";
@@ -30,10 +34,10 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
 
     @Override
     public void create(Resume resume) {
-        String sql = "INSERT INTO resumes (id, applicant_id, name, expected_salary,  created_date, update_time) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-         jdbcTemplate.update(sql, resume.getId(), resume.getApplicantId(), resume.getName(),
-                resume.getExpectedSalary(), resume.getCreatedTime(), resume.getUpdatedTime());
+        String sql = "INSERT INTO resumes ( applicant_id, name, CATEGORY_ID , expected_salary, IS_ACTIVE,  created_date, update_time) " +
+                "VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+         jdbcTemplate.update(sql,  resume.getApplicantId(), resume.getName(), resume.getCategoryId(),
+                resume.getExpectedSalary(), resume.isActive(),resume.getCreatedTime(), resume.getUpdatedTime());
     }
 
     @Override

@@ -1,10 +1,16 @@
 package com.example.java_19_headhunter.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Data
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class VacancyDto {
     private int id;
     private int authorId;
