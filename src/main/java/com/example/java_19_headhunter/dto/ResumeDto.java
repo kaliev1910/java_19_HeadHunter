@@ -22,4 +22,7 @@ public class ResumeDto {
     private boolean isActive;
     private Timestamp createdTime;
     private Timestamp updatedTime;
+    private List<ContactInfoDto> contacts;
+    private List<EducationDto> educations;
+    private List<ExperienceDto> experiences;
 }

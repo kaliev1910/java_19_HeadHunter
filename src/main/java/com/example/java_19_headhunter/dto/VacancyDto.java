@@ -1,11 +1,14 @@
 package com.example.java_19_headhunter.dto;
 
+import com.example.java_19_headhunter.models.RespondedApplicant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,5 +26,5 @@ public class VacancyDto {
     private boolean isActive;
     private Timestamp createdDate;
     private Timestamp updateTime;
-
+    private List<RespondedApplicant> respondedApplicantList;
 }
