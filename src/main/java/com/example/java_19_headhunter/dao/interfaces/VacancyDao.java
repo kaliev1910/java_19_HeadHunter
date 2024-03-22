@@ -3,6 +3,7 @@ package com.example.java_19_headhunter.dao.interfaces;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface VacancyDao {
@@ -23,4 +24,6 @@ public interface VacancyDao {
     int createVacancy(Vacancy vacancy);
 
     void applyForVacancy(User user, int vacancyId);
+
+    List<Vacancy> findByApplicantEmail(String applicantEmail);
 }

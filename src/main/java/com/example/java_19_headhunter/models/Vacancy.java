@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @RequiredArgsConstructor
 public class Vacancy {
     private int id;
-    private int authorId;
+    private String  authorEmail;
     private String name;
     private String description;
     private int categoryId;

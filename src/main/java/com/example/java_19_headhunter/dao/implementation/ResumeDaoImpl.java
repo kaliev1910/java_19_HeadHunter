@@ -23,9 +23,9 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class));
     }
     @Override
-    public List<Resume> findByUserId(int userId) {
-        String sql = "SELECT * FROM resumes WHERE applicant_id = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
+    public List<Resume> findByUserEmail(String userEmail) {
+        String sql = "SELECT * FROM resumes WHERE APPLICANT_EMAIL = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), userEmail);
     }
 
 
@@ -40,9 +40,9 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
-                    .prepareStatement("INSERT INTO resumes (applicant_id, name, CATEGORY_ID, expected_salary, IS_ACTIVE, created_date, update_time)" +
+                    .prepareStatement("INSERT INTO resumes (APPLICANT_EMAIL, name, CATEGORY_ID, expected_salary, IS_ACTIVE, created_date, update_time)" +
                             "VALUES (?, ?, ?, ?, ?, ?, ?)", new String[] {"id"});
-            ps.setInt(1, resume.getApplicantId());
+            ps.setString(1, resume.getApplicantEmail());
             ps.setString(2, resume.getName());
             ps.setInt(3, resume.getCategoryId());
             ps.setInt(4, resume.getExpectedSalary());
@@ -55,8 +55,8 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     }
     @Override
     public void update(Resume resume) {
-        String sql = "UPDATE resumes SET applicant_id = ?, name = ?, expected_salary = ?,  created_date = ?, update_time = ? WHERE id = ?";
-         jdbcTemplate.update(sql, resume.getApplicantId(), resume.getName(), resume.getExpectedSalary(),
+        String sql = "UPDATE resumes SET APPLICANT_EMAIL = ?, name = ?, expected_salary = ?,  created_date = ?, update_time = ? WHERE id = ?";
+         jdbcTemplate.update(sql, resume.getApplicantEmail(), resume.getName(), resume.getExpectedSalary(),
                 resume.getCreatedTime(), resume.getUpdatedTime(), resume.getId());
     }
 

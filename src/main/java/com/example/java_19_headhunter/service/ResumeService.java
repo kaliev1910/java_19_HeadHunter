@@ -8,7 +8,10 @@ import java.util.List;
 public interface ResumeService {
     List<ResumeDto> getAll();
     List<ResumeDto> findByCategory(int category);
-    List<ResumeDto> findByUserId(int userId);
+
+
+    List<ResumeDto> findByUserEmail(String userEmail);
+
     ResumeDto findById(int id);
     void create(ResumeDto resumeDto);
     void update(ResumeDto resumeDto);

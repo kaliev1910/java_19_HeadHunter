@@ -2,11 +2,9 @@ package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
-import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.dto.VacancyDto;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
-import com.example.java_19_headhunter.service.UserService;
 import com.example.java_19_headhunter.service.VacancyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +52,15 @@ public class VacancyServiceImpl implements VacancyService {
             throw e; // rethrow the exception
         }
     }
-
+    @Override
+    public List<VacancyDto> findByApplicantEmail(String applicantEmail) {
+        try {
+            return vacancyDao.findByApplicantEmail(applicantEmail).stream().map(this::toDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error finding vacancies by applicantEmail {}", applicantEmail, e);
+            throw e; // rethrow the exception
+        }
+    }
     @Override
     public List<VacancyDto> findActiveVacancies() {
         try {
@@ -111,7 +117,7 @@ public class VacancyServiceImpl implements VacancyService {
     private VacancyDto toDto(Vacancy vacancy) {
         return VacancyDto.builder()
                 .id(vacancy.getId())
-                .authorId(vacancy.getAuthorId())
+                .authorEmail(vacancy.getAuthorEmail())
                 .name(vacancy.getName())
                 .description(vacancy.getDescription())
                 .categoryId(vacancy.getCategoryId())
@@ -127,7 +133,7 @@ public class VacancyServiceImpl implements VacancyService {
     private Vacancy fromDto(VacancyDto vacancyDto) {
         return Vacancy.builder()
                 .id(vacancyDto.getId())
-                .authorId(vacancyDto.getAuthorId())
+                .authorEmail(vacancyDto.getAuthorEmail())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
                 .categoryId(vacancyDto.getCategoryId())

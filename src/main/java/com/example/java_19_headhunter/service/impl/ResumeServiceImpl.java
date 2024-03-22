@@ -1,14 +1,12 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.implementation.ResumeDaoImpl;
 import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.dto.ResumeDto;
 import com.example.java_19_headhunter.models.Resume;
 import com.example.java_19_headhunter.service.ResumeService;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +20,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
 
-    @NonNull
-    private final
-     ResumeDao resumeDao;
+    @NotNull
+    private final ResumeDao resumeDao;
 
     @Override
     public List<ResumeDto> findByCategory(int category) {
@@ -47,14 +44,15 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDto> findByUserId(int userId) {
+    public List<ResumeDto> findByUserEmail(String userEmail) {
         try {
-            return resumeDao.findByUserId(userId).stream().map(this::toDto).collect(Collectors.toList());
+            return resumeDao.findByUserEmail(userEmail).stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
-            log.error("Error finding Resumes by userId: {}", userId, e);
+            log.error("Error finding Resumes by userEmail: {}", userEmail, e);
             throw e;
         }
     }
+
     @Override
     public ResumeDto findById(int id) {
         try {
@@ -98,7 +96,7 @@ public class ResumeServiceImpl implements ResumeService {
     private Resume fromDto(ResumeDto resumeDto) {
         return Resume.builder()
                 .id(resumeDto.getId())
-                .applicantId(resumeDto.getApplicantId())
+                .applicantEmail(resumeDto.getApplicantEmail())
                 .categoryId(resumeDto.getCategoryId())
                 .isActive(resumeDto.isActive())
                 .name(resumeDto.getName())
@@ -111,7 +109,7 @@ public class ResumeServiceImpl implements ResumeService {
     private ResumeDto toDto(Resume resume) {
         return ResumeDto.builder()
                 .id(resume.getId())
-                .applicantId(resume.getApplicantId())
+                .applicantEmail(resume.getApplicantEmail())
                 .categoryId(resume.getCategoryId())
                 .isActive(resume.isActive())
                 .name(resume.getName())

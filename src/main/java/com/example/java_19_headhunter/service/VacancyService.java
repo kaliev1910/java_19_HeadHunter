@@ -11,6 +11,9 @@ public interface VacancyService {
     List<VacancyDto> findAll();
     List<VacancyDto> findByCategory(int categoryId);
     List<VacancyDto> findByApplicantId(int applicantId);
+
+    List<VacancyDto> findByApplicantEmail(String applicantEmail);
+
     List<VacancyDto> findActiveVacancies();
     List<VacancyDto> findVacanciesBySalaryRange(int salaryFrom, int salaryTo);
     void update(VacancyDto vacancyDto);

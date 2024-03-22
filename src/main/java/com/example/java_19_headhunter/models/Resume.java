@@ -15,7 +15,7 @@ import java.time.LocalDate;
 
 public class Resume {
     private int id;
-    private int applicantId;
+    private String applicantEmail;
     private String name;
     private Integer expectedSalary;
     private int categoryId;

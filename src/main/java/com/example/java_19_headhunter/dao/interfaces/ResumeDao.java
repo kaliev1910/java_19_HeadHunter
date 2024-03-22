@@ -10,7 +10,7 @@ public interface ResumeDao {
 
     List<Resume> findByCategory(int category);
 
-    List<Resume> findByUserId(int userId);
+    List<Resume> findByUserEmail(String userEmail);
 
     Resume findById(int id);
 

@@ -12,7 +12,7 @@ INSERT INTO contact_types (type)
 VALUES ('Phone'),
        ('Email'),
        ('LinkedIn'),
-       ('Skype');
+       ('Telegram');
 
 INSERT INTO users (name, surname, age, email, password, avatar, account_type)
 VALUES ('John', 'Doe', 30, 'john@example.com', 'password1', 'avatar1.jpg', 'applicant'),
@@ -28,7 +28,7 @@ VALUES (1, 1, '+1234567890'),
        (1, 2, 'john@example.com'),
        (1, 3, 'https://www.linkedin.com/in/johndoe'),
        (2, 2, 'jane@example.com'),
-       (2, 1, '+0987654321');
+       (2, 4, 'kaliev1910');
 
 INSERT INTO education_info (resume_id, institution, program, degree, start_date, end_date)
 VALUES (1, 'University of IT', 'Computer Science', 'Bachelor', '2010-09-01', '2014-06-30'),

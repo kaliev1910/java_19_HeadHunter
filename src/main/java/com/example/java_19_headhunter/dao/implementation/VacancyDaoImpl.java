@@ -24,6 +24,14 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
         String sql = "INSERT INTO responded_applicants (resume_id, vacancy_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, user.getId(), vacancyId);
     }
+
+    @Override
+    public List<Vacancy> findByApplicantEmail(String applicantEmail) {
+        String sql = "SELECT * FROM vacancies where AUTHOR_EMAIL = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), applicantEmail);
+
+    }
+
     @Override
     public List<Vacancy> findByCategory(int categoryId) {
         String sql = "SELECT * FROM vacancies WHERE category_id = ?";
@@ -56,9 +64,9 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
 
     @Override
     public void updateVacancy(Vacancy vacancy) {
-        String sql = "UPDATE vacancies SET author_id = ?, name = ?, description = ?, category_id = ?, " +
+        String sql = "UPDATE vacancies SET AUTHOR_EMAIL = ?, name = ?, description = ?, category_id = ?, " +
                 "salary = ?, exp_from = ?, exp_to = ?, is_active = ?, update_time = ? WHERE id = ?";
-        jdbcTemplate.update(sql, vacancy.getAuthorId(), vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
+        jdbcTemplate.update(sql, vacancy.getAuthorEmail(), vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
                 vacancy.getSalary(), vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.isActive(),
                 vacancy.getUpdateTime(), vacancy.getId());
     }
@@ -68,9 +76,9 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
-                    .prepareStatement("INSERT INTO vacancies (author_id, name, description, category_id, salary, exp_from, exp_to, is_active, update_time) " +
+                    .prepareStatement("INSERT INTO vacancies (AUTHOR_EMAIL, name, description, category_id, salary, exp_from, exp_to, is_active, update_time) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new String[] {"id"});
-            ps.setInt(1, vacancy.getAuthorId());
+            ps.setString(1, vacancy.getAuthorEmail());
             ps.setString(2, vacancy.getName());
             ps.setString(3, vacancy.getDescription());
             ps.setInt(4, vacancy.getCategoryId());
