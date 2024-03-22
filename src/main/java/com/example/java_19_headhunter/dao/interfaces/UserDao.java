@@ -1,10 +1,11 @@
 package com.example.java_19_headhunter.dao.interfaces;
 
 import com.example.java_19_headhunter.models.User;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-
+@Component
 
 public interface UserDao {
     public List<User> getUsers();

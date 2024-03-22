@@ -1,7 +1,9 @@
 package com.example.java_19_headhunter.dao.interfaces;
 import com.example.java_19_headhunter.models.Experience;
-import java.util.List;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+@Component
 public interface ExperienceDao {
     void  insert(Experience experience);
 

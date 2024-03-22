@@ -18,9 +18,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateUser(User user) {
-        String sql = "UPDATE users SET name = ?, surname = ?, age = ?, email = ?, password = ?, avatar = ?, account_type = ? WHERE id = ?";
+        String sql = "UPDATE users SET name = ?, surname = ?, age = ?,  password = ?, avatar = ?, account_type = ? WHERE EMAIL = ?";
         jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getAge(),
-                user.getEmail(), user.getPassword(), user.getAvatar(), user.getAccountType(), user.getId());
+                 user.getPassword(), user.getAvatar(), user.getAccountType(), user.getEmail());
     }
 
     @Override
