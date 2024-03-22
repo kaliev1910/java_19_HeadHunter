@@ -1,11 +1,15 @@
 package com.example.java_19_headhunter.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 
-@Builder
 @Data
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContactInfoDto {
     private int id;
     private int resumeId;

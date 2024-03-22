@@ -6,11 +6,14 @@ import com.example.java_19_headhunter.dto.VacancyDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -21,71 +24,43 @@ public class UserController {
     private final VacancyServiceImpl vacancyService;
 
     @PostMapping("/register")
-    public HttpStatus register(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserDto userDto) {
         userService.createUser(userDto);
-        return HttpStatus.OK;
-
+        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
     }
 
     @PutMapping("")
-    public HttpStatus updateProfile(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> updateProfile(@Valid @RequestBody UserDto userDto) {
         userService.updateUser(userDto);
-        return HttpStatus.OK;
-
+        return new ResponseEntity<>("Profile updated successfully", HttpStatus.OK);
     }
-
-    @PostMapping("/resume")
-    public HttpStatus createResume(@RequestBody ResumeDto resumeDto) {
-        resumeService.create(resumeDto);
-        return HttpStatus.OK;
-
-    }
-
-    @PutMapping("/resume")
-    public HttpStatus updateResume(@RequestBody ResumeDto resumeDto) {
-        resumeService.update(resumeDto);
-        return HttpStatus.OK;
-    }
-
-    @DeleteMapping("/resume")
-    public HttpStatus deleteResume(@RequestBody int id) {
-        resumeService.deleteById(id);
-        return HttpStatus.OK;
-    }
-
-
-    @GetMapping("/resumes")
-    public List<ResumeDto> getResumes() {
-        return resumeService.getAll();
-    }
-
     @GetMapping("/users")
-    public List<UserDto> getUsers() {
-        return userService.getUsers();
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/vacancies")
-    public List<VacancyDto> findVacancies() {
-        return vacancyService.findAll();
+    @GetMapping("/users/email/{email}")
+    public ResponseEntity<Optional<UserDto>> getUserByEmail(@PathVariable String email) {
+        return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
     }
 
-    @PostMapping("/apply/")
-    public void applyForJob(@RequestBody String email, int vacancyId) {
-        vacancyService.applyForVacancy(email, vacancyId);
+    @GetMapping("/users/phoneNumber/{phoneNumber}")
+    public ResponseEntity<Optional<UserDto>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
+        return new ResponseEntity<>(userService.findByPhoneNumber(phoneNumber), HttpStatus.OK);
     }
 
-    @PostMapping("/vacancy")
-    public HttpStatus createVacancy(@RequestBody VacancyDto vacancyDto) {
-        vacancyService.create(vacancyDto);
-        return HttpStatus.OK;
+    @GetMapping("/users/name/{name}")
+    public ResponseEntity<Optional<UserDto>> getUserByName(@PathVariable String name) {
+        return new ResponseEntity<>(userService.findByName(name), HttpStatus.OK);
     }
 
-    @PutMapping("/vacancy")
-    public HttpStatus updateVacancy(@RequestBody VacancyDto vacancyDto) {
-        vacancyService.update(vacancyDto);
-        return HttpStatus.OK;
-
+    @GetMapping("/users/exists/{email}")
+    public ResponseEntity<Boolean> userExists(@PathVariable String email) {
+        return new ResponseEntity<>(userService.userExists(email), HttpStatus.OK);
     }
 
-
+    @GetMapping("/users/type")
+    public ResponseEntity<Boolean> getUserType(@RequestBody UserDto userDto) {
+        return new ResponseEntity<>(userService.getUserType(userDto), HttpStatus.OK);
+    }
 }
