@@ -60,7 +60,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByName(String name) {
         String sql = """
-                SELECT * FROM users WHERE name LIKE ?;
+                SELECT * FROM users WHERE name = ?;
                     """;
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), name)));
     }
@@ -71,6 +71,12 @@ public class UserDaoImpl implements UserDao {
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
         return count != null && count > 0;
     }
+
+    @Override
+    public boolean getUserType(User user) {
+        return false;
+    }
+
 
 }
 //@Data

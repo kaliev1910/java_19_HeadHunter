@@ -1,8 +1,11 @@
 package com.example.java_19_headhunter.models;
 
-import lombok.Data;
+import lombok.*;
 
 @Data
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class User {
 
     private int id;

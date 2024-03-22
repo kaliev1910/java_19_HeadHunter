@@ -1,7 +1,20 @@
 package com.example.java_19_headhunter.service;
 
-import org.springframework.stereotype.Service;
+import com.example.java_19_headhunter.dto.ResumeDto;
 
-@Service
+import java.util.List;
+
+
 public interface ResumeService {
+    List<ResumeDto> getAll();
+    List<ResumeDto> findByCategory(int category);
+
+
+    List<ResumeDto> findByUserEmail(String userEmail);
+
+    ResumeDto findById(int id);
+    void create(ResumeDto resumeDto);
+    void update(ResumeDto resumeDto);
+    void deleteById(int id);
+
 }
