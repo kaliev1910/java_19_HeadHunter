@@ -10,7 +10,6 @@ databaseChangeLog:
                   name: id
                   type: INTEGER
                   autoIncrement: true
-
               - column:
                   name: name
                   type: VARCHAR(255)

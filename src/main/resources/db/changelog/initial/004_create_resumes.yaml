@@ -13,8 +13,8 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: applicant_id
-                  type: INTEGER
+                  name: applicant_email
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:

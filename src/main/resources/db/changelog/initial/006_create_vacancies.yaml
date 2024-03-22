@@ -13,8 +13,8 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: author_id
-                  type: INTEGER
+                  name: author_email
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
