@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Slf4j
 @Service
-@AllArgsConstructor
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -131,11 +131,12 @@ public class UserServiceImpl implements UserService {
             throw e;
         }
     }
-     boolean isAccountApplicant(UserDto userDto){
+
+    boolean isAccountApplicant(UserDto userDto) {
         return "applicant".equalsIgnoreCase(userDto.getAccountType());
     }
 
-    protected  UserDto toDto(User user) {
+    protected UserDto toDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())

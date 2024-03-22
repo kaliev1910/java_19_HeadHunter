@@ -1,13 +1,16 @@
 package com.example.java_19_headhunter.dto;
 
 import com.example.java_19_headhunter.models.RespondedApplicant;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,9 +19,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VacancyDto {
     private int id;
-    private String  authorEmail;
+
+    @NotNull
+    @Email(message = "Email should be valid")
+    private String authorEmail;
+
+    @NotBlank(message = "Name is mandatory")
+    @Size(max = 100, message = "Name should not be greater than 100 characters")
     private String name;
+
+    @NotBlank(message = "Description is mandatory")
+    @Size(max = 500, message = "Description should not be greater than 500 characters")
     private String description;
+
     private int categoryId;
     private int salary;
     private int expFrom;
