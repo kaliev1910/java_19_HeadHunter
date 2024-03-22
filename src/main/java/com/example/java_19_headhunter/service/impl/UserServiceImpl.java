@@ -2,11 +2,11 @@ package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dto.UserDto;
+import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +35,31 @@ public class UserServiceImpl implements UserService {
 
         }
     }
-
     @Override
-    public void createUser(UserDto userDto) {
+    @SneakyThrows
+    public boolean isEmployer(String email) {
+        return userDao.findByEmail(email)
+                .map(user -> {
+                    Optional<UserDto> userDto = findByEmail(user.getEmail());
+                    return userDto.get().getAccountType().equalsIgnoreCase("employer");
+                })
+                .orElseThrow(() -> new UserNotFoundException("Cannot find user"));
+    }
+    @Override
+    public int createUser(UserDto userDto) {
         User user;
         try {
             user = fromDto(userDto);
             userDao.createUser(user);
-            log.info("User with email {} has been created", userDto.getEmail());
+            Optional<User> newUser = userDao.findByEmail(user.getEmail());
+
+            if (newUser.isPresent()) {
+                log.info("User with email {} has been created", userDto.getEmail());
+                return user.getId();
+            } else {
+                log.info("User could not be created");
+                return 0;
+            }
         } catch (Exception e) {
             log.error("Error while trying to create user", e);
             throw e;
@@ -133,9 +150,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    boolean isAccountApplicant(UserDto userDto) {
-        return "applicant".equalsIgnoreCase(userDto.getAccountType());
-    }
+
 
     protected UserDto toDto(User user) {
         return UserDto.builder()

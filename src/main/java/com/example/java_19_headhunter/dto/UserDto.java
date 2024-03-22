@@ -1,17 +1,12 @@
 package com.example.java_19_headhunter.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-
-
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
     private int id;
@@ -43,4 +38,6 @@ public class UserDto {
     @Pattern(regexp = "applicant|employer", message = "Account type must be either 'applicant' or 'employer'")
     private String accountType;
 }
+
+
 
