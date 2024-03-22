@@ -14,7 +14,7 @@ public interface ResumeDao {
 
     Resume findById(int id);
 
-    void create(Resume resume);
+    int create(Resume resume);
 
     void update(Resume resume);
 

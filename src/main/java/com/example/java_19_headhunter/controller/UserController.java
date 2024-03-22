@@ -7,6 +7,7 @@ import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,23 +21,36 @@ public class UserController {
     private final VacancyServiceImpl vacancyService;
 
     @PostMapping("/register")
-    public void register(@RequestBody UserDto userDto) {
+    public HttpStatus register(@RequestBody UserDto userDto) {
         userService.createUser(userDto);
+        return HttpStatus.OK;
+
     }
 
-    @PutMapping("/update")
-    public void updateProfile(@RequestBody UserDto userDto) {
+    @PutMapping("")
+    public HttpStatus updateProfile(@RequestBody UserDto userDto) {
         userService.updateUser(userDto);
+        return HttpStatus.OK;
+
     }
 
     @PostMapping("/resume")
-    public void createResume(@RequestBody ResumeDto resumeDto) {
+    public HttpStatus createResume(@RequestBody ResumeDto resumeDto) {
         resumeService.create(resumeDto);
+        return HttpStatus.OK;
+
     }
 
     @PutMapping("/resume")
-    public void updateResume(@RequestBody ResumeDto resumeDto) {
+    public HttpStatus updateResume(@RequestBody ResumeDto resumeDto) {
         resumeService.update(resumeDto);
+        return HttpStatus.OK;
+    }
+
+    @DeleteMapping("/resume")
+    public HttpStatus deleteResume(@RequestBody int id) {
+        resumeService.deleteById(id);
+        return HttpStatus.OK;
     }
 
 
@@ -55,19 +69,22 @@ public class UserController {
         return vacancyService.findAll();
     }
 
-//    @PostMapping("/apply/{vacancyId}")
-//    public void applyForJob(@PathVariable int vacancyId) {
-//        vacancyService.applyForJob(vacancyId);
-//    }
+    @PostMapping("/apply/")
+    public void applyForJob(@RequestBody String email, int vacancyId) {
+        vacancyService.applyForVacancy(email, vacancyId);
+    }
 
     @PostMapping("/vacancy")
-    public void createVacancy(@RequestBody VacancyDto vacancyDto) {
+    public HttpStatus createVacancy(@RequestBody VacancyDto vacancyDto) {
         vacancyService.create(vacancyDto);
+        return HttpStatus.OK;
     }
 
     @PutMapping("/vacancy")
-    public void updateVacancy(@RequestBody VacancyDto vacancyDto) {
+    public HttpStatus updateVacancy(@RequestBody VacancyDto vacancyDto) {
         vacancyService.update(vacancyDto);
+        return HttpStatus.OK;
+
     }
 
 

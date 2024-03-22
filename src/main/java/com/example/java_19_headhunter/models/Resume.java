@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Builder
@@ -13,13 +14,13 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 
 public class Resume {
-    private long id;
-    private long applicantId;
+    private int id;
+    private int applicantId;
     private String name;
     private Integer expectedSalary;
     private int categoryId;
     private boolean isActive;
-    private LocalDate createdTime;
-    private LocalDate updatedTime;
+    private Timestamp createdTime;
+    private Timestamp updatedTime;
 
 }

@@ -10,8 +10,7 @@ databaseChangeLog:
                   name: id
                   type: INTEGER
                   autoIncrement: true
-                  constraints:
-                    primaryKey: true
+
               - column:
                   name: name
                   type: VARCHAR(255)
@@ -31,6 +30,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     unique: true
+                    primaryKey: true
               - column:
                   name: password
                   type: VARCHAR(255)

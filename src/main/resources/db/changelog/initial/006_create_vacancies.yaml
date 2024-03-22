@@ -55,10 +55,10 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
         - addForeignKeyConstraint:
             baseTableName: vacancies
-            baseColumnNames: author_id
-            constraintName: fk_vc_author_id
+            baseColumnNames: author_email
+            constraintName: fk_vc_author_email
             referencedTableName: users
-            referencedColumnNames: id
+            referencedColumnNames: email
         - addForeignKeyConstraint:
             baseTableName: vacancies
             baseColumnNames: category_id

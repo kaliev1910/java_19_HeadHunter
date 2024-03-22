@@ -1,5 +1,6 @@
 package com.example.java_19_headhunter.service;
 
+import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.dto.VacancyDto;
 import org.springframework.stereotype.Service;
 
@@ -14,4 +15,6 @@ public interface VacancyService {
     List<VacancyDto> findVacanciesBySalaryRange(int salaryFrom, int salaryTo);
     void update(VacancyDto vacancyDto);
     void create(VacancyDto vacancyDto);
+    void applyForVacancy(String email, int vacancyId);
+
 }

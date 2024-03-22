@@ -1,53 +1,29 @@
 package com.example.java_19_headhunter.service.impl;
 
+import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
+import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
+import com.example.java_19_headhunter.service.UserService;
 import com.example.java_19_headhunter.service.VacancyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class  VacancyServiceImpl implements VacancyService  {
+public class VacancyServiceImpl implements VacancyService {
     @Autowired
     private VacancyDao vacancyDao;
+    private UserDao userDao;
 
-    private VacancyDto toDto(Vacancy vacancy) {
-        return VacancyDto.builder()
-                .id(vacancy.getId())
-                .authorId(vacancy.getAuthorId())
-                .name(vacancy.getName())
-                .description(vacancy.getDescription())
-                .categoryId(vacancy.getCategoryId())
-                .salary(vacancy.getSalary())
-                .expFrom(vacancy.getExpFrom())
-                .expTo(vacancy.getExpTo())
-                .isActive(vacancy.isActive())
-                .createdDate(vacancy.getCreatedDate())
-                .updateTime(vacancy.getUpdateTime())
-                .build();
-    }
 
-    private Vacancy fromDto(VacancyDto vacancyDto) {
-        return Vacancy.builder()
-                .id(vacancyDto.getId())
-                .authorId(vacancyDto.getAuthorId())
-                .name(vacancyDto.getName())
-                .description(vacancyDto.getDescription())
-                .categoryId(vacancyDto.getCategoryId())
-                .salary(vacancyDto.getSalary())
-                .expFrom(vacancyDto.getExpFrom())
-                .expTo(vacancyDto.getExpTo())
-                .isActive(vacancyDto.isActive())
-                .createdDate(vacancyDto.getCreatedDate())
-                .updateTime(vacancyDto.getUpdateTime())
-                .build();
-    }
 
     @Override
     public List<VacancyDto> findAll() {
@@ -117,6 +93,51 @@ public class  VacancyServiceImpl implements VacancyService  {
             log.error("Error creating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
         }
+    }
+
+
+    @Override
+    public void applyForVacancy(String email, int vacancyId) {
+        try {
+            Optional<User> user = userDao.findByEmail(email);
+
+            vacancyDao.applyForVacancy(user.get(), vacancyId);
+        } catch (Exception e) {
+            log.error("Error applying for vacancy {}, with user email {}", vacancyId,email, e);
+            throw e; // rethrow the exception
+        }
+    }
+
+    private VacancyDto toDto(Vacancy vacancy) {
+        return VacancyDto.builder()
+                .id(vacancy.getId())
+                .authorId(vacancy.getAuthorId())
+                .name(vacancy.getName())
+                .description(vacancy.getDescription())
+                .categoryId(vacancy.getCategoryId())
+                .salary(vacancy.getSalary())
+                .expFrom(vacancy.getExpFrom())
+                .expTo(vacancy.getExpTo())
+                .isActive(vacancy.isActive())
+                .createdDate(vacancy.getCreatedDate())
+                .updateTime(vacancy.getUpdateTime())
+                .build();
+    }
+
+    private Vacancy fromDto(VacancyDto vacancyDto) {
+        return Vacancy.builder()
+                .id(vacancyDto.getId())
+                .authorId(vacancyDto.getAuthorId())
+                .name(vacancyDto.getName())
+                .description(vacancyDto.getDescription())
+                .categoryId(vacancyDto.getCategoryId())
+                .salary(vacancyDto.getSalary())
+                .expFrom(vacancyDto.getExpFrom())
+                .expTo(vacancyDto.getExpTo())
+                .isActive(vacancyDto.isActive())
+                .createdDate(vacancyDto.getCreatedDate())
+                .updateTime(vacancyDto.getUpdateTime())
+                .build();
     }
 
 }

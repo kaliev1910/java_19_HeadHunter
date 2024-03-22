@@ -4,8 +4,11 @@ import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Component
@@ -16,7 +19,11 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
         String sql = "SELECT * FROM vacancies";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class));
     }
-
+    @Override
+    public void applyForVacancy(User user, int vacancyId) {
+        String sql = "INSERT INTO responded_applicants (resume_id, vacancy_id) VALUES (?, ?)";
+        jdbcTemplate.update(sql, user.getId(), vacancyId);
+    }
     @Override
     public List<Vacancy> findByCategory(int categoryId) {
         String sql = "SELECT * FROM vacancies WHERE category_id = ?";
@@ -57,11 +64,23 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
     }
 
     @Override
-    public void createVacancy(Vacancy vacancy) {
-        String sql = "INSERT INTO vacancies (author_id, name, description, category_id, salary, exp_from, exp_to, is_active, created_date, update_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, vacancy.getAuthorId(), vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
-                vacancy.getSalary(), vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.isActive(),
-                vacancy.getCreatedDate(), vacancy.getUpdateTime());
+    public int createVacancy(Vacancy vacancy) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement("INSERT INTO vacancies (author_id, name, description, category_id, salary, exp_from, exp_to, is_active, update_time) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new String[] {"id"});
+            ps.setInt(1, vacancy.getAuthorId());
+            ps.setString(2, vacancy.getName());
+            ps.setString(3, vacancy.getDescription());
+            ps.setInt(4, vacancy.getCategoryId());
+            ps.setInt(5, vacancy.getSalary());
+            ps.setInt(6, vacancy.getExpFrom());
+            ps.setInt(7, vacancy.getExpTo());
+            ps.setBoolean(8, vacancy.isActive());
+            ps.setTimestamp(9, vacancy.getUpdateTime());
+            return ps;
+        }, keyHolder);
+        return (int) keyHolder.getKey();
     }
-
 }

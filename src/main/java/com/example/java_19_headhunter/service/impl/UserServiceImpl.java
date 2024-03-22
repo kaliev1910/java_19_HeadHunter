@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
         return "applicant".equalsIgnoreCase(userDto.getAccountType());
     }
 
-    private UserDto toDto(User user) {
+    protected  UserDto toDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    private User fromDto(UserDto userDto) {
+    protected static User fromDto(UserDto userDto) {
         return User.builder()
                 .name(userDto.getName())
                 .surname(userDto.getSurname())

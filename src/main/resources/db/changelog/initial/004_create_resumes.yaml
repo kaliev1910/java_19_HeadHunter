@@ -44,10 +44,10 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
         - addForeignKeyConstraint:
             baseTableName: resumes
-            baseColumnNames: applicant_id
-            constraintName: fk_rm_applicant_id
+            baseColumnNames: applicant_email
+            constraintName: fk_rm_applicant_email
             referencedTableName: users
-            referencedColumnNames: id
+            referencedColumnNames: email
         - addForeignKeyConstraint:
             baseTableName: resumes
             baseColumnNames: category_id
