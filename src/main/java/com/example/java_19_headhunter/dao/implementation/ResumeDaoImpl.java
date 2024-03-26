@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.List;
 
@@ -47,8 +48,8 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
             ps.setInt(3, resume.getCategoryId());
             ps.setInt(4, resume.getExpectedSalary());
             ps.setBoolean(5, resume.isActive());
-            ps.setTimestamp(6, resume.getCreatedTime());
-            ps.setTimestamp(7, resume.getUpdatedTime());
+            ps.setDate(6, Date.valueOf(resume.getCreatedTime()));
+            ps.setDate(7, Date.valueOf(resume.getUpdatedTime()));
             return ps;
         }, keyHolder);
         return (int) keyHolder.getKey();
