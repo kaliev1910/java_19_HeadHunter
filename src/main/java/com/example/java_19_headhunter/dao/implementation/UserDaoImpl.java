@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDao {
     public void updateUser(User user) {
         String sql = "UPDATE users SET name = ?, surname = ?, age = ?,  password = ?, avatar = ?, account_type = ? WHERE EMAIL = ?";
         jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getAge(),
-                 user.getPassword(), user.getAvatar(), user.getAccountType(), user.getEmail());
+                user.getPassword(), user.getAvatar(), user.getAccountType(), user.getEmail());
     }
 
     @Override
@@ -28,6 +28,17 @@ public class UserDaoImpl implements UserDao {
         String sql = "INSERT INTO users (name, surname, age, email, password, avatar, account_type,ENABLED) VALUES (?, ?, ?, ?, ?,?, ?, ?)";
         jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getAge(),
                 user.getEmail(), user.getPassword(), user.getAvatar(), user.getAccountType(), user.isEnabled());
+
+        String sqlUserRole = "INSERT INTO user_roles (user_email, role_id) VALUES (?, ?)";
+        int roleId;
+        if (user.getAccountType().equalsIgnoreCase( "applicant")) {
+            roleId=1;
+        } else if (user.getAccountType().equalsIgnoreCase("employer")) {
+            roleId =2;
+        }
+
+        jdbcTemplate.update(sqlUserRole, user.getEmail());
+
     }
 
 
