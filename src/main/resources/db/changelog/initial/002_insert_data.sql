@@ -14,9 +14,9 @@ VALUES ('Phone'),
        ('LinkedIn'),
        ('Telegram');
 
-INSERT INTO users (name, surname, age, email, password, avatar, account_type)
-VALUES ('John', 'Doe', 30, 'john@example.com', 'password1', 'avatar1.jpg', 'applicant'),
-       ('Jane', 'Smith', 28, 'jane@example.com', 'password2', 'avatar2.jpg', 'employer');
+INSERT INTO users (name, surname, age, email, password, avatar, account_type,enabled)
+VALUES ('John', 'Doe', 30, 'john@example.com', 'password1', 'avatar1.jpg', 'applicant',true),
+       ('Jane', 'Smith', 28, 'jane@example.com', 'password2', 'avatar2.jpg', 'employer',true);
 
 INSERT INTO resumes (applicant_email, name, category_id, expected_salary, is_active)
 VALUES ('john@example.com', 'Full Stack Developer', 2, 70000, true),
