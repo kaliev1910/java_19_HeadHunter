@@ -162,6 +162,7 @@ public class UserServiceImpl implements UserService {
                 .age(user.getAge())
                 .avatar(user.getAvatar())
                 .accountType(user.getAccountType())
+                .enabled(user.isEnabled())
                 .build();
     }
 
@@ -174,6 +175,7 @@ public class UserServiceImpl implements UserService {
                 .age(userDto.getAge())
                 .avatar(userDto.getAvatar())
                 .accountType(userDto.getAccountType())
+                .enabled(userDto.isEnabled())
                 .build();
     }
 }

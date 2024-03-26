@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .authorizeRequests(authz -> authz
 
                         .requestMatchers(new AntPathRequestMatcher("/register", HttpMethod.POST.name())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/vacancies", HttpMethod.GET.name())).permitAll()
 
                         .anyRequest().authenticated())
