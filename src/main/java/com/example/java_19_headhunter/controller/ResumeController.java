@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/resume")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('APPLICANT')")
 public class ResumeController {
     private final UserServiceImpl userService;
     private final ResumeService resumeService;
@@ -50,6 +52,7 @@ public class ResumeController {
     }
 
     @GetMapping("/resumes")
+    @PreAuthorize("hasRole('applicant')")
     public ResponseEntity<List<ResumeDto>> getAllResumes() {
         return new ResponseEntity<>(resumeService.getAll(), HttpStatus.OK);
     }
