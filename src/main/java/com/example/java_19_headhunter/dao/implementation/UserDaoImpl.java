@@ -30,14 +30,14 @@ public class UserDaoImpl implements UserDao {
                 user.getEmail(), user.getPassword(), user.getAvatar(), user.getAccountType(), user.isEnabled());
 
         String sqlUserRole = "INSERT INTO user_roles (user_email, role_id) VALUES (?, ?)";
-        int roleId;
+        int roleId = 0;
         if (user.getAccountType().equalsIgnoreCase( "applicant")) {
             roleId=1;
         } else if (user.getAccountType().equalsIgnoreCase("employer")) {
-            roleId =2;
+            roleId=2;
         }
 
-        jdbcTemplate.update(sqlUserRole, user.getEmail());
+        jdbcTemplate.update(sqlUserRole, user.getEmail(),roleId);
 
     }
 
