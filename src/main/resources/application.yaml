@@ -20,8 +20,6 @@ spring:
 logging:
   level:
     root: info
-  pattern:
-    console: "%d{HH:mm:ss} %highlight %-5level %logger{50} %msg%n"
   file:
     name: logs/headHunter.log
   logback:
