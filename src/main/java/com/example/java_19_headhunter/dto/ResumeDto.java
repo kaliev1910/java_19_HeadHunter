@@ -32,8 +32,8 @@ public class ResumeDto {
     private Integer expectedSalary;
     private int categoryId;
     private boolean isActive;
-    private Timestamp createdTime;
-    private Timestamp updatedTime;
+    private LocalDate createdTime;
+    private LocalDate updatedTime;
 
     private List<ContactInfoDto> contacts;
     private List<EducationDto> educations;

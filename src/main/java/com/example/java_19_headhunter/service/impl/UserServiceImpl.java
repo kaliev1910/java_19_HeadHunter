@@ -8,6 +8,7 @@ import com.example.java_19_headhunter.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
-
+    private final PasswordEncoder encoder;
     @Override
     public void updateUser(UserDto userDto) {
 
@@ -49,7 +50,9 @@ public class UserServiceImpl implements UserService {
     public int createUser(UserDto userDto) {
         User user;
         try {
+
             user = fromDto(userDto);
+            user.setPassword(encoder.encode(userDto.getPassword()));
             userDao.createUser(user);
             Optional<User> newUser = userDao.findByEmail(user.getEmail());
 
@@ -162,6 +165,7 @@ public class UserServiceImpl implements UserService {
                 .age(user.getAge())
                 .avatar(user.getAvatar())
                 .accountType(user.getAccountType())
+                .enabled(user.isEnabled())
                 .build();
     }
 
@@ -174,6 +178,7 @@ public class UserServiceImpl implements UserService {
                 .age(userDto.getAge())
                 .avatar(userDto.getAvatar())
                 .accountType(userDto.getAccountType())
+                .enabled(userDto.isEnabled())
                 .build();
     }
 }
