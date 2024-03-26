@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_roles
+      author: kaliev1910
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create_table_user_roles
+      author: kaliev1910
+      changes:
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_ur_user_id
+                    references: users(email)
+              - column:
+                  name: role_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_ur_role_id
+                    references: roles(id)
