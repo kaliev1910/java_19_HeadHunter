@@ -50,15 +50,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
-
+                .logout(Customizer.withDefaults())
                 .authorizeRequests(authz -> authz
-
                         .requestMatchers(new AntPathRequestMatcher("/user/register", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/vacancies", HttpMethod.GET.name())).permitAll()
-
-                        .anyRequest().authenticated())
-
-                .httpBasic(Customizer.withDefaults());
+                        .anyRequest().authenticated()
+                )
+        ;
 
         return http.build();
     }
