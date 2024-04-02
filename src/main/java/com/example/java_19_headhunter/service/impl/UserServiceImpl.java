@@ -8,6 +8,7 @@ import com.example.java_19_headhunter.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final PasswordEncoder encoder;
     @Override
+
     public void updateUser(UserDto userDto) {
 
         try {

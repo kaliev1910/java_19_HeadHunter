@@ -35,7 +35,4 @@ public class ResumeDto {
     private LocalDate createdTime;
     private LocalDate updatedTime;
 
-    private List<ContactInfoDto> contacts;
-    private List<EducationDto> educations;
-    private List<ExperienceDto> experiences;
 }

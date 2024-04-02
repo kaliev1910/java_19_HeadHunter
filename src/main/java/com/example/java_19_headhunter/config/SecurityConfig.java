@@ -52,7 +52,6 @@ public class SecurityConfig {
                 .authorizeRequests(authz -> authz
                         .requestMatchers(new AntPathRequestMatcher("/user/register", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/vacancies", HttpMethod.GET.name())).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/resume/resumes")).hasAuthority("APPLICANT")
                         .anyRequest().authenticated());
 
         return http.build();
