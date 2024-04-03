@@ -2,8 +2,10 @@ package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.dto.ResumeDto;
+import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.models.Resume;
 import com.example.java_19_headhunter.service.ResumeService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,14 +90,14 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @PreAuthorize("hasAuthority('APPLICANT')")
-    public void update(ResumeDto resumeDto, Authentication authentication) {
+    public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
         try {
-            Resume resume = fromDto(resumeDto);
-            resume.setUpdatedTime(LocalDate.now());
 
+            Resume resume = fromCreateDto(resumeCreateDto,authentication);
+            resume.setUpdatedTime(LocalDate.now());
             resumeDao.update(resume);
         } catch (Exception e) {
-            log.error("Error updating Resume: {}", resumeDto, e);
+            log.error("Error updating Resume:  name {} user {} ", resumeCreateDto.getName()  , ((User)authentication.getPrincipal()).getUsername(), e);
             throw e;
         }
     }
@@ -110,7 +112,19 @@ public class ResumeServiceImpl implements ResumeService {
             throw e;
         }
     }
+    private Resume fromCreateDto(ResumeCreateDto resumeDto, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
 
+        return Resume.builder()
+                .applicantEmail(user.getUsername())
+                .categoryId(resumeDto.getCategoryId())
+                .isActive(true)
+                .name(resumeDto.getName())
+                .expectedSalary(resumeDto.getExpectedSalary())
+                .createdTime(LocalDate.now())
+                .updatedTime(LocalDate.now())
+                .build();
+    }
     private Resume fromDto(ResumeDto resumeDto) {
         return Resume.builder()
                 .applicantEmail(resumeDto.getApplicantEmail())
@@ -119,7 +133,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
                 .createdTime(resumeDto.getCreatedTime())
-                .updatedTime(resumeDto.getUpdatedTime())
+                .updatedTime(LocalDate.now())
                 .build();
     }
 
