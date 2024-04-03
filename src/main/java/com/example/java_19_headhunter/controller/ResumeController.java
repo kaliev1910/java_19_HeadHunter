@@ -3,6 +3,7 @@ package com.example.java_19_headhunter.controller;
 import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.dto.ResumeDto;
 import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
@@ -34,7 +35,7 @@ public class ResumeController {
     }
 
     @PutMapping("/resume")
-    public ResponseEntity<String> updateResume(@Valid @RequestBody ResumeDto resumeDto, Authentication authentication) {
+    public ResponseEntity<String> updateResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
         resumeService.update(resumeDto, authentication);
         return new ResponseEntity<>("Resume updated successfully", HttpStatus.OK);
     }
