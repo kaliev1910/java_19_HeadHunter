@@ -8,6 +8,7 @@ import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.service.VacancyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -82,6 +83,7 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('EMPLOYER')")
     public void update(VacancyDto vacancyDto) {
         try {
             vacancyDao.updateVacancy(fromDto(vacancyDto));
@@ -92,6 +94,7 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('EMPLOYER')")
     public void create(VacancyDto vacancyDto) {
         try {
             vacancyDao.createVacancy(fromDto(vacancyDto));

@@ -3,14 +3,17 @@ package com.example.java_19_headhunter.controller;
 import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.dto.ResumeDto;
 import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,14 +29,14 @@ public class ResumeController {
 
 
     @PostMapping("/resume")
-    public ResponseEntity<String> createResume(@Valid @RequestBody ResumeDto resumeDto) {
-        resumeService.create(resumeDto);
+    public ResponseEntity<String> createResume(@Valid @RequestBody ResumeDto resumeDto, Authentication authentication) {
+        resumeService.create(resumeDto,authentication);
         return new ResponseEntity<>("Resume created successfully", HttpStatus.CREATED);
     }
 
     @PutMapping("/resume")
-    public ResponseEntity<String> updateResume(@Valid @RequestBody ResumeDto resumeDto) {
-        resumeService.update(resumeDto);
+    public ResponseEntity<String> updateResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
+        resumeService.update(resumeDto, authentication);
         return new ResponseEntity<>("Resume updated successfully", HttpStatus.OK);
     }
 

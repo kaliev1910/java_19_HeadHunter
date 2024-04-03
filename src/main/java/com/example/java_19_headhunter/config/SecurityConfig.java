@@ -28,7 +28,7 @@ public class SecurityConfig {
 
     private static final String USER_QUERY = "select email,password,enabled from users where email=?";
     private static final String ROLES_QUERY = """
-            select u.email, r.name 
+            select u.email, r.role 
             from user_roles ur inner join users u on u.email = ur.user_email
             inner join roles r on r.id = ur.role_id where u.email=?
             """;
@@ -44,19 +44,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(AbstractHttpConfigurer::disable)
-                .logout(Customizer.withDefaults())
                 .authorizeRequests(authz -> authz
                         .requestMatchers(new AntPathRequestMatcher("/user/register", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/vacancies", HttpMethod.GET.name())).permitAll()
-                        .anyRequest().authenticated()
-                )
-        ;
+                        .anyRequest().authenticated());
 
         return http.build();
     }
