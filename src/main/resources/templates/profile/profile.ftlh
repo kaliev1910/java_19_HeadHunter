@@ -42,15 +42,18 @@
 
     </style>
 
-    <#if user.role == "APPLICANT" >
+    <#if user.accountType == "APPLICANT" >
         <h1 class="center mb-3">Личный кабинет соискателя</h1>
         <div class="row">
             <th scope="col">
                 <#if user.avatar?has_content>
-                    <img class="user-avatar" src="${user.avatar}">
+                    <div class="card" style="height: 16rem ;width: 13rem;">
+                        <img src="..." class="card-img-top" alt="...">
+                    </div>
                 <#else >
-                    <img class="user-avatar"
-                         src="https://media.pn.am/media/issue/197/297/photo/197297.jpg">
+                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">
+                        <img src="..." class="card-img-top" alt="...">
+                    </div>
                 </#if>
             </th>
             <th scope="col">
@@ -58,13 +61,13 @@
                     <div class="col-sm-6">
                         <div class="card profile border-0">
                             <div class="card-body">
-                                <h5 class="card-title">${user.name}</h5>
+                                <h5 class="card-title">${user.name} ${user.surname} </h5>
                                 <#if user.age?has_content>
                                     <p class="card-text">Возраст: ${user.age}</p>
                                 <#else>
                                     <p class="card-text">Возраст: не указан</p>
                                 </#if>
-                                <a href="/hh/redact/${user.email}" class="btn btn-primary">Редактировать</a>
+                                <a href="/hh/redact/${user.email}" class="btn btn-primary" methods="PUT">Редактировать</a>
                             </div>
                         </div>
                     </div>
@@ -86,46 +89,53 @@
             <#list resume as resume>
                 <div class="card col-3 m-1">
                     <div class="card-body">
-                        <h5 class="card-title">Должность: ${resume.jobTitle}</h5>
+                        <h5 class="card-title">Должность: ${resume.name}</h5>
                         <h6 class="card-title">Категория работы: ${resume.categoryId}</h6>
+                        <h6 class="card-title">Контактные детали: </h6>
+                        <#list contacts as contact>
 
+                        <#if contact.typeId?has_content>
+                            <p class="card-text"> ${contact.contactValue}</p>
+                        </#if>
+
+                        </#list>
                         <p class="card-text">${resume.expectedSalary} KGZ</p>
                         <p class="font-weight-bold">Образование: </p>
-                        <#list resume.educations as education>
+                        <#list educations as education>
                             <div>
-                                Учебное заведение: ${education.nameInstitution}
+                                Учебное заведение: ${education.institution}
                             </div>
                             <div>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Специальность: ${education.speciality}</li>
+                                    <li class="list-group-item">Специальность: ${education.program}</li>
                                 </ul>
                             </div>
 
                             <div>
-                                Годы обучения: ${education.startStudy} - ${education.finishStudy}
+                                Годы обучения: ${education.startDate} - ${education.endDate}
                             </div>
                             <hr>
                         </#list>
                         <p class="font-weight-bold">Опыт работы: </p>
-                        <#list resume.experienceDtos as experience>
+                        <#list experiences as experience>
                             <div>
-                                Организация: ${experience.nameCompany}
+                                Организация: ${experience.companyName}
                             </div>
                             <div>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Должность: ${experience.jobTitle}</li>
+                                    <li class="list-group-item">Должность: ${experience.position}</li>
                                 </ul>
                             </div>
 
                             <div>
-                                Годы работы: ${experience.startWork} - ${experience.finishWork}
+                                Годы работы: ${experience.years}
                             </div>
                             <hr>
                         </#list>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer"   >
                         <a href="#" class="card-link">Обновить</a>
-                        <a href="/applicant/resume/edit/${resume.id}" class="card-link">Редактировать</a>
+                        <a href="/applicant/resume/${resume.id}" class="card-link">Редактировать</a>
                     </div>
                 </div>
 
@@ -135,11 +145,14 @@
         <h1 class="center mb-3">Личный кабинет работодателя</h1>
         <div class="row">
             <th scope="col mx-3">
-                <#if user.photo?has_content>
-                    <img class="user-photo" src="${user.photo}">
+                <#if user.avatar?has_content>
+                    <div class="card" style="height: 16rem ;width: 13rem;">
+                        <img src="..." class="card-img-top" alt="...">
+                    </div>
                 <#else >
-                    <img class="user-photo"
-                         src="https://www.esc.ru/upload/medialibrary/e64/e6455878ac0a5de8bd8e710666b5d76c.jpg">
+                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">
+                        <img src="..." class="card-img-top" alt="...">
+                    </div>
                 </#if>
             </th>
             <th scope="col">
@@ -160,16 +173,16 @@
         </div>
         <h3 class="mt-5">Вакансии:</h3>
         <div class="row">
-            <#list user.vacancyDtoList as vacancy>
+            <#list vacancies as vacancy>
                 <th scope="col">
                     <div class="card  mx-3 mb-3" style="width: 18rem;">
                         <div class="card-body">
-                            <h5 class="card-title">${vacancy.jobTitle}</h5>
+                            <h5 class="card-title">${vacancy.name}</h5>
                             <h6>${vacancy.salary} KGS</h6>
-                            <p>${vacancy.descriptionVacancy}</p>
+                            <p>${vacancy.description}</p>
                         </div>
                         <div class="card-footer">
-                            <p>${vacancy.date}</p>
+                            <p>${vacancy.createdDate}</p>
                             <a href="/employer/vacancies/edit/date/${vacancy.id}" class="card-link">Обновить</a>
                             <a href="/employer/vacancies/edit/${vacancy.id}" class="card-link">Редактировать</a>
                         </div>

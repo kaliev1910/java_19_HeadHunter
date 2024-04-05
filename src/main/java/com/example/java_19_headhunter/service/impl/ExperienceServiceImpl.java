@@ -4,6 +4,7 @@ import com.example.java_19_headhunter.dao.interfaces.ExperienceDao;
 import com.example.java_19_headhunter.dto.ExperienceDto;
 import com.example.java_19_headhunter.models.Experience;
 import com.example.java_19_headhunter.service.ExperienceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +12,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ExperienceServiceImpl implements ExperienceService {
 
     private final ExperienceDao experienceDao;
 
-    @Autowired
-    public ExperienceServiceImpl(ExperienceDao experienceDao) {
-        this.experienceDao = experienceDao;
-    }
+
 
     @Override
     public void insert(ExperienceDto experienceDto) {
