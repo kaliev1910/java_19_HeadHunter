@@ -21,7 +21,7 @@ public class UserDto {
 
     @NotNull(message = "Age cannot be null")
     @Min(value = 18, message = "Age should not be less than 18")
-    @Max(value = 150, message = "Age should not be greater than 150")
+    @Max(value = 120, message = "Age should not be greater than 120")
     private byte age;
 
     @NotNull
