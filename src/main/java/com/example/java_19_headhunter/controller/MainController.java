@@ -20,6 +20,7 @@ public class MainController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new UserDto());
+
         return "auth/register";
     }
 

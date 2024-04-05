@@ -22,11 +22,13 @@ public class VacancyController {
 
     @GetMapping("/vacancies")
     public ResponseEntity<List<VacancyDto>> getAllVacancies() {
+
         return new ResponseEntity<>(vacancyService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/vacancies/category/{id}")
     public ResponseEntity<List<VacancyDto>> getVacanciesByCategory(@PathVariable int id) {
+
         return new ResponseEntity<>(vacancyService.findByCategory(id), HttpStatus.OK);
     }
 
