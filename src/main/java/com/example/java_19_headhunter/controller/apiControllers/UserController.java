@@ -1,8 +1,6 @@
 package com.example.java_19_headhunter.controller.apiControllers;
 
 import com.example.java_19_headhunter.dto.UserDto;
-import com.example.java_19_headhunter.dto.ResumeDto;
-import com.example.java_19_headhunter.dto.VacancyDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
@@ -20,8 +18,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;
-    private final ResumeService resumeService;
-    private final VacancyServiceImpl vacancyService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody UserDto userDto) {
@@ -34,6 +30,7 @@ public class UserController {
         userService.updateUser(userDto);
         return new ResponseEntity<>("Profile updated successfully", HttpStatus.OK);
     }
+
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);

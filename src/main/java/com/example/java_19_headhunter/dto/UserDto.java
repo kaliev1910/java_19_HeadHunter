@@ -38,6 +38,7 @@ public class UserDto {
     @Pattern(regexp = "applicant|employer", message = "Account type must be either 'applicant' or 'employer'")
     private String accountType;
     private boolean enabled;
+
 }
 
 
