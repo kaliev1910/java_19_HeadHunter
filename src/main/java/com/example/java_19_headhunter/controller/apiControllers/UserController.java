@@ -1,57 +1,64 @@
 package com.example.java_19_headhunter.controller.apiControllers;
 
 import com.example.java_19_headhunter.dto.UserDto;
-import com.example.java_19_headhunter.dto.ResumeDto;
-import com.example.java_19_headhunter.dto.VacancyDto;
-import com.example.java_19_headhunter.service.ResumeService;
-import com.example.java_19_headhunter.service.impl.UserServiceImpl;
-import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
+import com.example.java_19_headhunter.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserServiceImpl userService;
-    private final ResumeService resumeService;
-    private final VacancyServiceImpl vacancyService;
+    private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody UserDto userDto) {
+    public String register(@Valid @ModelAttribute("userDto") UserDto userDto, Model model) {
         userService.createUser(userDto);
-        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+        model.addAttribute("message", "User registered successfully");
+        return "redirect:/user/users";
     }
 
     @PutMapping("")
-    public ResponseEntity<String> updateProfile(@Valid @RequestBody UserDto userDto) {
+    public String updateProfile(@Valid @ModelAttribute("userDto") UserDto userDto, Model model) {
         userService.updateUser(userDto);
-        return new ResponseEntity<>("Profile updated successfully", HttpStatus.OK);
+        model.addAttribute("message", "Profile updated successfully");
+        return "redirect:/user/users";
     }
+
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+    public String getAllUsers(Model model) {
+        List<UserDto> users = userService.getUsers();
+        model.addAttribute("users", users);
+        return "user-list";
     }
 
     @GetMapping("/users/email/{email}")
-    public ResponseEntity<Optional<UserDto>> getUserByEmail(@PathVariable String email) {
-        return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
+    public String getUserByEmail(@PathVariable String email, Model model) {
+        Optional<UserDto> user = userService.findByEmail(email);
+        model.addAttribute("user", user.orElse(null));
+        return "user-details";
     }
 
     @GetMapping("/users/phoneNumber/{phoneNumber}")
-    public ResponseEntity<Optional<UserDto>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
-        return new ResponseEntity<>(userService.findByPhoneNumber(phoneNumber), HttpStatus.OK);
+    public String getUserByPhoneNumber(@PathVariable String phoneNumber, Model model) {
+        Optional<UserDto> user = userService.findByPhoneNumber(phoneNumber);
+        model.addAttribute("user", user.orElse(null));
+        return "user-details";
     }
 
     @GetMapping("/users/name/{name}")
-    public ResponseEntity<Optional<UserDto>> getUserByName(@PathVariable String name) {
-        return new ResponseEntity<>(userService.findByName(name), HttpStatus.OK);
+    public String getUserByName(@PathVariable String name, Model model) {
+        Optional<UserDto> user = userService.findByName(name);
+        model.addAttribute("user", user.orElse(null));
+        return "user-details";
     }
 
     @GetMapping("/users/exists/{email}")
