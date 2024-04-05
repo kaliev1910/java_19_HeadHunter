@@ -1,17 +1,12 @@
 package com.example.java_19_headhunter.controller.apiControllers;
 
-import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.dto.ResumeDto;
-import com.example.java_19_headhunter.dto.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -31,7 +26,7 @@ public class ResumeController {
 
     @PostMapping("/resume")
     public String createResume(@Valid @ModelAttribute("resumeDto") ResumeDto resumeDto, Model model, Authentication authentication) {
-        resumeService.create(resumeDto,authentication);
+        resumeService.create(resumeDto, authentication);
         model.addAttribute("message", "Resume created successfully");
         return "redirect:/resume/resumes";
     }
