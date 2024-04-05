@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.controller;
+package com.example.java_19_headhunter.controller.apiControllers;
 
 import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.dto.ResumeDto;

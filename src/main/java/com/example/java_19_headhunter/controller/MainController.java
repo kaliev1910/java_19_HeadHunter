@@ -57,4 +57,28 @@ public class MainController {
 
         return "redirect:/home";
     }
+
+
+
+    @GetMapping("/profile")
+    public String getUserProfile(Model model) {
+        // Здесь предполагается, что у вас есть сервис, который возвращает информацию о пользователе
+        UserDto user = getUserInfoFromService();
+
+        // Пример заполнения данных для шаблона
+        model.addAttribute("user", user);
+
+        return "/profile/profile"; // Это имя вашего шаблона
+    }
+
+    // Пример метода, который возвращает информацию о пользователе из вашего сервиса
+    private UserDto getUserInfoFromService() {
+        // Здесь можно использовать ваш сервис для получения информации о пользователе из базы данных или другого источника
+        // Пример данных о пользователе
+     UserDto  user = userService.getUsers().get(2);
+        // Заполните другие поля пользователя, если необходимо
+
+        // Возвращаем информацию о пользователе
+        return user;
+    }
 }
