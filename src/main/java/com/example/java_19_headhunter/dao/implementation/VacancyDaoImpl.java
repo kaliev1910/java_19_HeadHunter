@@ -19,6 +19,7 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
         String sql = "SELECT * FROM vacancies";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class));
     }
+
     @Override
     public void applyForVacancy(User user, int vacancyId) {
         String sql = "INSERT INTO responded_applicants (resume_id, vacancy_id) VALUES (?, ?)";
@@ -39,9 +40,9 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
     }
 
     @Override
-    public List<Vacancy> findByApplicantId(int applicantId) {
+    public List<Vacancy> findByUserId(int userId) {
         String sql = "SELECT * FROM vacancies WHERE id IN (SELECT vacancy_id FROM responded_applicants WHERE resume_id = ?)";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), applicantId);
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
                     .prepareStatement("INSERT INTO vacancies (AUTHOR_EMAIL, name, description, category_id, salary, exp_from, exp_to, is_active, update_time) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new String[] {"id"});
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new String[]{"id"});
             ps.setString(1, vacancy.getAuthorEmail());
             ps.setString(2, vacancy.getName());
             ps.setString(3, vacancy.getDescription());

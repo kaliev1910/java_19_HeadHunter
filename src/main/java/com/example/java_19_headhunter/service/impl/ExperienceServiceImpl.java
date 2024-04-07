@@ -5,9 +5,9 @@ import com.example.java_19_headhunter.dto.ExperienceDto;
 import com.example.java_19_headhunter.models.Experience;
 import com.example.java_19_headhunter.service.ExperienceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 public class ExperienceServiceImpl implements ExperienceService {
 
     private final ExperienceDao experienceDao;
-
-
 
     @Override
     public void insert(ExperienceDto experienceDto) {
@@ -34,6 +32,9 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public List<ExperienceDto> findByResumeId(int resumeId) {
         List<Experience> experiences = experienceDao.findByResumeId(resumeId);
+        if (experiences.isEmpty()) {
+            return Collections.emptyList(); // Возвращаем пустой список, если опыт работы не найден
+        }
         return experiences.stream()
                 .map(this::mapToExperienceDto)
                 .collect(Collectors.toList());
@@ -65,5 +66,4 @@ public class ExperienceServiceImpl implements ExperienceService {
                 .years(experience.getYears())
                 .build();
     }
-
 }

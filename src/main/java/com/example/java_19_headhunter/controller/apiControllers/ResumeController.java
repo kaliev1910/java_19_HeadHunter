@@ -1,75 +1,96 @@
 package com.example.java_19_headhunter.controller.apiControllers;
 
+import com.example.java_19_headhunter.dto.ContactInfoDto;
+import com.example.java_19_headhunter.dto.EducationDto;
+import com.example.java_19_headhunter.dto.ExperienceDto;
 import com.example.java_19_headhunter.dto.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
-import com.example.java_19_headhunter.service.ResumeService;
-import com.example.java_19_headhunter.service.impl.UserServiceImpl;
-import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
-import jakarta.validation.Valid;
+import com.example.java_19_headhunter.service.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/resume")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('APPLICANT')")
 public class ResumeController {
-    private final UserServiceImpl userService;
     private final ResumeService resumeService;
-    private final VacancyServiceImpl vacancyService;
+    private final EducationService educationService;
+    private final ExperienceService experienceService;
+    private final ContactInfoService contactInfoService;
+    private final VacancyService vacancyService;
+    private final MessageService messageService;
 
+    @PostMapping("/create")
+    public String createResume(
+            @Validated @RequestBody ResumeCreateDto resumeDto,
+            EducationDto educationDto, ExperienceDto experienceDto,
+            Authentication authentication, ContactInfoDto contactInfoDto, Model model) {
 
-    @PostMapping("/resume")
-    public ResponseEntity<String> createResume(@Valid @RequestBody ResumeDto resumeDto, Authentication authentication) {
-        resumeService.create(resumeDto, authentication);
+       int resumeId=  resumeService.create(resumeDto, authentication);
 
-        return new ResponseEntity<>("Resume created successfully", HttpStatus.CREATED);
+        experienceDto.setResumeId(resumeId);
+        educationDto.setResumeId(resumeId);
+        contactInfoDto.setResumeId(resumeId);
+        experienceService.insert(experienceDto);
+        educationService.insert(educationDto);
+        contactInfoService.insert(contactInfoDto);
+        model.addAttribute("message", "Resume created successfully");
+        return "redirect:resume/create";
     }
 
-    @PutMapping("/resume")
-    public ResponseEntity<String> updateResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
+    @PutMapping("/update")
+    public String updateResume(@Validated @RequestBody ResumeCreateDto resumeDto, Authentication authentication, Model model) {
         resumeService.update(resumeDto, authentication);
-        return new ResponseEntity<>("Resume updated successfully", HttpStatus.OK);
+        model.addAttribute("message", "Resume updated successfully");
+        return "redirect:/resume";
     }
 
-    @DeleteMapping("/resume")
-    public ResponseEntity<String> deleteResume(@RequestBody int id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteResume(@PathVariable int id, Model model) {
         resumeService.deleteById(id);
-        return new ResponseEntity<>("Resume deleted successfully", HttpStatus.OK);
+        model.addAttribute("message", "Resume deleted successfully");
+        return "redirect:/resume";
     }
 
-
-    @GetMapping("/resumes/category/{id}")
-    public ResponseEntity<List<ResumeDto>> getResumesByCategory(@PathVariable int id) {
-        return new ResponseEntity<>(resumeService.findByCategory(id), HttpStatus.OK);
+    @GetMapping("/category/{id}")
+    public String getResumesByCategory(@PathVariable int id, Model model) {
+        List<ResumeDto> resumes = resumeService.findByCategory(id);
+        model.addAttribute("resumes", resumes);
+        return "resume-list";
     }
 
-    @GetMapping("/resumes")
-    @PreAuthorize("hasRole('applicant')")
-    public ResponseEntity<List<ResumeDto>> getAllResumes() {
-        return new ResponseEntity<>(resumeService.getAll(), HttpStatus.OK);
+    @GetMapping
+    public String getAllResumes(Model model) {
+        List<ResumeDto> resumes = resumeService.getAll();
+        model.addAttribute("resumes", resumes);
+        return "resume-list";
     }
 
-    @GetMapping("/resumes/email/{email}")
-    public ResponseEntity<List<ResumeDto>> getResumesByEmail(@PathVariable String email) {
-        return new ResponseEntity<>(resumeService.findByUserEmail(email), HttpStatus.OK);
+    @GetMapping("/email/{email}")
+    public String getResumesByEmail(@PathVariable String email, Model model) {
+        List<ResumeDto> resumes = resumeService.findByUserEmail(email);
+        model.addAttribute("resumes", resumes);
+        return "resume-list";
     }
 
-    @GetMapping("/resumes/{id}")
-    public ResponseEntity<ResumeDto> getResumesById(@PathVariable int id) {
-        return new ResponseEntity<>(resumeService.findById(id), HttpStatus.OK);
-    }
-
-
-    @GetMapping("/resume/{id}")
-    public ResponseEntity<ResumeDto> getResumeById(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public String getResumeById(Model model, @PathVariable int id) {
         ResumeDto resume = resumeService.findById(id);
-        return new ResponseEntity<>(resume, HttpStatus.OK);
+        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(id);
+        List<ExperienceDto> experiences = experienceService.findByResumeId(id);
+        List<EducationDto> educations = educationService.findByResumeId(id);
+
+        model.addAttribute("resume", resume);
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("educations", educations);
+        model.addAttribute("experiences", experiences);
+
+        return "/resumes/resume_info";
     }
 }

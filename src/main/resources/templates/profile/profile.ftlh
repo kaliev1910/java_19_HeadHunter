@@ -67,7 +67,8 @@
                                 <#else>
                                     <p class="card-text">Возраст: не указан</p>
                                 </#if>
-                                <a href="/hh/redact/${user.email}" class="btn btn-primary" methods="PUT">Редактировать</a>
+                                <a href="/hh/redact/${user.email}" class="btn btn-primary"
+                                   methods="PUT">Редактировать</a>
                             </div>
                         </div>
                     </div>
@@ -75,7 +76,7 @@
             </th>
             <th scope="col" class="mx-3">
                 <div class="mx-3">
-                    <a href="#" class="btn btn-primary p-5">+<br>Создать<br>резюме</a>
+                    <a href="/resume/create" class="btn btn-primary p-5">+<br>Создать<br>резюме</a>
                 </div>
             </th>
             <th scope="col">
@@ -91,52 +92,11 @@
                     <div class="card-body">
                         <h5 class="card-title">Должность: ${resume.name}</h5>
                         <h6 class="card-title">Категория работы: ${resume.categoryId}</h6>
-                        <h6 class="card-title">Контактные детали: </h6>
-                        <#list contacts as contact>
-
-                        <#if contact.typeId?has_content>
-                            <p class="card-text"> ${contact.contactValue}</p>
-                        </#if>
-
-                        </#list>
-                        <p class="card-text">${resume.expectedSalary} KGZ</p>
-                        <p class="font-weight-bold">Образование: </p>
-                        <#list educations as education>
-                            <div>
-                                Учебное заведение: ${education.institution}
-                            </div>
-                            <div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Специальность: ${education.program}</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                Годы обучения: ${education.startDate} - ${education.endDate}
-                            </div>
-                            <hr>
-                        </#list>
-                        <p class="font-weight-bold">Опыт работы: </p>
-                        <#list experiences as experience>
-                            <div>
-                                Организация: ${experience.companyName}
-                            </div>
-                            <div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Должность: ${experience.position}</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                Годы работы: ${experience.years}
-                            </div>
-                            <hr>
-                        </#list>
                     </div>
-                    <div class="card-footer"   >
+                    <a class="card-footer type">
                         <a href="#" class="card-link">Обновить</a>
-                        <a href="/applicant/resume/${resume.id}" class="card-link">Редактировать</a>
-                    </div>
+                        <a href="/resume/${resume.id}" class="card-link">Редактировать</a>
+                    </a>
                 </div>
 
             </#list>
@@ -144,17 +104,17 @@
     <#else>
         <h1 class="center mb-3">Личный кабинет работодателя</h1>
         <div class="row">
-            <th scope="col mx-3">
-                <#if user.avatar?has_content>
-                    <div class="card" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                    </div>
-                <#else >
-                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                    </div>
-                </#if>
-            </th>
+            < scope="col mx-3">
+            <#if user.avatar?has_content>
+                <div class="card" style="height: 16rem ;width: 13rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                </div>
+            <#else >
+                <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                </div>
+            </#if>
+            <th/>
             <th scope="col">
                 <div class="row">
                     <div class="col-sm-6">
@@ -175,16 +135,9 @@
         <div class="row">
             <#list vacancies as vacancy>
                 <th scope="col">
-                    <div class="card  mx-3 mb-3" style="width: 18rem;">
+                    <div class="card  mx-3 mb-3" style="width: 13rem;">
                         <div class="card-body">
                             <h5 class="card-title">${vacancy.name}</h5>
-                            <h6>${vacancy.salary} KGS</h6>
-                            <p>${vacancy.description}</p>
-                        </div>
-                        <div class="card-footer">
-                            <p>${vacancy.createdDate}</p>
-                            <a href="/employer/vacancies/edit/date/${vacancy.id}" class="card-link">Обновить</a>
-                            <a href="/employer/vacancies/edit/${vacancy.id}" class="card-link">Редактировать</a>
                         </div>
                     </div>
                 </th>

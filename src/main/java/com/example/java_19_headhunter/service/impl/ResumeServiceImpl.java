@@ -73,19 +73,20 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @PreAuthorize("hasAuthority('APPLICANT')")
-    public void create(ResumeDto resumeDto, Authentication authentication) {
+    public int create(ResumeCreateDto resumeDto, Authentication authentication) {
+        int resumeId;
         try {
             User user = (User) authentication.getPrincipal();
-
-            resumeDto.setApplicantEmail(user.getUsername());
-            Resume resume = fromDto(resumeDto);
+            Resume resume = fromDto(mapToResumeDto(resumeDto));
             resume.setCreatedTime(LocalDate.now());
             resume.setUpdatedTime(LocalDate.now());
-            resumeDao.create(resume);
+            resume.setApplicantEmail(user.getUsername());
+            resumeId = resumeDao.create(resume);
         } catch (Exception e) {
             log.error("Error inserting Resume: {}", resumeDto, e);
             throw e;
         }
+        return resumeId;
     }
 
     @Override
@@ -94,6 +95,7 @@ public class ResumeServiceImpl implements ResumeService {
         try {
 
             Resume resume = fromCreateDto(resumeCreateDto,authentication);
+            resume.setApplicantEmail(authentication.getName());
             resume.setUpdatedTime(LocalDate.now());
             resumeDao.update(resume);
         } catch (Exception e) {
@@ -127,6 +129,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
     private Resume fromDto(ResumeDto resumeDto) {
         return Resume.builder()
+
                 .applicantEmail(resumeDto.getApplicantEmail())
                 .categoryId(resumeDto.getCategoryId())
                 .isActive(resumeDto.isActive())
@@ -139,6 +142,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     private ResumeDto toDto(Resume resume) {
         return ResumeDto.builder()
+                .id(resume.getId())
                 .applicantEmail(resume.getApplicantEmail())
                 .categoryId(resume.getCategoryId())
                 .isActive(resume.isActive())
@@ -148,4 +152,15 @@ public class ResumeServiceImpl implements ResumeService {
                 .updatedTime(resume.getUpdatedTime())
                 .build();
     }
+    public static ResumeDto mapToResumeDto(ResumeCreateDto createDto) {
+        ResumeDto resumeDto = new ResumeDto();
+        resumeDto.setName(createDto.getName());
+        resumeDto.setExpectedSalary(createDto.getExpectedSalary());
+        resumeDto.setCategoryId(createDto.getCategoryId());
+        resumeDto.setActive(true);
+        resumeDto.setCreatedTime(LocalDate.now());
+        resumeDto.setUpdatedTime(LocalDate.now());
+        return resumeDto;
+    }
+
 }

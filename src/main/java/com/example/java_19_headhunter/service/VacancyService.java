@@ -1,6 +1,5 @@
 package com.example.java_19_headhunter.service;
 
-import com.example.java_19_headhunter.dto.UserDto;
 import com.example.java_19_headhunter.dto.VacancyDto;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,7 @@ import java.util.List;
 public interface VacancyService {
     List<VacancyDto> findAll();
     List<VacancyDto> findByCategory(int categoryId);
-    List<VacancyDto> findByApplicantId(int applicantId);
+    List<VacancyDto> findByUserId(int applicantId);
 
     List<VacancyDto> findByApplicantEmail(String applicantEmail);
 

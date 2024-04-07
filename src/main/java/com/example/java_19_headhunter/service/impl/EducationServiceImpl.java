@@ -7,6 +7,7 @@ import com.example.java_19_headhunter.service.EducationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,26 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    public List<EducationDto> findByResumeId(int resumeId) {
+        List<Education> educations = educationDao.findByResumeId(resumeId);
+        if (educations.isEmpty()) {
+            return Collections.emptyList(); // Возвращаем пустой список, если образование не найдено
+        }
+        return educations.stream()
+                .map(this::mapToEducationDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteByResumeId(int resumeId) {
+        List<Education> educations = educationDao.findByResumeId(resumeId);
+        if (!educations.isEmpty()) { // Проверяем, есть ли образование для удаления
+            educationDao.deleteByResumeId(resumeId);
+        }
+        // Если образование отсутствует, ничего не делаем
+    }
+
+    @Override
     public void insert(EducationDto educationDto) {
         Education education = mapToEducation(educationDto);
         educationDao.insert(education);
@@ -29,19 +50,6 @@ public class EducationServiceImpl implements EducationService {
     public void update(EducationDto educationDto) {
         Education education = mapToEducation(educationDto);
         educationDao.update(education);
-    }
-
-    @Override
-    public List<EducationDto> findByResumeId(int resumeId) {
-        List<Education> educations = educationDao.findByResumeId(resumeId);
-        return educations.stream()
-                .map(this::mapToEducationDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteByResumeId(int resumeId) {
-        educationDao.deleteByResumeId(resumeId);
     }
 
     private Education mapToEducation(EducationDto educationDto) {

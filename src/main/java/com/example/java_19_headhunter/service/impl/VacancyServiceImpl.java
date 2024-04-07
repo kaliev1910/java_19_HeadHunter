@@ -45,11 +45,11 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<VacancyDto> findByApplicantId(int applicantId) {
+    public List<VacancyDto> findByUserId(int userId) {
         try {
-            return vacancyDao.findByApplicantId(applicantId).stream().map(this::toDto).collect(Collectors.toList());
+            return vacancyDao.findByUserId(userId).stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
-            log.error("Error finding vacancies by applicantId {}", applicantId, e);
+            log.error("Error finding vacancies by userId {}", userId, e);
             throw e; // rethrow the exception
         }
     }

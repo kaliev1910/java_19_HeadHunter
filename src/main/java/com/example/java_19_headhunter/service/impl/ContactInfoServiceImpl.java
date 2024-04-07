@@ -7,6 +7,7 @@ import com.example.java_19_headhunter.service.ContactInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,26 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     }
 
     @Override
+    public List<ContactInfoDto> findByResumeId(int resumeId) {
+        List<ContactInfo> contactInfos = contactInfoDao.findByResumeId(resumeId);
+        if (contactInfos.isEmpty()) {
+            return Collections.emptyList(); // Возвращаем пустой список, если контакты не найдены
+        }
+        return contactInfos.stream()
+                .map(this::mapToContactInfoDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteByResumeId(int resumeId) {
+        List<ContactInfo> contactInfos = contactInfoDao.findByResumeId(resumeId);
+        if (!contactInfos.isEmpty()) { // Проверяем, есть ли контакты для удаления
+            contactInfoDao.deleteByResumeId(resumeId);
+        }
+        // Если контакты отсутствуют, ничего не делаем
+    }
+
+    @Override
     public void insert(ContactInfoDto contactInfoDto) {
         ContactInfo contactInfo = mapToContactInfo(contactInfoDto);
         contactInfoDao.insert(contactInfo);
@@ -29,19 +50,6 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     public void update(ContactInfoDto contactInfoDto) {
         ContactInfo contactInfo = mapToContactInfo(contactInfoDto);
         contactInfoDao.update(contactInfo);
-    }
-
-    @Override
-    public List<ContactInfoDto> findByResumeId(int resumeId) {
-        List<ContactInfo> contactInfos = contactInfoDao.findByResumeId(resumeId);
-        return contactInfos.stream()
-                .map(this::mapToContactInfoDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteByResumeId(int resumeId) {
-        contactInfoDao.deleteByResumeId(resumeId);
     }
 
     private ContactInfo mapToContactInfo(ContactInfoDto contactInfoDto) {

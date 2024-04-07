@@ -5,6 +5,7 @@ import com.example.java_19_headhunter.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,26 +72,19 @@ public class MainController {
         return "redirect:/home";
     }
 
-
     @GetMapping("/profile")
     public String getUserProfile(Model model) {
         // Здесь предполагается, что у вас есть сервис, который возвращает информацию о пользователе
         UserDto user = getUserInfoFromService();
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
+        List<VacancyDto> vacancies= vacancyService.findByUserId(user.getId());
 
         int resumeId= resumes.get(0).getId();
 
-        List<ExperienceDto> experienceDtos = experienceService.findByResumeId(resumeId);
-        List<EducationDto> educationDtos = educationService.findByResumeId(resumeId);
-        List<ContactInfoDto> contactInfoDtos = contactInfoService.findByResumeId(resumeId);
-        List<VacancyDto> vacancyDtos = vacancyService.findByApplicantEmail(user.getEmail());
         // Пример заполнения данных для шаблона
         model.addAttribute("user", user);
         model.addAttribute("resume", resumes);
-        model.addAttribute("contacts", contactInfoDtos);
-        model.addAttribute("educations", educationDtos);
-        model.addAttribute("experiences", experienceDtos);
-        model.addAttribute("vacancies", vacancyDtos);
+        model.addAttribute("vacancies", vacancies);
 
         return "/profile/profile"; // Это имя вашего шаблона
     }
@@ -99,7 +93,7 @@ public class MainController {
     private UserDto getUserInfoFromService() {
         // Здесь можно использовать ваш сервис для получения информации о пользователе из базы данных или другого источника
         // Пример данных о пользователе
-        UserDto user = userService.getUsers().get(1);
+        UserDto user = userService.getUsers().get(0);
         // Заполните другие поля пользователя, если необходимо
 
         // Возвращаем информацию о пользователе

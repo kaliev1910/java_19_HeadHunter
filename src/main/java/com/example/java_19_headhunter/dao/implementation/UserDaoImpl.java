@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
+
 public class UserDaoImpl implements UserDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -31,9 +32,9 @@ public class UserDaoImpl implements UserDao {
 
         String sqlUserRole = "INSERT INTO user_roles (user_email, role_id) VALUES (?, ?)";
         int roleId = 0;
-        if (user.getAccountType().equalsIgnoreCase( "applicant")) {
+        if (user.getAccountType().equalsIgnoreCase( "APPLICANT")) {
             roleId=1;
-        } else if (user.getAccountType().equalsIgnoreCase("employer")) {
+        } else if (user.getAccountType().equalsIgnoreCase("EMPLOYER")) {
             roleId=2;
         }
 

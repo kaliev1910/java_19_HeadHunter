@@ -20,7 +20,7 @@ public interface ResumeService {
 
 
     @PreAuthorize("hasAuthority('APPLICANT')")
-    void create(ResumeDto resumeDto, Authentication authentication);
+    int create(ResumeCreateDto resumeDto, Authentication authentication);
 
     void update(@Valid ResumeCreateDto resumeDto, Authentication authentication);
     void deleteById(int id);
