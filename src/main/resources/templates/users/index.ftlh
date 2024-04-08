@@ -41,7 +41,6 @@
         }
 
     </style>
-
     <#if user.accountType == "APPLICANT" >
         <h1 class="center mb-3">Личный кабинет соискателя</h1>
         <div class="row">
@@ -121,7 +120,7 @@
                         <div class="card profile border-0">
                             <div class="card-body">
                                 <h3 class="card-title">${user.name}</h3>
-                                <a href="/hh/redact/${user.email}" class="btn btn-primary">Редактировать</a>
+                                <a href="/user/${user.email}" class="btn btn-primary">Редактировать</a>
                             </div>
                         </div>
                     </div>

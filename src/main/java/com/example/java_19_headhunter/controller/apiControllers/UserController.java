@@ -1,55 +1,80 @@
-package com.example.java_19_headhunter.controller.apiControllers;
+package com.example.java_19_headhunter.controller;
 
-import com.example.java_19_headhunter.dto.UserDto;
-import com.example.java_19_headhunter.service.ResumeService;
-import com.example.java_19_headhunter.service.impl.UserServiceImpl;
-import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
+import com.example.java_19_headhunter.dto.basicDtos.UserDto;
+import com.example.java_19_headhunter.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserServiceImpl userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody UserDto userDto) {
-        userService.createUser(userDto);
-        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+    private final UserService userService;
+
+//    @PostMapping("/register")
+//    public ResponseEntity<String> register(@Valid @RequestBody UserDto userDto) {
+//        userService.createUser(userDto);
+//        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+//    }
+
+    @GetMapping("update/{email}")
+    public String updateProfile(@PathVariable String email){
+        return "users/redact";
     }
-
-    @PutMapping("")
-    public ResponseEntity<String> updateProfile(@Valid @RequestBody UserDto userDto) {
+    @PutMapping("update/{email}")
+    public ResponseEntity<String> updateProfile(@RequestBody UserDto userDto) {
         userService.updateUser(userDto);
         return new ResponseEntity<>("Profile updated successfully", HttpStatus.OK);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+    public String getAllUsers(Model model) {
+        List<UserDto> users = userService.getUsers();
+        model.addAttribute("users", users);
+        return "userList";
     }
+    @GetMapping("/profile/edit")
+    public String showEditProfileForm(Model model, Authentication authentication) {
+        // Получаем данные пользователя
+        Optional<UserDto> userDto = userService.findByEmail(authentication.getName());
+        UserDto user = userDto.orElseThrow();
 
+        // Передаем данные в модель
+        model.addAttribute("user", user);
+
+        // Возвращаем имя шаблона для отображения формы редактирования профиля
+        return "users/editUser";
+    }
     @GetMapping("/users/email/{email}")
-    public ResponseEntity<Optional<UserDto>> getUserByEmail(@PathVariable String email) {
-        return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
+    public String getUserByEmail(@PathVariable String email, Model model) {
+        Optional<UserDto> userDto = userService.findByEmail(email);
+        model.addAttribute("user", userDto.orElse(null));
+        return "users/editUser";
     }
 
     @GetMapping("/users/phoneNumber/{phoneNumber}")
-    public ResponseEntity<Optional<UserDto>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
-        return new ResponseEntity<>(userService.findByPhoneNumber(phoneNumber), HttpStatus.OK);
-
+    public String getUserByPhoneNumber(@PathVariable String phoneNumber, Model model) {
+        Optional<UserDto> userDto = userService.findByPhoneNumber(phoneNumber);
+        model.addAttribute("user", userDto.orElse(null));
+        return "userDetails";
     }
 
     @GetMapping("/users/name/{name}")
-    public ResponseEntity<Optional<UserDto>> getUserByName(@PathVariable String name) {
-        return new ResponseEntity<>(userService.findByName(name), HttpStatus.OK);
+    public String getUserByName(@PathVariable String name, Model model) {
+        Optional<UserDto> userDto = userService.findByName(name);
+        model.addAttribute("user", userDto.orElse(null));
+        return "userDetails";
     }
 
     @GetMapping("/users/exists/{email}")

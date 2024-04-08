@@ -1,5 +1,8 @@
 package com.example.java_19_headhunter.dto.createDto;
 
+import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
+import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
+import com.example.java_19_headhunter.dto.basicDtos.ExperienceDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -21,4 +26,8 @@ public class ResumeCreateDto {
     private String name;
     private Integer expectedSalary;
     private int categoryId;
+    private List<EducationDto> educationDtoList;
+    private List<ExperienceDto> experienceDtos;
+    private List<ContactInfoDto> contactInfoDtos;
+
 }

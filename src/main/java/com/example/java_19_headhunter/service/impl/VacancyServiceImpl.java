@@ -2,7 +2,7 @@ package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
-import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.service.VacancyService;

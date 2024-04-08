@@ -1,14 +1,13 @@
 package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.UserDao;
-import com.example.java_19_headhunter.dto.UserDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

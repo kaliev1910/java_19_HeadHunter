@@ -1,11 +1,13 @@
 package com.example.java_19_headhunter.controller;
 
-import com.example.java_19_headhunter.dto.*;
+import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserDto;
+import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -67,36 +70,27 @@ public class MainController {
             return "/auth/login";
         }
 
-        //TODO сюда логику аутентификации
 
         return "redirect:/home";
     }
 
     @GetMapping("/profile")
-    public String getUserProfile(Model model) {
+    public String getUserProfile(Model model, Authentication authentication) {
         // Здесь предполагается, что у вас есть сервис, который возвращает информацию о пользователе
-        UserDto user = getUserInfoFromService();
+        Optional<UserDto> userDto = userService.findByEmail(authentication.getName());
+        UserDto user = userDto.get();
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
-        List<VacancyDto> vacancies= vacancyService.findByUserId(user.getId());
+        List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
 
-        int resumeId= resumes.get(0).getId();
+        int resumeId = resumes.get(0).getId();
 
         // Пример заполнения данных для шаблона
         model.addAttribute("user", user);
         model.addAttribute("resume", resumes);
         model.addAttribute("vacancies", vacancies);
 
-        return "/profile/profile"; // Это имя вашего шаблона
+        return "users/index"; // Это имя вашего шаблона
     }
 
-    // Пример метода, который возвращает информацию о пользователе из вашего сервиса
-    private UserDto getUserInfoFromService() {
-        // Здесь можно использовать ваш сервис для получения информации о пользователе из базы данных или другого источника
-        // Пример данных о пользователе
-        UserDto user = userService.getUsers().get(0);
-        // Заполните другие поля пользователя, если необходимо
 
-        // Возвращаем информацию о пользователе
-        return user;
-    }
 }

@@ -13,7 +13,8 @@
             </div>
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="age" style="width: 100%;">Age</label>
-                <input type="number" class="form-control" id="age" name="age" required min="18" max="150" style="width: 100%;">
+                <input type="number" class="form-control" id="age" name="age" required min="18" max="150"
+                       style="width: 100%;">
             </div>
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="email" style="width: 100%;">Email</label>
@@ -21,13 +22,14 @@
             </div>
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="password" style="width: 100%;">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required minlength="8" style="width: 100%;">
+                <input type="password" class="form-control" id="password" name="password" required minlength="8"
+                       style="width: 100%;">
             </div>
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="accountType" style="width: 100%;">Account Type</label>
                 <select class="form-control" id="accountType" name="accountType" required style="width: 100%;">
-                    <option value="applicant">Applicant</option>
-                    <option value="employer">Employer</option>
+                    <option value="APPLICANT">Applicant</option>
+                    <option value="EMPLOYER">Employer</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary btn-block mt-4" style="flex-basis: 100%;">Submit</button>

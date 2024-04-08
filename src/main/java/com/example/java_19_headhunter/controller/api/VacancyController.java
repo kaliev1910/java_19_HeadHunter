@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.controller.apiControllers;
+package com.example.java_19_headhunter.controller.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.service.ResumeService;
@@ -22,19 +22,17 @@ public class VacancyController {
 
     @GetMapping("/vacancies")
     public ResponseEntity<List<VacancyDto>> getAllVacancies() {
-
         return new ResponseEntity<>(vacancyService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/vacancies/category/{id}")
     public ResponseEntity<List<VacancyDto>> getVacanciesByCategory(@PathVariable int id) {
-
         return new ResponseEntity<>(vacancyService.findByCategory(id), HttpStatus.OK);
     }
 
     @GetMapping("/vacancies/applicant/{id}")
     public ResponseEntity<List<VacancyDto>> getVacanciesByApplicantId(@PathVariable int id) {
-        return new ResponseEntity<>(vacancyService.findByUserId(id), HttpStatus.OK);
+        return new ResponseEntity<>(vacancyService.findByApplicantId(id), HttpStatus.OK);
     }
 
     @GetMapping("/vacancies/applicant/email/{email}")

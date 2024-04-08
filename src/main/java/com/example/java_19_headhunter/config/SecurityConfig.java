@@ -45,12 +45,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .authorizeRequests(authz -> authz
 //                        .requestMatchers(new AntPathRequestMatcher("/user/register", HttpMethod.POST.name())).permitAll()
 //                        .requestMatchers(new AntPathRequestMatcher("/user/vacancies", HttpMethod.GET.name())).permitAll()
-                        .anyRequest().permitAll());
+                        .anyRequest().authenticated());
         return http.build();
     }
 }

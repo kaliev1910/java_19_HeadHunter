@@ -7,34 +7,35 @@
         <a href="/resume/resumes?page=1">2</a>
         <a href="/employer/resumes?page=2">3</a>
     </div>
-
     <div class="row justify-content-around">
-        <#list resumes as resume>
+        <#list resume as resume>
             <div class="card col-3 m-1">
-                <div class="card-footer"> <a href="/employer/resume/${resume.id}">Должность: ${resume.jobTitle}</a></div>
+                <div class="card-footer"><a href="/employer/resume/${resume.id}">Должность: ${resume.name}</a></div>
                 <div class="card-body">
-                    <h6 class="card-title">Категория работы: ${resume.category}</h6>
+                    <h6 class="card-title">Категория работы: ${resume.categoryId}</h6>
                     <h6 class="card-title">Контактные детали: </h6>
-                    <#if resume.contactDetailsDto.telegram?has_content>
-                        <p class="card-text"> ${resume.contactDetailsDto.telegram}</p>
-                    </#if>
-                    <#if resume.contactDetailsDto.email?has_content>
-                        <p class="card-text"> ${resume.contactDetailsDto.email}</p>
-                    </#if>
-                    <#if resume.contactDetailsDto.phoneNumber?has_content>
-                        <p class="card-text"> ${resume.contactDetailsDto.phoneNumber}</p>
-                    </#if>
-                    <#if resume.contactDetailsDto.facebook?has_content>
-                        <p class="card-text"> ${resume.contactDetailsDto.facebook}</p>
-                    </#if>
-                    <#if resume.contactDetailsDto.linkedin?has_content>
-                        <p class="card-text"> ${resume.contactDetailsDto.linkedin}</p>
-                    </#if>
+                    <#list contacts as contact>
+                        <#if contact?has_content>
+                            <#if contact.typeId=1>
+                                <p class="card-text"> Phone  ${contact.contactValue}</p>
+                            </#if>
+                            <#if contact.typeId=2>
+                                <p class="card-text"> Email  ${contact.contactValue}</p>
+                            </#if>
+                            <#if contact.typeId=3>
+                                <p class="card-text"> LinkedIn  ${contact.contactValue}</p>
+                            </#if>
+                            <#if contact.typeId=4>
+                                <p class="card-text">Telegram  ${contact.contactValue}</p>
+                            </#if>
+
+
+                        </#if>
+                    </#list>
                     <p class="card-text">${resume.expectedSalary} KGZ</p>
                 </div>
                 <div class="card-footer">
-                    <p>${resume.date}</p>
-                    <a href="/employer/resume/${resume.id}" class="btn btn-primary">Подробнее</a>
+                    <a href="/${resume.id}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
         </#list>

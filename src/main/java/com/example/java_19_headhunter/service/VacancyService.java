@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.service;
 
-import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

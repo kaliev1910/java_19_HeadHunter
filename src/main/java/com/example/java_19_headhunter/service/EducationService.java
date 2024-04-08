@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.service;
 
-import com.example.java_19_headhunter.dto.EducationDto;
+import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

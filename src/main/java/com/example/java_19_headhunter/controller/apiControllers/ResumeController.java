@@ -1,9 +1,6 @@
 package com.example.java_19_headhunter.controller.apiControllers;
 
-import com.example.java_19_headhunter.dto.ContactInfoDto;
-import com.example.java_19_headhunter.dto.EducationDto;
-import com.example.java_19_headhunter.dto.ExperienceDto;
-import com.example.java_19_headhunter.dto.ResumeDto;
+import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.*;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +22,20 @@ public class ResumeController {
     private final ContactInfoService contactInfoService;
     private final VacancyService vacancyService;
     private final MessageService messageService;
+    private final UserService userService;
+
+    @GetMapping("/create")
+    public String createResume() {
+        return "resumes/resume_add";
+    }
 
     @PostMapping("/create")
     public String createResume(
-            @Validated @RequestBody ResumeCreateDto resumeDto,
-            EducationDto educationDto, ExperienceDto experienceDto,
-            Authentication authentication, ContactInfoDto contactInfoDto, Model model) {
+            ResumeCreateDto resumeDto, EducationDto educationDto, ExperienceDto experienceDto,
+            ContactInfoDto contactInfoDto, Authentication authentication, Model model) {
 
-       int resumeId=  resumeService.create(resumeDto, authentication);
+
+        int resumeId = resumeService.create(resumeDto, authentication);
 
         experienceDto.setResumeId(resumeId);
         educationDto.setResumeId(resumeId);
@@ -40,8 +43,19 @@ public class ResumeController {
         experienceService.insert(experienceDto);
         educationService.insert(educationDto);
         contactInfoService.insert(contactInfoDto);
-        model.addAttribute("message", "Resume created successfully");
-        return "redirect:resume/create";
+        UserDto user = userService.findByEmail(authentication.getName()).get();
+
+
+        List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
+        List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
+        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(user.getId());
+
+        model.addAttribute("resume", resumes);
+        model.addAttribute("vacancies", vacancies);
+        model.addAttribute("contacts", contacts);
+
+
+        return "redirect:resume/email/{}";
     }
 
     @PutMapping("/update")
@@ -69,7 +83,7 @@ public class ResumeController {
     public String getAllResumes(Model model) {
         List<ResumeDto> resumes = resumeService.getAll();
         model.addAttribute("resumes", resumes);
-        return "resume-list";
+        return "resumes/resumes";
     }
 
     @GetMapping("/email/{email}")
@@ -78,6 +92,7 @@ public class ResumeController {
         model.addAttribute("resumes", resumes);
         return "resume-list";
     }
+
 
     @GetMapping("/{id}")
     public String getResumeById(Model model, @PathVariable int id) {

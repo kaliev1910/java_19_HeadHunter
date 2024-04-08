@@ -1,7 +1,7 @@
 package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
-import com.example.java_19_headhunter.dto.ResumeDto;
+import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.models.Resume;
 import com.example.java_19_headhunter.service.ResumeService;

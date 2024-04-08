@@ -5,17 +5,17 @@
     <div class="justify-content-around">
         <div class="card m-1 mb-5">
             <form action="/resume/create" method="post">
-                <div class="card-title">
+                <div class="card-title" >
                     <p>Название резюме:</p>
                     <input type="text" id="name" name="name" required><br><br>
                     <label for="categoryId">Категория резюме:</label>
                     <select id="categoryId" name="categoryId" required>
-                        <option value="">--Выберите категорию--</option>
-                        <option value="1">IT</option>
-                        <option value="3">Web Development</option>
-                        <option value="5">Finance</option>
-                        <option value="6">Accounting</option>
-                        <option value="7">Investment Banking</option>
+                        <option value=1>--Выберите категорию--</option>
+                        <option value=1>IT</option>
+                        <option value=3>Web Development</option>
+                        <option value=5>Finance</option>
+                        <option value=6>Accounting</option>
+                        <option value=7>Investment Banking</option>
                     </select><br><br>
                 </div>
                 <div class="card-body">
@@ -36,19 +36,19 @@
 
                     <!-- Добавление опыта работы -->
                     <label for="companyName">Название компании:</label>
-                    <input type="text" id="companyName" name="companyName" required><br><br>
+                    <input type="text" id="companyName" name="companyName" ><br><br>
                     <label for="position">Должность:</label>
-                    <input type="text" id="position" name="position" required><br><br>
+                    <input type="text" id="position" name="position" ><br><br>
                     <label for="responsibilities">Обязанности:</label>
-                    <input type="text" id="responsibilities" name="responsibilities" required><br><br>
+                    <input type="text" id="responsibilities" name="responsibilities" ><br><br>
                     <label for="years">Продолжительность работы (в годах):</label>
-                    <input type="number" id="years" name="years" required><br><br>
+                    <input type="number" id="years" name="years" ><br><br>
 
                     <!-- Добавление контактной информации -->
                     <label for="contactValue">Контактная информация:</label>
-                    <input type="text" id="contactValue" name="contactValue" required><br><br>
+                    <input type="text" id="contactValue" name="contactValue" ><br><br>
                     <label for="typeId">Тип контакта:</label>
-                    <select id="typeId" name="typeId" required>
+                    <select id="typeId" name="typeId" >
                         <option value="">--Выберите тип контакта--</option>
                         <option value="1">Телефон</option>
                         <option value="2">Email</option>

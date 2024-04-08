@@ -1,7 +1,7 @@
 package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.EducationDao;
-import com.example.java_19_headhunter.dto.EducationDto;
+import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
 import com.example.java_19_headhunter.models.Education;
 import com.example.java_19_headhunter.service.EducationService;
 import org.springframework.beans.factory.annotation.Autowired;
