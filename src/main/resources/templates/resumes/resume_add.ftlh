@@ -4,7 +4,7 @@
 
     <div class="justify-content-around">
         <div class="card m-1 mb-5">
-            <form action="/resume/create" method="post">
+            <form action="/create" method="post">
                 <div class="card-title" >
                     <p>Название резюме:</p>
                     <input type="text" id="name" name="name" required><br><br>
@@ -57,7 +57,7 @@
                     </select><br><br>
                 </div>
                 <div class="card-footer">
-                    <input type="submit" value="Создать резюме">
+                    <input type="submit"   value="Создать резюме">
                 </div>
             </form>
         </div>

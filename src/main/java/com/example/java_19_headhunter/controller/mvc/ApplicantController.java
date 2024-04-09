@@ -27,7 +27,6 @@ public class ApplicantController {
 
     @GetMapping("resumes")
     public String getResumesForm(Model model, Authentication authentication) {
-
         return "resumes/resumes";
     }
 
@@ -37,8 +36,7 @@ public class ApplicantController {
     }
 
     @PostMapping("/create")
-    public String createResume(
-            @Validated @RequestBody ResumeCreateDto resumeDto,
+    public String createResume( ResumeCreateDto resumeDto,
             EducationDto educationDto, ExperienceDto experienceDto,
             Authentication authentication, ContactInfoDto contactInfoDto, Model model) {
 
