@@ -3,22 +3,28 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
+import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.service.VacancyService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
-    @Autowired
+@Autowired
     private VacancyDao vacancyDao;
     private UserDao userDao;
 
@@ -95,9 +101,9 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @PreAuthorize("hasAuthority('EMPLOYER')")
-    public void create(VacancyDto vacancyDto) {
+    public void create(VacancyCreateDto vacancyDto) {
         try {
-            vacancyDao.createVacancy(fromDto(vacancyDto));
+            vacancyDao.createVacancy(fromCreateDto(vacancyDto));
         } catch (Exception e) {
             log.error("Error creating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
@@ -148,5 +154,17 @@ public class VacancyServiceImpl implements VacancyService {
                 .updateTime(vacancyDto.getUpdateTime())
                 .build();
     }
-
+    public static Vacancy fromCreateDto(VacancyCreateDto vacancyDto) {
+        return Vacancy.builder()
+                .authorEmail(null) // Ваша логика определения автора вакансии
+                .name(vacancyDto.getName())
+                .description(vacancyDto.getDescription())
+                .categoryId(vacancyDto.getCategoryId())
+                .salary(vacancyDto.getSalary())
+                .expFrom(vacancyDto.getExpFrom())
+                .isActive(true)
+                .createdDate(LocalDate.now())
+                .updateTime(LocalDate.now())
+                .build();
+    }
 }

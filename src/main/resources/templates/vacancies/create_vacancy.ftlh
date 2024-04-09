@@ -10,21 +10,20 @@
                 <label for="category">Категория вакансии:</label>
                 <select id="category" name="category" required>
                     <option value="">--Выберите категорию--</option>
-                    <option value="IT">IT</option>
-                    <option value="юриспруденция">Юриспруденция</option>
-                    <option value="мэнэджмент">Менеджмент</option>
-                    <option value="продажи">Продажи</option>
-                    <option value="авто">Авто</option>
-                    <option value="маркетинг">Маркетинг</option>
+                    <option value=1>IT</option>
+                    <option value=>5</option>
+                    <option value=6>Accounting</option>
+                    <option value=7>Investment Banking</option>
+
                 </select><br><br>
                 <label for="salary">Заработная плата:</label>
                 <input type="number" id="salary" name="salary" required><br><br>
-                <label for="jobDescription">Детальное описание вакансии:</label><br>
-                <textarea id="jobDescription" name="descriptionVacancy" rows="5" cols="30" required></textarea><br><br>
+                <label for="description">Детальное описание вакансии:</label><br>
+                <textarea id="description" name="descriptionVacancy" rows="5" cols="30" required></textarea><br><br>
                 <label for="experienceFrom">Требуемый опыт работы (от):</label>
                 <input type="number" id="experienceFrom" name="requiredWorkExperience" required><br><br>
-                <#--                    <label for="experienceTo">Требуемый опыт работы (до):</label>-->
-                <#--                    <input type="number" id="experienceTo" name="experienceTo" required><br><br>-->
+                <label for="experienceTo">Требуемый опыт работы (до):</label>
+                <input type="number" id="experienceTo" name="experienceTo" required><br><br>
 
                 <div class="form-element">
                     <button class="register-button" type="submit">Опубликовать</button>

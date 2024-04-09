@@ -42,8 +42,6 @@ public class ApplicantController {
 
 
         int resumeId = resumeService.create(resumeDto, authentication);
-
-
         experienceDto.setResumeId(resumeId);
         educationDto.setResumeId(resumeId);
         contactInfoDto.setResumeId(resumeId);

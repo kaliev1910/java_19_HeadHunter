@@ -9,6 +9,7 @@ import com.example.java_19_headhunter.service.VacancyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('APPLICANT')")
 public class MainController {
 
     private final UserService userService;

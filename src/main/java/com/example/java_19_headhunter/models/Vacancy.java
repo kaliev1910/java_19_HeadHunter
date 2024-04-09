@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -21,7 +22,7 @@ public class Vacancy {
     private int expFrom;
     private int expTo;
     private boolean isActive;
-    private Timestamp createdDate;
-    private Timestamp updateTime;
+    private LocalDate createdDate;
+    private LocalDate updateTime;
 
 }

@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -37,7 +38,7 @@ public class VacancyDto {
     private int expFrom;
     private int expTo;
     private boolean isActive;
-    private Timestamp createdDate;
-    private Timestamp updateTime;
+    private LocalDate createdDate;
+    private LocalDate updateTime;
     private List<RespondedApplicant> respondedApplicantList;
 }

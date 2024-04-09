@@ -23,5 +23,5 @@ public class VacancyCreateDto  {
     private int categoryId;
     private int salary;
     private int expFrom;
-    private int expTo;
+
 }
