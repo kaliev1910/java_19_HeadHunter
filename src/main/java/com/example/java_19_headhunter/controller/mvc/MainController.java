@@ -72,8 +72,8 @@ public class MainController {
 
     @GetMapping("/profile")
     public String getUserProfile(Model model, Authentication authentication) {
-        Optional<UserDto> userDto = userService.findByEmail(authentication.getName());
-        UserDto user = userDto.get();
+        UserDto user = userService.findByEmail(authentication.getName()).get();
+
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
 

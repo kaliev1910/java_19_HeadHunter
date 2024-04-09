@@ -28,7 +28,7 @@ public class SecurityConfig {
 
     private static final String USER_QUERY = "select email,password,enabled from users where email=?";
     private static final String ROLES_QUERY = """
-            select u.email, r.role 
+            select u.email, r.role
             from user_roles ur inner join users u on u.email = ur.user_email
             inner join roles r on r.id = ur.role_id where u.email=?
             """;
