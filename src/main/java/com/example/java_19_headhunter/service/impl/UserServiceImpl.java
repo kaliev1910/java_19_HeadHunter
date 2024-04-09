@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final PasswordEncoder encoder;
+
     @Override
 
     public void updateUser(UserDto userDto) {
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService {
 
         }
     }
+
     @Override
     @SneakyThrows
     public boolean isEmployer(String email) {
@@ -47,6 +49,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .orElseThrow(() -> new UserNotFoundException("Cannot find user"));
     }
+
     @Override
     public int createUser(UserDto userDto) {
         User user;
@@ -153,7 +156,6 @@ public class UserServiceImpl implements UserService {
             throw e;
         }
     }
-
 
 
     protected UserDto toDto(User user) {

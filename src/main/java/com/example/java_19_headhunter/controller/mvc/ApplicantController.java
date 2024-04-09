@@ -31,6 +31,10 @@ public class ApplicantController {
         return "resumes/resumes";
     }
 
+    @GetMapping("create")
+    public String createResume() {
+        return "resumes/resume_add";
+    }
 
     @PostMapping("/create")
     public String createResume(
@@ -49,7 +53,7 @@ public class ApplicantController {
         educationService.insert(educationDto);
         contactInfoService.insert(contactInfoDto);
         model.addAttribute("message", "Resume created successfully");
-        return "redirect:resume/create";
+
         UserDto user = userService.findByEmail(authentication.getName()).get();
 
 
@@ -62,6 +66,6 @@ public class ApplicantController {
         model.addAttribute("contacts", contacts);
 
 
-        return "redirect:/";
+        return "resumes/resumes";
     }
 }
