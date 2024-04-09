@@ -1,9 +1,11 @@
-package com.example.java_19_headhunter.controller;
+package com.example.java_19_headhunter.controller.mvc;
 
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
-import com.example.java_19_headhunter.service.*;
+import com.example.java_19_headhunter.service.ResumeService;
+import com.example.java_19_headhunter.service.UserService;
+import com.example.java_19_headhunter.service.VacancyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,11 +27,7 @@ public class MainController {
 
     private final UserService userService;
     private final ResumeService resumeService;
-    private final EducationService educationService;
-    private final ExperienceService experienceService;
-    private final ContactInfoService contactInfoService;
     private final VacancyService vacancyService;
-    private final MessageService messageService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -69,14 +67,11 @@ public class MainController {
         if (bindingResult.hasErrors()) {
             return "/auth/login";
         }
-
-
         return "redirect:/home";
     }
 
     @GetMapping("/profile")
     public String getUserProfile(Model model, Authentication authentication) {
-        // Здесь предполагается, что у вас есть сервис, который возвращает информацию о пользователе
         Optional<UserDto> userDto = userService.findByEmail(authentication.getName());
         UserDto user = userDto.get();
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
@@ -84,7 +79,6 @@ public class MainController {
 
         int resumeId = resumes.get(0).getId();
 
-        // Пример заполнения данных для шаблона
         model.addAttribute("user", user);
         model.addAttribute("resume", resumes);
         model.addAttribute("vacancies", vacancies);
