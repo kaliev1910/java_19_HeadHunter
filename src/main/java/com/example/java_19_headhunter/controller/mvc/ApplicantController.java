@@ -26,6 +26,15 @@ public class ApplicantController {
 
     @GetMapping("/myResumes")
     public String getResumesForm(Model model, Authentication authentication) {
+
+        UserDto user = userService.findByEmail(authentication.getName()).get();
+
+        List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
+        List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
+        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(user.getId());
+
+        model.addAttribute("resume", resumes);
+        model.addAttribute("contacts", contacts);
         return "resumes/userResumes";
     }
 
@@ -33,17 +42,6 @@ public class ApplicantController {
     public String showCreateResumeForm(Model model) {
         return "resumes/resume_add";
     }
-
-    @GetMapping("/resumes/{resumeId}")
-    public String showResumeInfo(@PathVariable int resumeId, Model model) {
-
-        model.addAttribute("contacts", contactInfoService.findByResumeId(resumeId));
-        model.addAttribute("educations",educationService.findByResumeId(resumeId));
-        model.addAttribute("experiences", experienceService.findByResumeId(resumeId));
-        model.addAttribute("resume", resumeService.findById(resumeId));
-        return "resumes/resume_info";
-    }
-
 
     @PostMapping("/resumes")
     public String createResume(ResumeCreateDto resumeDto,
@@ -61,17 +59,17 @@ public class ApplicantController {
         educationService.insert(educationDto);
         contactInfoService.insert(contactInfoDto);
         model.addAttribute("message", "Resume created successfully");
-
-        UserDto user = userService.findByEmail(authentication.getName()).get();
-
-        List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
-        List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
-        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(user.getId());
-
-        model.addAttribute("resume", resumes);
-        model.addAttribute("vacancies", vacancies);
-        model.addAttribute("contacts", contacts);
-
-        return "resumes/userResumes";
+        return "redirect:/myResumes";
     }
+
+    @GetMapping("/resumes/{resumeId}")
+    public String showResumeInfo(@PathVariable int resumeId, Model model) {
+
+        model.addAttribute("contacts", contactInfoService.findByResumeId(resumeId));
+        model.addAttribute("educations", educationService.findByResumeId(resumeId));
+        model.addAttribute("experiences", experienceService.findByResumeId(resumeId));
+        model.addAttribute("resume", resumeService.findById(resumeId));
+        return "resumes/resume_info";
+    }
+
 }

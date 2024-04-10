@@ -46,8 +46,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login") // Set login page URL (matches your template location)
+                        .loginProcessingUrl("/login") // URL to process login form submission
+                        .usernameParameter("username") // Username form field name (matches your template)
+                        .passwordParameter("password") // Password form field name (matches your template)
+                        .permitAll() // Allow everyone to access the login page
+                        .defaultSuccessUrl("/success", true) // Redirect URL on successful login (optional)
+                )
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .authorizeRequests(authz -> authz
@@ -55,7 +62,9 @@ public class SecurityConfig {
 //                        .requestMatchers(new AntPathRequestMatcher("/user/vacancies", HttpMethod.GET.name())).permitAll()
 //                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name())).permitAll()
 
-                        .anyRequest().authenticated());
+                                .anyRequest().authenticated()
+
+                );
 
         return http.build();
     }

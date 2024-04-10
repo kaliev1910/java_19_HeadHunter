@@ -96,4 +96,9 @@ public class MainController {
         userService.updateUser(userDto);
         return "redirect:/profile";
     }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "auth/login";
+    }
 }
