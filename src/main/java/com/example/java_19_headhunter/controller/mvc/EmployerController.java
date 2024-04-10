@@ -3,15 +3,15 @@ package com.example.java_19_headhunter.controller.mvc;
 
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
-import com.example.java_19_headhunter.service.ContactInfoService;
-import com.example.java_19_headhunter.service.ResumeService;
-import com.example.java_19_headhunter.service.UserService;
-import com.example.java_19_headhunter.service.VacancyService;
+import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
+import com.example.java_19_headhunter.service.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +24,7 @@ public class EmployerController {
     private final VacancyService vacancyService;
     private final ResumeService resumeService;
     private final ContactInfoService contactInfoService;
+    private final CategoryService categoryService;
 
     @GetMapping("/vacancies")
     public String getVacancies(Model model, Authentication authentication) {
@@ -57,4 +58,35 @@ public class EmployerController {
         model.addAttribute("contacts", contacts);
         return "resumes/resume_info";
     }
+
+    // Метод для отображения формы редактирования вакансии
+    @GetMapping("/vacancy/{id}")
+    public String showVacancyInfo(@PathVariable("id") int id, Model model) {
+        VacancyDto vacancy = (VacancyDto) vacancyService.findById(id);
+        model.addAttribute("vacancy", vacancy);
+        return "vacancies/vacancy_info"; // Название представления для отображения формы
+    }
+
+    @GetMapping("/vacancy/{id}/edit")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+        VacancyDto vacancyDto = (VacancyDto) vacancyService.findById(id);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("vacancy", vacancyDto);
+        return "vacancies/edit_vacancy"; // Название представления для отображения формы
+    }
+
+    // Метод для обновления вакансии
+    @PostMapping("/vacancy/{id}/edit")
+    public String updateVacancy(@PathVariable("id") int id, VacancyUpdateDto vacancyDto, Authentication authentication,
+                                BindingResult result) {
+        if (result.hasErrors()) {
+            return "vacancies/edit_vacancy"; // Возвращаем форму с ошибками валидации
+        }
+        vacancyService.update(vacancyDto, authentication);
+        return "redirect:/vacancy/{id}";
+    }
+
+
+
+
 }

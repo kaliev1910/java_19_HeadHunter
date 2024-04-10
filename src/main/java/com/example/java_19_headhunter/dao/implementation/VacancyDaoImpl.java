@@ -18,8 +18,14 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
 
     @Override
     public List<Vacancy> findAll() {
-        String sql = "SELECT * FROM vacancies";
+        String sql = "SELECT * FROM vacancies where IS_ACTIVE = true";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class));
+    }
+
+    @Override
+    public Vacancy findById(int id) {
+        String sql = "SELECT * FROM vacancies where ID= ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Vacancy.class), id);
     }
 
     @Override

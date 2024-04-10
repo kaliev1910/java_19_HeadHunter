@@ -4,6 +4,7 @@ import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('APPLICANT')")
 public class ApplicantController {
     private final ContactInfoService contactInfoService;
     private final VacancyService vacancyService;
@@ -20,6 +22,7 @@ public class ApplicantController {
     private final ResumeService resumeService;
     private final ExperienceService experienceService;
     private final EducationService educationService;
+
 
     @GetMapping("/myResumes")
     public String getResumesForm(Model model, Authentication authentication) {
@@ -30,6 +33,17 @@ public class ApplicantController {
     public String showCreateResumeForm(Model model) {
         return "resumes/resume_add";
     }
+
+    @GetMapping("/resumes/{resumeId}")
+    public String showResumeInfo(@PathVariable int resumeId, Model model) {
+
+        model.addAttribute("contacts", contactInfoService.findByResumeId(resumeId));
+        model.addAttribute("educations",educationService.findByResumeId(resumeId));
+        model.addAttribute("experiences", experienceService.findByResumeId(resumeId));
+        model.addAttribute("resume", resumeService.findById(resumeId));
+        return "resumes/resume_info";
+    }
+
 
     @PostMapping("/resumes")
     public String createResume(ResumeCreateDto resumeDto,

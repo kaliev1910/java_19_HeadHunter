@@ -4,6 +4,7 @@ import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
+import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.service.VacancyService;
@@ -41,6 +42,11 @@ public class VacancyServiceImpl implements VacancyService {
             log.error("Error finding all vacancies", e);
             throw e; // rethrow the exception
         }
+    }
+
+    @Override
+    public VacancyDto findById(int id) {
+        return toDto(vacancyDao.findById(id));
     }
 
     @Override
@@ -95,9 +101,10 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @PreAuthorize("hasAuthority('EMPLOYER')")
-    public void update(VacancyDto vacancyDto) {
+    public void update(VacancyUpdateDto vacancyDto, Authentication a) {
         try {
-            vacancyDao.updateVacancy(fromDto(vacancyDto));
+            vacancyDto.setUpdatedDate(LocalDate.now());
+            vacancyDao.updateVacancy(fromUpdateDto(vacancyDto, a));
         } catch (Exception e) {
             log.error("Error updating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
@@ -165,6 +172,19 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     private Vacancy fromCreateDto(VacancyCreateDto vacancyDto, Authentication authentication) {
+        return Vacancy.builder()
+                .authorEmail(authentication.getName())
+                .name(vacancyDto.getName())
+                .description(vacancyDto.getDescription())
+                .categoryId(vacancyDto.getCategoryId())
+                .salary(vacancyDto.getSalary())
+                .expFrom(vacancyDto.getExpFrom())
+                .createdDate(LocalDate.now())
+                .updateTime(LocalDate.now())
+                .build();
+    }
+
+    private Vacancy fromUpdateDto(VacancyUpdateDto vacancyDto, Authentication authentication) {
         return Vacancy.builder()
                 .authorEmail(authentication.getName())
                 .name(vacancyDto.getName())

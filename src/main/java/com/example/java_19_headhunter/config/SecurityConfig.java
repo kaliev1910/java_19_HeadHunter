@@ -54,7 +54,9 @@ public class SecurityConfig {
 //                        .requestMatchers(new AntPathRequestMatcher("/user/register", HttpMethod.POST.name())).permitAll()
 //                        .requestMatchers(new AntPathRequestMatcher("/user/vacancies", HttpMethod.GET.name())).permitAll()
 //                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name())).permitAll()
+
                         .anyRequest().authenticated());
+
         return http.build();
     }
 }
