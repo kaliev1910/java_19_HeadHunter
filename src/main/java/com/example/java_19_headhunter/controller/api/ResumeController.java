@@ -1,15 +1,12 @@
-package com.example.java_19_headhunter.controller;
+package com.example.java_19_headhunter.controller.api;
 
-import com.example.java_19_headhunter.dto.UserDto;
-import com.example.java_19_headhunter.dto.ResumeDto;
-import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +26,7 @@ public class ResumeController {
 
 
     @PostMapping("/resume")
-    public ResponseEntity<String> createResume(@Valid @RequestBody ResumeDto resumeDto, Authentication authentication) {
+    public ResponseEntity<String> createResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
         resumeService.create(resumeDto,authentication);
         return new ResponseEntity<>("Resume created successfully", HttpStatus.CREATED);
     }
@@ -54,11 +51,11 @@ public class ResumeController {
         return new ResponseEntity<>(resumeService.findByCategory(id), HttpStatus.OK);
     }
 
-    @GetMapping("/resumes")
-    @PreAuthorize("hasRole('applicant')")
-    public ResponseEntity<List<ResumeDto>> getAllResumes() {
-        return new ResponseEntity<>(resumeService.getAll(), HttpStatus.OK);
-    }
+//    @GetMapping("/resumes")
+//    @PreAuthorize("hasRole('applicant')")
+//    public ResponseEntity<List<ResumeDto>> getAllResumes() {
+//        return new ResponseEntity<>(resumeService.getAll(), HttpStatus.OK);
+//    }
 
     @GetMapping("/resumes/email/{email}")
     public ResponseEntity<List<ResumeDto>> getResumesByEmail(@PathVariable String email) {

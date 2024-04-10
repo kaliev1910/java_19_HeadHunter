@@ -2,26 +2,36 @@ package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
-import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
+import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
+import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.service.VacancyService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class VacancyServiceImpl implements VacancyService {
-    @Autowired
-    private VacancyDao vacancyDao;
-    private UserDao userDao;
 
+public class VacancyServiceImpl implements VacancyService {
+    private final VacancyDao vacancyDao;
+    private final UserDao userDao;
+
+    public VacancyServiceImpl(VacancyDao vacancyDao, UserDao userDao) {
+        this.vacancyDao = vacancyDao;
+        this.userDao = userDao;
+    }
 
 
     @Override
@@ -35,6 +45,11 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    public VacancyDto findById(int id) {
+        return toDto(vacancyDao.findById(id));
+    }
+
+    @Override
     public List<VacancyDto> findByCategory(int categoryId) {
         try {
             return vacancyDao.findByCategory(categoryId).stream().map(this::toDto).collect(Collectors.toList());
@@ -45,16 +60,17 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<VacancyDto> findByApplicantId(int applicantId) {
+    public List<VacancyDto> findByUserId(int userId) {
         try {
-            return vacancyDao.findByApplicantId(applicantId).stream().map(this::toDto).collect(Collectors.toList());
+            return vacancyDao.findByUserId(userId).stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
-            log.error("Error finding vacancies by applicantId {}", applicantId, e);
+            log.error("Error finding vacancies by userId {}", userId, e);
             throw e; // rethrow the exception
         }
     }
+
     @Override
-    public List<VacancyDto> findByApplicantEmail(String applicantEmail) {
+    public List<VacancyDto> findByUserEmail(String applicantEmail) {
         try {
             return vacancyDao.findByApplicantEmail(applicantEmail).stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
@@ -62,6 +78,7 @@ public class VacancyServiceImpl implements VacancyService {
             throw e; // rethrow the exception
         }
     }
+
     @Override
     public List<VacancyDto> findActiveVacancies() {
         try {
@@ -84,9 +101,10 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @PreAuthorize("hasAuthority('EMPLOYER')")
-    public void update(VacancyDto vacancyDto) {
+    public void update(VacancyUpdateDto vacancyDto, Authentication a) {
         try {
-            vacancyDao.updateVacancy(fromDto(vacancyDto));
+            vacancyDto.setUpdatedDate(LocalDate.now());
+            vacancyDao.updateVacancy(fromUpdateDto(vacancyDto, a));
         } catch (Exception e) {
             log.error("Error updating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
@@ -95,13 +113,17 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @PreAuthorize("hasAuthority('EMPLOYER')")
-    public void create(VacancyDto vacancyDto) {
+    public int create(VacancyCreateDto vacancyDto, Authentication authentication) {
+        int vacancyId;
         try {
-            vacancyDao.createVacancy(fromDto(vacancyDto));
+            Vacancy vacancy = fromCreateDto(vacancyDto, authentication);
+            vacancy.setAuthorEmail(authentication.getName());
+            vacancyId = vacancyDao.createVacancy(vacancy);
         } catch (Exception e) {
             log.error("Error creating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
         }
+        return vacancyId;
     }
 
 
@@ -112,7 +134,7 @@ public class VacancyServiceImpl implements VacancyService {
 
             vacancyDao.applyForVacancy(user.get(), vacancyId);
         } catch (Exception e) {
-            log.error("Error applying for vacancy {}, with user email {}", vacancyId,email, e);
+            log.error("Error applying for vacancy {}, with user email {}", vacancyId, email, e);
             throw e; // rethrow the exception
         }
     }
@@ -148,5 +170,32 @@ public class VacancyServiceImpl implements VacancyService {
                 .updateTime(vacancyDto.getUpdateTime())
                 .build();
     }
+
+    private Vacancy fromCreateDto(VacancyCreateDto vacancyDto, Authentication authentication) {
+        return Vacancy.builder()
+                .authorEmail(authentication.getName())
+                .name(vacancyDto.getName())
+                .description(vacancyDto.getDescription())
+                .categoryId(vacancyDto.getCategoryId())
+                .salary(vacancyDto.getSalary())
+                .expFrom(vacancyDto.getExpFrom())
+                .createdDate(LocalDate.now())
+                .updateTime(LocalDate.now())
+                .build();
+    }
+
+    private Vacancy fromUpdateDto(VacancyUpdateDto vacancyDto, Authentication authentication) {
+        return Vacancy.builder()
+                .authorEmail(authentication.getName())
+                .name(vacancyDto.getName())
+                .description(vacancyDto.getDescription())
+                .categoryId(vacancyDto.getCategoryId())
+                .salary(vacancyDto.getSalary())
+                .expFrom(vacancyDto.getExpFrom())
+                .createdDate(LocalDate.now())
+                .updateTime(LocalDate.now())
+                .build();
+    }
+
 
 }

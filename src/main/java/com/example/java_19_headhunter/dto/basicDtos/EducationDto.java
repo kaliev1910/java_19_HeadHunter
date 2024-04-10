@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.dto;
+package com.example.java_19_headhunter.dto.basicDtos;
 
 
 import jakarta.validation.constraints.NotBlank;

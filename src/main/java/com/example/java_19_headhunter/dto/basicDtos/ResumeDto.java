@@ -1,6 +1,5 @@
-package com.example.java_19_headhunter.dto;
+package com.example.java_19_headhunter.dto.basicDtos;
 
-import com.example.java_19_headhunter.models.RespondedApplicant;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,33 +10,29 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class VacancyDto {
+public class ResumeDto {
+
     private int id;
 
     @NotNull
     @Email(message = "Email should be valid")
-    private String authorEmail;
+    private String applicantEmail;
 
     @NotBlank(message = "Name is mandatory")
     @Size(max = 100, message = "Name should not be greater than 100 characters")
     private String name;
 
-    @NotBlank(message = "Description is mandatory")
-    @Size(max = 500, message = "Description should not be greater than 500 characters")
-    private String description;
-
+    private Integer expectedSalary;
     private int categoryId;
-    private int salary;
-    private int expFrom;
-    private int expTo;
     private boolean isActive;
-    private Timestamp createdDate;
-    private Timestamp updateTime;
-    private List<RespondedApplicant> respondedApplicantList;
+    private LocalDate createdTime;
+    private LocalDate updatedTime;
+
 }

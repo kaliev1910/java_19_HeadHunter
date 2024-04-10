@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.dto.createDto;
+package com.example.java_19_headhunter.dto.auth;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class UserCreateDto {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    private String avatar;
+
 
     @NotNull(message = "Account type cannot be null")
     @Pattern(regexp = "applicant|employer", message = "Account type must be either 'applicant' or 'employer'")

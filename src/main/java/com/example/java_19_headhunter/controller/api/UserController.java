@@ -1,8 +1,6 @@
-package com.example.java_19_headhunter.controller;
+package com.example.java_19_headhunter.controller.api;
 
-import com.example.java_19_headhunter.dto.UserDto;
-import com.example.java_19_headhunter.dto.ResumeDto;
-import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
@@ -34,6 +32,7 @@ public class UserController {
         userService.updateUser(userDto);
         return new ResponseEntity<>("Profile updated successfully", HttpStatus.OK);
     }
+
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);

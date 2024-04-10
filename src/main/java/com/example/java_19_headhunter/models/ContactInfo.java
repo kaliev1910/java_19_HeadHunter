@@ -1,11 +1,13 @@
 package com.example.java_19_headhunter.models;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class ContactInfo {
     private int id;
     private int resumeId;

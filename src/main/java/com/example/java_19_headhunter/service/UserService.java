@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.service;
 
-import com.example.java_19_headhunter.dto.UserDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.models.User;
 import lombok.SneakyThrows;
 

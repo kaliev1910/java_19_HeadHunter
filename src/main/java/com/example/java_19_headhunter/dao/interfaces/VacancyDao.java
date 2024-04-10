@@ -4,15 +4,17 @@ import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.List;
+
 @Component
 public interface VacancyDao {
     List<Vacancy> findAll();
 
+    Vacancy findById(int id);
+
     List<Vacancy> findByCategory(int categoryId);
 
-    List<Vacancy> findByApplicantId(int applicantId);
+    List<Vacancy> findByUserId(int userId);
 
     List<User> findRespondedApplicantsForVacancy(int vacancyId);
 

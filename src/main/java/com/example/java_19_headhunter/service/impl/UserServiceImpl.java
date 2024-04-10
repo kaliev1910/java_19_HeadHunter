@@ -1,14 +1,13 @@
 package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.UserDao;
-import com.example.java_19_headhunter.dto.UserDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,21 +22,27 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final PasswordEncoder encoder;
+
     @Override
 
     public void updateUser(UserDto userDto) {
-
+        User user;
         try {
-            User user;
+
             user = fromDto(userDto);
+            user.setPassword(encoder.encode(user.getPassword()));
+           User tempUser=  userDao.findByEmail(user.getEmail()).get();
+           user.setAccountType(tempUser.getAccountType());
+           user.setEnabled(tempUser.isEnabled());
             userDao.updateUser(user);
             log.info("User with email {} has been updated", userDto.getEmail());
         } catch (Exception e) {
-            log.error("Error while trying to update user with email {}", userDto.getEmail(), e);
+            log.error("Error while trying to update user with email {} user {}", userDto.getEmail(), userDto, e);
             throw e;
 
         }
     }
+
     @Override
     @SneakyThrows
     public boolean isEmployer(String email) {
@@ -48,6 +53,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .orElseThrow(() -> new UserNotFoundException("Cannot find user"));
     }
+
     @Override
     public int createUser(UserDto userDto) {
         User user;
@@ -154,7 +160,6 @@ public class UserServiceImpl implements UserService {
             throw e;
         }
     }
-
 
 
     protected UserDto toDto(User user) {

@@ -20,7 +20,7 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     }
     @Override
     public List<Resume> getAll() {
-        String sql = "SELECT * FROM resumes";
+        String sql = "SELECT * FROM resumes ";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class));
     }
     @Override

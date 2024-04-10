@@ -1,6 +1,6 @@
-package com.example.java_19_headhunter.controller;
+package com.example.java_19_headhunter.controller.api;
 
-import com.example.java_19_headhunter.dto.VacancyDto;
+import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/vacancies")
 @RequiredArgsConstructor
 public class VacancyController {
     private final UserServiceImpl userService;
@@ -20,32 +20,32 @@ public class VacancyController {
     private final VacancyServiceImpl vacancyService;
 
 
-    @GetMapping("/vacancies")
+    @GetMapping("/")
     public ResponseEntity<List<VacancyDto>> getAllVacancies() {
         return new ResponseEntity<>(vacancyService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/vacancies/category/{id}")
+    @GetMapping("/category/{id}")
     public ResponseEntity<List<VacancyDto>> getVacanciesByCategory(@PathVariable int id) {
         return new ResponseEntity<>(vacancyService.findByCategory(id), HttpStatus.OK);
     }
 
-    @GetMapping("/vacancies/applicant/{id}")
+    @GetMapping("/applicant/{id}")
     public ResponseEntity<List<VacancyDto>> getVacanciesByApplicantId(@PathVariable int id) {
-        return new ResponseEntity<>(vacancyService.findByApplicantId(id), HttpStatus.OK);
+        return new ResponseEntity<>(vacancyService.findByUserId(id), HttpStatus.OK);
     }
 
-    @GetMapping("/vacancies/applicant/email/{email}")
+    @GetMapping("/applicant/email/{email}")
     public ResponseEntity<List<VacancyDto>> getVacanciesByEmail(@PathVariable String email) {
-        return new ResponseEntity<>(vacancyService.findByApplicantEmail(email), HttpStatus.OK);
+        return new ResponseEntity<>(vacancyService.findByUserEmail(email), HttpStatus.OK);
     }
 
-    @GetMapping("/vacancies/active")
+    @GetMapping("/active")
     public ResponseEntity<List<VacancyDto>> getActiveVacancies() {
         return new ResponseEntity<>(vacancyService.findActiveVacancies(), HttpStatus.OK);
     }
 
-    @GetMapping("/vacancies/salary")
+    @GetMapping("/salary")
     public ResponseEntity<List<VacancyDto>> getVacanciesBySalary(@RequestParam int salaryFrom,
                                                                  @RequestParam int salaryTo) {
         return new ResponseEntity<>(vacancyService.findVacanciesBySalaryRange(salaryFrom, salaryTo), HttpStatus.OK);
