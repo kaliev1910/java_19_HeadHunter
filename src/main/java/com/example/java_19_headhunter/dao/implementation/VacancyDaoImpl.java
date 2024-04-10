@@ -73,9 +73,11 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
 
     @Override
     public void updateVacancy(Vacancy vacancy) {
-        String sql = "UPDATE vacancies SET AUTHOR_EMAIL = ?, name = ?, description = ?, category_id = ?, " +
-                "salary = ?, exp_from = ?, exp_to = ?, is_active = ?, update_time = ? WHERE id = ?";
-        jdbcTemplate.update(sql, vacancy.getAuthorEmail(), vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
+        String sql = """ 
+                UPDATE vacancies SET  name = ?, description = ?, category_id = ?,
+                                salary = ?, exp_from = ?, exp_to = ?, is_active = ?, update_time = ? WHERE id = ?;
+                """;
+        jdbcTemplate.update(sql,  vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
                 vacancy.getSalary(), vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.isActive(),
                 vacancy.getUpdateTime(), vacancy.getId());
     }
