@@ -26,14 +26,18 @@ public class UserServiceImpl implements UserService {
     @Override
 
     public void updateUser(UserDto userDto) {
-
+        User user;
         try {
-            User user;
+
             user = fromDto(userDto);
+            user.setPassword(encoder.encode(user.getPassword()));
+           User tempUser=  userDao.findByEmail(user.getEmail()).get();
+           user.setAccountType(tempUser.getAccountType());
+           user.setEnabled(tempUser.isEnabled());
             userDao.updateUser(user);
             log.info("User with email {} has been updated", userDto.getEmail());
         } catch (Exception e) {
-            log.error("Error while trying to update user with email {}", userDto.getEmail(), e);
+            log.error("Error while trying to update user with email {} user {}", userDto.getEmail(), userDto, e);
             throw e;
 
         }

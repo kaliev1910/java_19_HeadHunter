@@ -66,7 +66,7 @@
                                 <#else>
                                     <p class="card-text">Возраст: не указан</p>
                                 </#if>
-                                <a href="/hh/redact/${user.email}" class="btn btn-primary"
+                                <a href="/${user.email}" class="btn btn-primary"
                                    methods="PUT">Редактировать</a>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
                         <div class="card profile border-0">
                             <div class="card-body">
                                 <h3 class="card-title">${user.name}</h3>
-                                <a href="/user/${user.email}" class="btn btn-primary">Редактировать</a>
+                                <a href="/${user.email}" class="btn btn-primary">Редактировать</a>
                             </div>
                         </div>
                     </div>

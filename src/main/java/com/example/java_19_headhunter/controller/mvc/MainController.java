@@ -14,10 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -88,5 +85,15 @@ public class MainController {
         return "users/index"; // Это имя вашего шаблона
     }
 
+    @GetMapping("/{email}")
+    public String showEditUser(@PathVariable String email, Model model, Authentication authentication) {
+        model.addAttribute("user", userService.findByEmail(authentication.getName()).get());
+        return "users/editUser";
+    }
 
+    @PostMapping("/{email}")
+    public String updateUser(String email, @Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
+        userService.updateUser(userDto);
+        return "redirect:/profile";
+    }
 }

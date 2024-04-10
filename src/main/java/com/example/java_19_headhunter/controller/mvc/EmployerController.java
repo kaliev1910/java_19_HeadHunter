@@ -38,7 +38,6 @@ public class EmployerController {
         model.addAttribute("vacancy", new VacancyCreateDto());
         return "vacancies/create_vacancy";
     }
-
     @PostMapping("/vacancies")
     public String createVacancy(VacancyCreateDto vacancyDto,
                                 Authentication authentication,
@@ -48,7 +47,6 @@ public class EmployerController {
         model.addAttribute("message", "Vacancy created successfully");
         return "redirect:/vacancies";
     }
-
 
     @GetMapping("/resumes/{id}")
     public String getResumeDetails(@PathVariable int id, Model model) {
@@ -60,13 +58,13 @@ public class EmployerController {
     }
 
     // Метод для отображения формы редактирования вакансии
+
     @GetMapping("/vacancy/{id}")
     public String showVacancyInfo(@PathVariable("id") int id, Model model) {
         VacancyDto vacancy = (VacancyDto) vacancyService.findById(id);
         model.addAttribute("vacancy", vacancy);
         return "vacancies/vacancy_info"; // Название представления для отображения формы
     }
-
     @GetMapping("/vacancy/{id}/edit")
     public String showEditForm(@PathVariable("id") int id, Model model) {
         VacancyDto vacancyDto = (VacancyDto) vacancyService.findById(id);
@@ -76,6 +74,7 @@ public class EmployerController {
     }
 
     // Метод для обновления вакансии
+
     @PostMapping("/vacancy/{id}/edit")
     public String updateVacancy(@PathVariable("id") int id, VacancyUpdateDto vacancyDto, Authentication authentication,
                                 BindingResult result) {

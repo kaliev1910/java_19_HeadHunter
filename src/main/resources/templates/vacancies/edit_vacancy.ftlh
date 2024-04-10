@@ -4,7 +4,7 @@
 
     <div class="row justify-content-around">
         <div class="card col-8 m-1 mb-5">
-            <form action="" method="post">
+            <form action="vacancy/${vacancy.id}/edit" method="post">
 
                 <div class="form-group">
                     <label for="name">Job Title:</label>
