@@ -37,7 +37,7 @@ public class VacancyController {
 
     @GetMapping("/applicant/email/{email}")
     public ResponseEntity<List<VacancyDto>> getVacanciesByEmail(@PathVariable String email) {
-        return new ResponseEntity<>(vacancyService.findByApplicantEmail(email), HttpStatus.OK);
+        return new ResponseEntity<>(vacancyService.findByUserEmail(email), HttpStatus.OK);
     }
 
     @GetMapping("/active")

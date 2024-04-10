@@ -1,6 +1,7 @@
 package com.example.java_19_headhunter.service;
 
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
+import com.example.java_19_headhunter.dto.basicDtos.ResumeListDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;

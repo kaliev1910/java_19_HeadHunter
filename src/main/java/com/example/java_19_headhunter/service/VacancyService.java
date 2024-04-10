@@ -2,6 +2,7 @@ package com.example.java_19_headhunter.service;
 
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface VacancyService {
 
     List<VacancyDto> findByUserId(int applicantId);
 
-    List<VacancyDto> findByApplicantEmail(String applicantEmail);
+    List<VacancyDto> findByUserEmail(String applicantEmail);
 
     List<VacancyDto> findActiveVacancies();
 
@@ -21,7 +22,7 @@ public interface VacancyService {
 
     void update(VacancyDto vacancyDto);
 
-    void create(VacancyCreateDto vacancyDto);
+    int create(VacancyCreateDto vacancyDto, Authentication authentication);
 
     void applyForVacancy(String email, int vacancyId);
 

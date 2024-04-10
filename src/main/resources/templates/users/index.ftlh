@@ -128,7 +128,7 @@
             </th>
             <th scope="col">
                 <div class="mx-3">
-                    <a href="/create" class="btn btn-primary p-5">+<br>Создать<br>вакансию</a>
+                    <a href="/vacancies/create" class="btn btn-primary p-5">+<br>Создать<br>вакансию</a>
                 </div>
             </th>
             <th scope="col">

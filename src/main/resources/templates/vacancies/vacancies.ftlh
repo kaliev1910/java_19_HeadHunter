@@ -34,7 +34,6 @@
         .card-name {
             height: 70px;
         }
-
     </style>
     <h1 class="text-center mb-3">Вакансии</h1>
     <div class="text-center">
@@ -56,20 +55,20 @@
         </div>
     </div>
 
-
     <div class="row justify-content-around">
         <#list vacancies as vacancy>
             <div class="card col-3 m-1 mb-5">
-                <a href="/hh/vacancy/${vacancy.id}"><h5 class="card-header card-name">${vacancy.jobTitle}</h5>
+                <a href="/hh/vacancy/${vacancy.id}">
+                    <h5 class="card-header card-name">${vacancy.name}</h5>
                 </a>
-                <h6 class="card-header">${vacancy.category}</h6>
+                <h6 class="card-header">${vacancy.categoryId}</h6>
                 <div class="card-body">
                     <h5 class="card-title">${vacancy.salary} KGS</h5>
-                    <p class="card-title">${vacancy.descriptionVacancy}</p>
+                    <p class="card-title">${vacancy.description}</p>
                 </div>
                 <div class="card-footer">
-                    <p class="card-text"><a href="/hh/guest/${vacancy.userEmail}">${vacancy.userEmail}</a></p>
-                    <p class="card-text">${vacancy.date}</p>
+                    <p class="card-text"><a href="/hh/guest/${vacancy.authorEmail}">${vacancy.authorEmail}</a></p>
+                    <p class="card-text">${vacancy.createdDate}</p>
                     <a href="/hh/vacancy/${vacancy.id}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
@@ -77,6 +76,4 @@
     </div>
 
     <a href="/employer/vacancy/add" class="btn btn-success">Создать новую вакансию</a>
-
-
 </@main.layout>

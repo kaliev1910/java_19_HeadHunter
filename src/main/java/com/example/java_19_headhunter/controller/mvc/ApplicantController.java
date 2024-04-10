@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,27 +16,28 @@ import java.util.List;
 public class ApplicantController {
     private final ContactInfoService contactInfoService;
     private final VacancyService vacancyService;
-    private final MessageService messageService;
     private final UserService userService;
     private final ResumeService resumeService;
     private final ExperienceService experienceService;
     private final EducationService educationService;
 
-    @GetMapping("resumes")
+    @GetMapping("/myResumes")
     public String getResumesForm(Model model, Authentication authentication) {
-        return "resumes/resumes";
+        return "resumes/userResumes";
     }
 
-    @GetMapping("create")
-    public String createResume() {
+    @GetMapping("/resumes/create")
+    public String showCreateResumeForm(Model model) {
         return "resumes/resume_add";
     }
 
-    @PostMapping("/create")
-    public String createResume( ResumeCreateDto resumeDto,
-            EducationDto educationDto, ExperienceDto experienceDto,
-            Authentication authentication, ContactInfoDto contactInfoDto, Model model) {
-
+    @PostMapping("/resumes")
+    public String createResume(ResumeCreateDto resumeDto,
+                               EducationDto educationDto,
+                               ExperienceDto experienceDto,
+                               Authentication authentication,
+                               ContactInfoDto contactInfoDto,
+                               Model model) {
 
         int resumeId = resumeService.create(resumeDto, authentication);
         experienceDto.setResumeId(resumeId);
@@ -52,7 +50,6 @@ public class ApplicantController {
 
         UserDto user = userService.findByEmail(authentication.getName()).get();
 
-
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
         List<ContactInfoDto> contacts = contactInfoService.findByResumeId(user.getId());
@@ -61,7 +58,6 @@ public class ApplicantController {
         model.addAttribute("vacancies", vacancies);
         model.addAttribute("contacts", contacts);
 
-
-        return "resumes/resumes";
+        return "resumes/userResumes";
     }
 }

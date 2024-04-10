@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,13 +22,15 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@AllArgsConstructor
-@RequiredArgsConstructor
-public class VacancyServiceImpl implements VacancyService {
-@Autowired
-    private VacancyDao vacancyDao;
-    private UserDao userDao;
 
+public class VacancyServiceImpl implements VacancyService {
+    private final VacancyDao vacancyDao;
+    private final UserDao userDao;
+
+    public VacancyServiceImpl(VacancyDao vacancyDao, UserDao userDao) {
+        this.vacancyDao = vacancyDao;
+        this.userDao = userDao;
+    }
 
 
     @Override
@@ -59,8 +62,9 @@ public class VacancyServiceImpl implements VacancyService {
             throw e; // rethrow the exception
         }
     }
+
     @Override
-    public List<VacancyDto> findByApplicantEmail(String applicantEmail) {
+    public List<VacancyDto> findByUserEmail(String applicantEmail) {
         try {
             return vacancyDao.findByApplicantEmail(applicantEmail).stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
@@ -68,6 +72,7 @@ public class VacancyServiceImpl implements VacancyService {
             throw e; // rethrow the exception
         }
     }
+
     @Override
     public List<VacancyDto> findActiveVacancies() {
         try {
@@ -101,13 +106,17 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @PreAuthorize("hasAuthority('EMPLOYER')")
-    public void create(VacancyCreateDto vacancyDto) {
+    public int create(VacancyCreateDto vacancyDto, Authentication authentication) {
+        int vacancyId;
         try {
-            vacancyDao.createVacancy(fromCreateDto(vacancyDto));
+            Vacancy vacancy = fromCreateDto(vacancyDto, authentication);
+            vacancy.setAuthorEmail(authentication.getName());
+            vacancyId = vacancyDao.createVacancy(vacancy);
         } catch (Exception e) {
             log.error("Error creating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
         }
+        return vacancyId;
     }
 
 
@@ -118,7 +127,7 @@ public class VacancyServiceImpl implements VacancyService {
 
             vacancyDao.applyForVacancy(user.get(), vacancyId);
         } catch (Exception e) {
-            log.error("Error applying for vacancy {}, with user email {}", vacancyId,email, e);
+            log.error("Error applying for vacancy {}, with user email {}", vacancyId, email, e);
             throw e; // rethrow the exception
         }
     }
@@ -154,17 +163,19 @@ public class VacancyServiceImpl implements VacancyService {
                 .updateTime(vacancyDto.getUpdateTime())
                 .build();
     }
-    public static Vacancy fromCreateDto(VacancyCreateDto vacancyDto) {
+
+    private Vacancy fromCreateDto(VacancyCreateDto vacancyDto, Authentication authentication) {
         return Vacancy.builder()
-                .authorEmail(null) // Ваша логика определения автора вакансии
+                .authorEmail(authentication.getName())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
                 .categoryId(vacancyDto.getCategoryId())
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
-                .isActive(true)
                 .createdDate(LocalDate.now())
                 .updateTime(LocalDate.now())
                 .build();
     }
+
+
 }

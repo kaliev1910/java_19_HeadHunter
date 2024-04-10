@@ -51,11 +51,11 @@ public class ResumeController {
         return new ResponseEntity<>(resumeService.findByCategory(id), HttpStatus.OK);
     }
 
-    @GetMapping("/resumes")
-    @PreAuthorize("hasRole('applicant')")
-    public ResponseEntity<List<ResumeDto>> getAllResumes() {
-        return new ResponseEntity<>(resumeService.getAll(), HttpStatus.OK);
-    }
+//    @GetMapping("/resumes")
+//    @PreAuthorize("hasRole('applicant')")
+//    public ResponseEntity<List<ResumeDto>> getAllResumes() {
+//        return new ResponseEntity<>(resumeService.getAll(), HttpStatus.OK);
+//    }
 
     @GetMapping("/resumes/email/{email}")
     public ResponseEntity<List<ResumeDto>> getResumesByEmail(@PathVariable String email) {
