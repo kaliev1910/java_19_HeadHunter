@@ -4,7 +4,7 @@
 
     <div class="justify-content-around">
         <div class="card m-1 mb-5">
-            <form action="/create" method="post">
+            <form action="/create" method="post" id="resumeForm">
                 <div class="card-title" >
                     <p>Название резюме:</p>
                     <input type="text" id="name" name="name" required><br><br>
@@ -23,38 +23,22 @@
                     <input type="number" id="expectedSalary" name="expectedSalary" required><br><br>
 
                     <!-- Добавление образования -->
-                    <label for="institution">Учебное заведение:</label>
-                    <input type="text" id="institution" name="institution" required><br><br>
-                    <label for="program">Программа/Специализация:</label>
-                    <input type="text" id="program" name="program" required><br><br>
-                    <label for="degree">Степень:</label>
-                    <input type="text" id="degree" name="degree" required><br><br>
-                    <label for="startDate">Дата начала:</label>
-                    <input type="date" id="startDate" name="startDate" required><br><br>
-                    <label for="endDate">Дата окончания:</label>
-                    <input type="date" id="endDate" name="endDate" required><br><br>
+                    <div id="educationSection">
+                        <label>Образование:</label>
+                        <button type="button" onclick="addEducation()">Добавить образование</button><br><br>
+                    </div>
 
                     <!-- Добавление опыта работы -->
-                    <label for="companyName">Название компании:</label>
-                    <input type="text" id="companyName" name="companyName" ><br><br>
-                    <label for="position">Должность:</label>
-                    <input type="text" id="position" name="position" ><br><br>
-                    <label for="responsibilities">Обязанности:</label>
-                    <input type="text" id="responsibilities" name="responsibilities" ><br><br>
-                    <label for="years">Продолжительность работы (в годах):</label>
-                    <input type="number" id="years" name="years" ><br><br>
+                    <div id="experienceSection">
+                        <label>Опыт работы:</label>
+                        <button type="button" onclick="addExperience()">Добавить опыт работы</button><br><br>
+                    </div>
 
                     <!-- Добавление контактной информации -->
-                    <label for="contactValue">Контактная информация:</label>
-                    <input type="text" id="contactValue" name="contactValue" ><br><br>
-                    <label for="typeId">Тип контакта:</label>
-                    <select id="typeId" name="typeId" >
-                        <option value="">--Выберите тип контакта--</option>
-                        <option value="1">Телефон</option>
-                        <option value="2">Email</option>
-                        <option value="3">LinkedIn</option>
-                        <option value="4">Telegram</option>
-                    </select><br><br>
+                    <div id="contactSection">
+                        <label>Контактная информация:</label>
+                        <button type="button" onclick="addContact()">Добавить контакт</button><br><br>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <input type="submit"   value="Создать резюме">
@@ -63,4 +47,51 @@
         </div>
     </div>
 
+    <script>
+        function addEducation() {
+            // Add education form fields dynamically
+            document.getElementById("educationSection").innerHTML += `
+                <label for="institution">Учебное заведение:</label>
+                <input type="text" name="education.institution" required><br><br>
+                <label for="program">Программа/Специализация:</label>
+                <input type="text" name="education.program" required><br><br>
+                <label for="degree">Степень:</label>
+                <input type="text" name="education.degree" required><br><br>
+                <label for="startDate">Дата начала:</label>
+                <input type="date" name="education.startDate" required><br><br>
+                <label for="endDate">Дата окончания:</label>
+                <input type="date" name="education.endDate" required><br><br>
+            `;
+        }
+
+        function addExperience() {
+            // Add experience form fields dynamically
+            document.getElementById("experienceSection").innerHTML += `
+                <label for="companyName">Название компании:</label>
+                <input type="text" name="experience.companyName"><br><br>
+                <label for="position">Должность:</label>
+                <input type="text" name="experience.position"><br><br>
+                <label for="responsibilities">Обязанности:</label>
+                <input type="text" name="experience.responsibilities"><br><br>
+                <label for="years">Продолжительность работы (в годах):</label>
+                <input type="number" name="experience.years"><br><br>
+            `;
+        }
+
+        function addContact() {
+            // Add contact form fields dynamically
+            document.getElementById("contactSection").innerHTML += `
+                <label for="contactValue">Контактная информация:</label>
+                <input type="text" name="contactInfo.contactValue"><br><br>
+                <label for="typeId">Тип контакта:</label>
+                <select name="contactInfo.typeId">
+                    <option value="">--Выберите тип контакта--</option>
+                    <option value="1">Телефон</option>
+                    <option value="2">Email</option>
+                    <option value="3">LinkedIn</option>
+                    <option value="4">Telegram</option>
+                </select><br><br>
+            `;
+        }
+    </script>
 </@main.layout>

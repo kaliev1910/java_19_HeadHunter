@@ -44,20 +44,26 @@ public class ApplicantController {
     }
 
     @PostMapping("/resumes")
-    public String createResume(ResumeCreateDto resumeDto,
-                               EducationDto educationDto,
-                               ExperienceDto experienceDto,
-                               Authentication authentication,
-                               ContactInfoDto contactInfoDto,
-                               Model model) {
+    public String createResume(ResumeCreateDto resumeDto, EducationDto educationDto, ExperienceDto experienceDto, Authentication authentication, ContactInfoDto contactInfoDto, Model model) {
 
         int resumeId = resumeService.create(resumeDto, authentication);
-        experienceDto.setResumeId(resumeId);
-        educationDto.setResumeId(resumeId);
-        contactInfoDto.setResumeId(resumeId);
-        experienceService.insert(experienceDto);
-        educationService.insert(educationDto);
-        contactInfoService.insert(contactInfoDto);
+
+        if (educationDto != null) {
+            educationDto.setResumeId(resumeId);
+            educationService.insert(educationDto);
+        }
+
+
+        if (experienceDto != null) {
+            experienceDto.setResumeId(resumeId);
+            experienceService.insert(experienceDto);
+        }
+
+
+        if (contactInfoDto != null) {
+            contactInfoDto.setResumeId(resumeId);
+            contactInfoService.insert(contactInfoDto);
+        }
         model.addAttribute("message", "Resume created successfully");
         return "redirect:/myResumes";
     }

@@ -21,7 +21,6 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('APPLICANT')")
 public class MainController {
 
     private final UserService userService;
@@ -60,13 +59,13 @@ public class MainController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginDto") UserDto userDto,
+    public String login(@Valid @ModelAttribute("loginDto") Authentication authentication,
                         BindingResult bindingResult,
                         Model model) {
         if (bindingResult.hasErrors()) {
             return "/auth/login";
         }
-        return "redirect:/home";
+        return "redirect:/profile";
     }
 
     @GetMapping("/profile")
@@ -97,8 +96,8 @@ public class MainController {
         return "redirect:/profile";
     }
 
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "auth/login";
-    }
+//    @GetMapping("/login")
+//    public String showLoginForm() {
+//        return "auth/login";
+//    }
 }
