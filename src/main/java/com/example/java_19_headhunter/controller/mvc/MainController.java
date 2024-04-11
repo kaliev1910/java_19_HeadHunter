@@ -68,13 +68,13 @@ public class MainController {
         return "users/index"; // Это имя вашего шаблона
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/{email}/edit")
     public String showEditUser(@PathVariable String email, Model model, Authentication authentication) {
         model.addAttribute("user", userService.findByEmail(authentication.getName()).get());
         return "users/editUser";
     }
 
-    @PostMapping("/{email}")
+    @PostMapping("/{email}/edit")
     public String updateUser(UserDto userDto) {
         userService.updateUser(userDto);
         return "redirect:/profile";

@@ -6,7 +6,7 @@
         <div class="col-sm-6">
             <div class="card profile border-0">
                 <div class="card-body">
-                    <form action="/${user.email}" method="post">
+                    <form action="/${user.email}/edit" method="post">
                         <fieldset>
                             <div class="form-group">
                                 <label for="name">Имя</label>

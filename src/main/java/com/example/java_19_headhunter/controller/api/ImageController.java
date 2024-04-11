@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.*;
 public class ImageController {
     private final UserImageService userImageService;
 
-    @GetMapping("/api/download/{imageId}")
+    @GetMapping("/download/{imageId}")
     public ResponseEntity<?> downloadImage(@PathVariable long imageId) {
         return userImageService.downloadImage(imageId);
     }
 
-    @PostMapping("/api/upload")
+    @PostMapping("/upload")
     public HttpStatus uploadImage(UserImageDto userImageDto) {
         userImageService.uploadImage(userImageDto);
         return HttpStatus.OK;
     }
 
-    @GetMapping("/api/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<?> getImageByMovie(@PathVariable Long userId) {
         return userImageService.getImageByUserId(userId);
     }
