@@ -35,7 +35,7 @@
                     <p class="card-text">${resume.expectedSalary} KGZ</p>
                 </div>
                 <div class="card-footer">
-                    <a href="/${resume.id}" class="btn btn-primary">Подробнее</a>
+                    <a href="/resume/${resume.id}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
         </#list>

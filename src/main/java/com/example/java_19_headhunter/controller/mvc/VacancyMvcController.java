@@ -1,4 +1,3 @@
-
 package com.example.java_19_headhunter.controller.mvc;
 
 import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
@@ -9,7 +8,6 @@ import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
 import com.example.java_19_headhunter.service.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +21,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 
-public class EmployerController {
+public class VacancyMvcController {
     private final UserService userService;
     private final VacancyService vacancyService;
     private final ResumeService resumeService;
@@ -37,25 +35,20 @@ public class EmployerController {
         return "vacancies/vacancies";
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     @GetMapping("/vacancies/create")
     public String showCreateVacancyForm(Model model) {
         model.addAttribute("vacancy", new VacancyCreateDto());
         return "vacancies/create_vacancy";
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     @PostMapping("/vacancies")
-    public String createVacancy(VacancyCreateDto vacancyDto,
-                                Authentication authentication,
-                                Model model) {
+    public String createVacancy(VacancyCreateDto vacancyDto, Authentication authentication, Model model) {
         UserDto employer = userService.findByEmail(authentication.getName()).get();
         int vacancyId = vacancyService.create(vacancyDto, authentication);
         model.addAttribute("message", "Vacancy created successfully");
         return "redirect:/vacancies";
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     @GetMapping("/resumes/{id}")
     public String getResumeDetails(@PathVariable int id, Model model) {
         ResumeDto resume = resumeService.findById(id);
@@ -68,25 +61,22 @@ public class EmployerController {
 
     @GetMapping("/vacancy/{id}")
     public String showVacancyInfo(@PathVariable("id") int id, Model model) {
-        VacancyDto vacancy = (VacancyDto) vacancyService.findById(id);
+        VacancyDto vacancy = vacancyService.findById(id);
         model.addAttribute("vacancy", vacancy);
         return "vacancies/vacancy_info"; //
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     @GetMapping("/vacancy/{id}/edit")
     public String showEditForm(@PathVariable("id") int id, Model model) {
-        VacancyDto vacancyDto = (VacancyDto) vacancyService.findById(id);
+        VacancyDto vacancyDto = vacancyService.findById(id);
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("vacancy", vacancyDto);
         return "vacancies/edit_vacancy";
     }
 
     // Метод для обновления вакансии
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     @PostMapping("/vacancy/{id}/edit")
-    public String updateVacancy(@PathVariable("id") int id, VacancyUpdateDto vacancyDto, Authentication authentication,
-                                BindingResult result) {
+    public String updateVacancy(@PathVariable("id") int id, VacancyUpdateDto vacancyDto, Authentication authentication, BindingResult result) {
         if (result.hasErrors()) {
             return "vacancies/edit_vacancy";
         }

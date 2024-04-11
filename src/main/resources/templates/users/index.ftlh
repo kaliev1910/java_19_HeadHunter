@@ -75,7 +75,7 @@
             </th>
             <th scope="col" class="mx-3">
                 <div class="mx-3">
-                    <a href="/create" class="btn btn-primary p-5">+<br>Создать<br>резюме</a>
+                    <a href="/resumes/create" class="btn btn-primary p-5">+<br>Создать<br>резюме</a>
                 </div>
             </th>
             <th scope="col">

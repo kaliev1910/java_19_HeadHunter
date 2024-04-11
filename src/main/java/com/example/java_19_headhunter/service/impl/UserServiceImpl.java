@@ -31,9 +31,9 @@ public class UserServiceImpl implements UserService {
 
             user = fromDto(userDto);
             user.setPassword(encoder.encode(user.getPassword()));
-           User tempUser=  userDao.findByEmail(user.getEmail()).get();
-           user.setAccountType(tempUser.getAccountType());
-           user.setEnabled(tempUser.isEnabled());
+            User tempUser = userDao.findByEmail(user.getEmail()).get();
+            user.setAccountType(tempUser.getAccountType());
+            user.setEnabled(tempUser.isEnabled());
             userDao.updateUser(user);
             log.info("User with email {} has been updated", userDto.getEmail());
         } catch (Exception e) {
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
     public boolean userExists(String email) {
         try {
             var exists = userDao.userExists(email);
-            log.info("Checked if user exists by email: {} result {}", email,exists );
+            log.info("Checked if user exists by email: {} result {}", email, exists);
             return exists;
         } catch (Exception e) {
             log.error("Error while trying to check if user exists by email: {}", email, e);

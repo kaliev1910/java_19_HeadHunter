@@ -1,6 +1,7 @@
 package com.example.java_19_headhunter.config;
 
 
+import com.example.java_19_headhunter.enums.AccountType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -49,24 +50,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-//                .formLogin(formLogin -> formLogin
-//                        .loginPage("/login") // Set login page URL (matches your template location)
-//                        .loginProcessingUrl("login") // URL to process login form submission
-//                        .usernameParameter("username") // Username form field name (matches your template)
-//                        .passwordParameter("password") // Password form field name (matches your template)
-//                        .permitAll() // Allow everyone to access the login page
-//                        .defaultSuccessUrl("/profile", true) // Redirect URL on successful login (optional)
-//                )
-//                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
-                .authorizeRequests(authz -> authz
-//                        .requestMatchers(new AntPathRequestMatcher("/user/register", HttpMethod.POST.name())).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/login", HttpMethod.GET.name())).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/login", HttpMethod.POST.name())).permitAll()
-                                .anyRequest().authenticated()
-
+                .formLogin(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/profile").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/resumes/").hasRole(AccountType.EMPLOYER.getValue())
+                        .anyRequest().permitAll()
                 )
         ;
 

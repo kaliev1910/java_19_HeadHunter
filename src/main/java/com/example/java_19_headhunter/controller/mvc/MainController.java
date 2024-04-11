@@ -1,6 +1,5 @@
 package com.example.java_19_headhunter.controller.mvc;
 
-import com.example.java_19_headhunter.dto.auth.LoginForm;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
@@ -9,9 +8,7 @@ import com.example.java_19_headhunter.service.UserService;
 import com.example.java_19_headhunter.service.VacancyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,9 +34,7 @@ public class MainController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.SEE_OTHER)
-    public String registerUser(@Valid @ModelAttribute("user") UserDto userDto,
-                               BindingResult bindingResult,
-                               Model model) {
+    public String registerUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "auth/register";
         }
@@ -59,18 +53,6 @@ public class MainController {
         return "/auth/login";
     }
 
-    @PostMapping("/login")
-    public String login( @ModelAttribute LoginForm loginForm) {
-        if (loginForm!=null){
-            if( loginForm.getPassword() != null && !loginForm.getPassword().isEmpty() ) {
-                if (userService.userExists(loginForm.getUsername()) ){
-                    return "redirect:/profile";
-                }
-                else return "auth/login";
-            }
-        }
-        return "redirect:/profile";
-    }
 
     @GetMapping("/profile")
     public String getUserProfile(Model model, Authentication authentication) {
@@ -93,13 +75,10 @@ public class MainController {
     }
 
     @PostMapping("/{email}")
-    public String updateUser(String email, @Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
+    public String updateUser(UserDto userDto) {
         userService.updateUser(userDto);
         return "redirect:/profile";
     }
 
-//    @GetMapping("/login")
-//    public String showLoginForm() {
-//        return "auth/login";
-//    }
+
 }

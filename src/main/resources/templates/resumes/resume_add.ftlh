@@ -4,7 +4,7 @@
 
     <div class="justify-content-around">
         <div class="card m-1 mb-5">
-            <form action="/create" method="post" id="resumeForm">
+            <form action="/resume/create" method="post" id="resumeForm">
                 <div class="card-title" >
                     <p>Название резюме:</p>
                     <input type="text" id="name" name="name" required><br><br>
@@ -22,19 +22,19 @@
                     <label for="expectedSalary">Ожидаемый уровень оклада:</label>
                     <input type="number" id="expectedSalary" name="expectedSalary" required><br><br>
 
-                    <!-- Добавление образования -->
+
                     <div id="educationSection">
                         <label>Образование:</label>
                         <button type="button" onclick="addEducation()">Добавить образование</button><br><br>
                     </div>
 
-                    <!-- Добавление опыта работы -->
+
                     <div id="experienceSection">
                         <label>Опыт работы:</label>
                         <button type="button" onclick="addExperience()">Добавить опыт работы</button><br><br>
                     </div>
 
-                    <!-- Добавление контактной информации -->
+
                     <div id="contactSection">
                         <label>Контактная информация:</label>
                         <button type="button" onclick="addContact()">Добавить контакт</button><br><br>
@@ -49,7 +49,7 @@
 
     <script>
         function addEducation() {
-            // Add education form fields dynamically
+
             document.getElementById("educationSection").innerHTML += `
                 <label for="institution">Учебное заведение:</label>
                 <input type="text" name="education.institution" required><br><br>
@@ -65,7 +65,7 @@
         }
 
         function addExperience() {
-            // Add experience form fields dynamically
+
             document.getElementById("experienceSection").innerHTML += `
                 <label for="companyName">Название компании:</label>
                 <input type="text" name="experience.companyName"><br><br>
@@ -79,7 +79,7 @@
         }
 
         function addContact() {
-            // Add contact form fields dynamically
+
             document.getElementById("contactSection").innerHTML += `
                 <label for="contactValue">Контактная информация:</label>
                 <input type="text" name="contactInfo.contactValue"><br><br>

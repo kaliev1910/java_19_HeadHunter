@@ -26,8 +26,8 @@ public class ResumeCreateDto {
     private String name;
     private Integer expectedSalary;
     private int categoryId;
-    private List<EducationDto> educationDtoList;
-    private List<ExperienceDto> experienceDtos;
-    private List<ContactInfoDto> contactInfoDtos;
+    private List<EducationDto> education;
+    private List<ExperienceDto> experience;
+    private List<ContactInfoDto> contactInfo;
 
 }
