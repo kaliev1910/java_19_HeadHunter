@@ -28,10 +28,10 @@ public class ResumeMvcController {
 
     @GetMapping("/myResumes")
     public String getResumesForm(Model model, Authentication authentication) {
+
         UserDto user = userService.findByEmail(authentication.getName()).get();
 
-//TODO переделать чтобы показывал не резюме а resumeListDto и модель получала контакты только этого резюме
-        //TODO         List<ResumeListDto> resumes; contacts = resumes.getContacts()
+//TODO переделать чтобы показывал не резюме а resumeListDto и контакты в шаблоне получала контакты этого резюме #list resume.contacts as contact
 
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<ContactInfoDto> contacts = contactInfoService.findByResumeId(user.getId());
@@ -44,7 +44,7 @@ public class ResumeMvcController {
     @GetMapping("/resumes/create")
     public String showCreateResumeForm(Model model) {
         model.addAttribute("resume", new ResumeCreateDto());
-        return "resumes/resume_add";
+        return "/resumes/createResume";
     }
 
     @PostMapping("/resume/create")
@@ -68,6 +68,7 @@ public class ResumeMvcController {
             for (ExperienceDto experience : experienceDto) {
                 experience.setResumeId(resumeId);
                 experienceService.insert(experience);
+                log.info("added experience for resume {}", experience.getResumeId());
             }
         }
 
@@ -76,6 +77,7 @@ public class ResumeMvcController {
             for (ContactInfoDto contactInfo : contactInfoDto) {
                 contactInfo.setResumeId(resumeId);
                 contactInfoService.insert(contactInfo);
+                log.info("added contacts for resume {}", contactInfo.getResumeId());
             }
         }
 

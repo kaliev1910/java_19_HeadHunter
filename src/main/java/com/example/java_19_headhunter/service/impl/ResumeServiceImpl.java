@@ -27,7 +27,6 @@ public class ResumeServiceImpl implements ResumeService {
     private final ResumeDao resumeDao;
 
     @Override
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     public List<ResumeDto> findByCategory(int category) {
         try {
             return resumeDao.findByCategory(category).stream().map(this::toDto).collect(Collectors.toList());
@@ -38,7 +37,6 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     public List<ResumeDto> getAll() {
         try {
             return resumeDao.getAll().stream().map(this::toDto).collect(Collectors.toList());
@@ -49,7 +47,6 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     public List<ResumeDto> findByUserEmail(String userEmail) {
         try {
             return resumeDao.findByUserEmail(userEmail).stream().map(this::toDto).collect(Collectors.toList());
@@ -58,6 +55,7 @@ public class ResumeServiceImpl implements ResumeService {
             throw e;
         }
     }
+
 
     @Override
     public ResumeDto findById(int id) {
@@ -70,7 +68,6 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('APPLICANT')")
     public int create(ResumeCreateDto resumeDto, Authentication authentication) {
         int resumeId;
         try {
@@ -88,7 +85,6 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('APPLICANT')")
     public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
         try {
 
@@ -103,7 +99,6 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('APPLICANT')")
     public void deleteById(int id) {
         try {
             resumeDao.deleteById(id);

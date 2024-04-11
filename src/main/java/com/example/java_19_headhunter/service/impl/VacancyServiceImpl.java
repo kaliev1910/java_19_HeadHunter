@@ -100,7 +100,6 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     public void update(VacancyUpdateDto vacancyDto, Authentication a) {
         try {
             vacancyDto.setUpdatedDate(LocalDate.now());
@@ -112,7 +111,6 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     public int create(VacancyCreateDto vacancyDto, Authentication authentication) {
         int vacancyId;
         try {

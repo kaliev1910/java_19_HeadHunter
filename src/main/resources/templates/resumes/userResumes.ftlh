@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <h6 class="card-title">Категория работы: ${resume.categoryId}</h6>
                     <h6 class="card-title">Контактные детали: </h6>
-                    <#list contacts as contact>
+                    <#list resume.contacts as contact>
                         <#if contact?has_content>
                             <#if contact.typeId=1>
                                 <p class="card-text"> Phone  ${contact.contactValue}</p>

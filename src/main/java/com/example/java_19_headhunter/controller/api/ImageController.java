@@ -6,26 +6,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-@Controller
-@RequiredArgsConstructor
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/images")@RequiredArgsConstructor
 public class ImageController {
     private final UserImageService userImageService;
 
-    @GetMapping("/download/{imageId}")
+    @GetMapping("/api/download/{imageId}")
     public ResponseEntity<?> downloadImage(@PathVariable long imageId) {
         return userImageService.downloadImage(imageId);
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/api/upload")
     public HttpStatus uploadImage(UserImageDto userImageDto) {
         userImageService.uploadImage(userImageDto);
         return HttpStatus.OK;
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/api/{userId}")
     public ResponseEntity<?> getImageByMovie(@PathVariable Long userId) {
         return userImageService.getImageByUserId(userId);
     }
