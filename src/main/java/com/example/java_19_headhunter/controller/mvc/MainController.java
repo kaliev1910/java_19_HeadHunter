@@ -1,5 +1,6 @@
 package com.example.java_19_headhunter.controller.mvc;
 
+import com.example.java_19_headhunter.dto.auth.LoginForm;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
@@ -8,6 +9,7 @@ import com.example.java_19_headhunter.service.UserService;
 import com.example.java_19_headhunter.service.VacancyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -53,17 +55,19 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("loginDto", new UserDto());
+    public String showLoginForm() {
         return "/auth/login";
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginDto") Authentication authentication,
-                        BindingResult bindingResult,
-                        Model model) {
-        if (bindingResult.hasErrors()) {
-            return "/auth/login";
+    public String login( @ModelAttribute LoginForm loginForm) {
+        if (loginForm!=null){
+            if( loginForm.getPassword() != null && !loginForm.getPassword().isEmpty() ) {
+                if (userService.userExists(loginForm.getUsername()) ){
+                    return "redirect:/profile";
+                }
+                else return "auth/login";
+            }
         }
         return "redirect:/profile";
     }
@@ -74,8 +78,6 @@ public class MainController {
 
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
-
-        int resumeId = resumes.get(0).getId();
 
         model.addAttribute("user", user);
         model.addAttribute("resume", resumes);

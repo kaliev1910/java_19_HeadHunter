@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
     public boolean userExists(String email) {
         try {
             var exists = userDao.userExists(email);
-            log.info("Checked if user exists by email: {}", email);
+            log.info("Checked if user exists by email: {} result {}", email,exists );
             return exists;
         } catch (Exception e) {
             log.error("Error while trying to check if user exists by email: {}", email, e);

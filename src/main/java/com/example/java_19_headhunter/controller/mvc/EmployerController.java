@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('EMPLOYER')")
+
 public class EmployerController {
     private final UserService userService;
     private final VacancyService vacancyService;
@@ -33,11 +33,14 @@ public class EmployerController {
         return "vacancies/vacancies";
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYER')")
     @GetMapping("/vacancies/create")
     public String showCreateVacancyForm(Model model) {
         model.addAttribute("vacancy", new VacancyCreateDto());
         return "vacancies/create_vacancy";
     }
+
+    @PreAuthorize("hasAuthority('EMPLOYER')")
     @PostMapping("/vacancies")
     public String createVacancy(VacancyCreateDto vacancyDto,
                                 Authentication authentication,
@@ -48,6 +51,7 @@ public class EmployerController {
         return "redirect:/vacancies";
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYER')")
     @GetMapping("/resumes/{id}")
     public String getResumeDetails(@PathVariable int id, Model model) {
         ResumeDto resume = resumeService.findById(id);
@@ -65,6 +69,8 @@ public class EmployerController {
         model.addAttribute("vacancy", vacancy);
         return "vacancies/vacancy_info"; // Название представления для отображения формы
     }
+
+    @PreAuthorize("hasAuthority('EMPLOYER')")
     @GetMapping("/vacancy/{id}/edit")
     public String showEditForm(@PathVariable("id") int id, Model model) {
         VacancyDto vacancyDto = (VacancyDto) vacancyService.findById(id);
@@ -74,7 +80,7 @@ public class EmployerController {
     }
 
     // Метод для обновления вакансии
-
+    @PreAuthorize("hasAuthority('EMPLOYER')")
     @PostMapping("/vacancy/{id}/edit")
     public String updateVacancy(@PathVariable("id") int id, VacancyUpdateDto vacancyDto, Authentication authentication,
                                 BindingResult result) {
@@ -84,8 +90,6 @@ public class EmployerController {
         vacancyService.update(vacancyDto, authentication);
         return "redirect:/vacancy/{id}";
     }
-
-
 
 
 }

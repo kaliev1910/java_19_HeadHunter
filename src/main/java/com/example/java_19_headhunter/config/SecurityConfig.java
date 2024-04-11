@@ -35,11 +35,14 @@ public class SecurityConfig {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
+        auth
+                .jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery(USER_QUERY)
                 .authoritiesByUsernameQuery(ROLES_QUERY)
-                .passwordEncoder(new BCryptPasswordEncoder());
+                .passwordEncoder(new BCryptPasswordEncoder())
+
+        ;
 
     }
 
@@ -47,25 +50,27 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login") // Set login page URL (matches your template location)
-                        .loginProcessingUrl("login") // URL to process login form submission
-                        .usernameParameter("username") // Username form field name (matches your template)
-                        .passwordParameter("password") // Password form field name (matches your template)
-                        .permitAll() // Allow everyone to access the login page
-                        .defaultSuccessUrl("/success", true) // Redirect URL on successful login (optional)
-                )
-                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(AbstractHttpConfigurer::disable)
+//                .formLogin(formLogin -> formLogin
+//                        .loginPage("/login") // Set login page URL (matches your template location)
+//                        .loginProcessingUrl("login") // URL to process login form submission
+//                        .usernameParameter("username") // Username form field name (matches your template)
+//                        .passwordParameter("password") // Password form field name (matches your template)
+//                        .permitAll() // Allow everyone to access the login page
+//                        .defaultSuccessUrl("/profile", true) // Redirect URL on successful login (optional)
+//                )
+//                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .authorizeRequests(authz -> authz
 //                        .requestMatchers(new AntPathRequestMatcher("/user/register", HttpMethod.POST.name())).permitAll()
-//                        .requestMatchers(new AntPathRequestMatcher("/user/vacancies", HttpMethod.GET.name())).permitAll()
-
-
+                                .requestMatchers(new AntPathRequestMatcher("/login", HttpMethod.GET.name())).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/login", HttpMethod.POST.name())).permitAll()
                                 .anyRequest().authenticated()
 
-                );
+                )
+        ;
 
         return http.build();
     }
+
 }
