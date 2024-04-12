@@ -14,6 +14,9 @@
             /* Custom Styles */
             body {
                 padding-top: 60px; /* Adjust based on your navbar height */
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh; /* Make sure the body fills the whole viewport */
             }
 
             .navbar-brand {
@@ -31,7 +34,8 @@
                 color: #fff;
                 padding: 20px 0;
                 text-align: center;
-                margin-top: 30px;
+                margin-top: auto; /* Push the footer to the bottom */
+                width: 100%; /* Ensure full width */
             }
 
             footer p {
@@ -64,7 +68,6 @@
 
     <div class="container">
         <!-- Content Goes Here -->
-
         <#nested >
     </div>
 

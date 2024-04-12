@@ -39,9 +39,7 @@ public class UserDaoImpl implements UserDao {
         } else if (user.getAccountType().equalsIgnoreCase("EMPLOYER")) {
             roleId = 2;
         }
-
         jdbcTemplate.update(sqlUserRole, user.getEmail(), roleId);
-
     }
 
 

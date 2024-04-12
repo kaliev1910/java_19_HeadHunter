@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.controller.api;
+package com.example.java_19_headhunter.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.service.impl.UserImageService;

@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.controller.mvc;
+package com.example.java_19_headhunter.controller;
 
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
