@@ -51,6 +51,7 @@
         }
 
     </style>
+
     <#if user.accountType == "APPLICANT" >
         <h1 class="center mb-3">Личный кабинет соискателя</h1>
         <div class="row">
@@ -61,33 +62,17 @@
                     <div id="imageContainer">
                         <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">
                     </div>
-                    <form id="imageForm" action="api/images/upload" method="post" enctype="multipart/form-data">
-                        <!-- Название будет показываться при наведении на поле выбора файла -->
-                        <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
-                        <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg"><br><br>
-
-                        <!-- Дополнительные поля, скрытые -->
-                        <label for="userId" hidden>Email</label>
-                        <input type="number" id="userId" name="userId" class="form-control" value="${user.id}" hidden>
-
-                        <!-- Перемещенная кнопка "Загрузить" -->
-                        <input type="submit" value="Загрузить">
-                    </form>
-
-
                 </div>
-                <#--                <div class="card" style="height: 16rem; width: 13rem;">-->
-                <#--                    <div id="imageContainer">-->
-                <#--                        <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">-->
-                <#--                    </div>-->
-                <#--                    <button id="uploadButton" style="display: none;">Загрузить изображение</button>-->
+                <form id="imageForm" action="api/images/upload" method="post" enctype="multipart/form-data">
+                    <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
+                    <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg" required><br><br>
 
-                <#--                </div>-->
-                <#--                <#else >-->
-                <#--                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">-->
-                <#--                        <img src="/api/images/n" class="card-img-top" alt="...">-->
-                <#--                    </div>-->
-                <#--                </#if>-->
+                    <input type="hidden" name="MAX_FILE_SIZE" value="1000000">
+                    <label for="userId" hidden>Email</label>
+                    <input type="number" id="userId" name="userId" class="form-control" value="${user.id}" hidden>
+
+                    <input type="submit" value="Загрузить">
+                </form>
             </th>
             <th scope="col">
                 <div class="row">
@@ -100,7 +85,7 @@
                                 <#else>
                                     <p class="card-text">Возраст: не указан</p>
                                 </#if>
-                                <a href="/${user.email}" class="btn btn-primary"
+                                <a href="/${user.email}/edit" class="btn btn-primary"
                                    methods="PUT">Редактировать</a>
                             </div>
                         </div>
@@ -165,7 +150,7 @@
                         <div class="card profile border-0">
                             <div class="card-body">
                                 <h3 class="card-title">${user.name}</h3>
-                                <a href="/${user.email}" class="btn btn-primary">Редактировать</a>
+                                <a href="/${user.email}/edit" class="btn btn-primary">Редактировать</a>
                             </div>
                         </div>
                     </div>

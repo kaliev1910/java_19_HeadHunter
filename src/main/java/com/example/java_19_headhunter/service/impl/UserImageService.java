@@ -19,6 +19,7 @@ public class UserImageService {
     private final UserImageDao userImageDao;
 
     public void uploadImage(UserImageDto userImageDto) {
+        userImageDao.delete(userImageDto.getUserId());
         String fileName = fileService.saveUploadedFile(userImageDto.getFile(), SUB_DIR);
         UserImage ui = UserImage.builder()
                 .userId(userImageDto.getUserId())
@@ -26,6 +27,8 @@ public class UserImageService {
                 .build();
         userImageDao.save(ui);
     }
+
+
 
     public ResponseEntity<?> downloadImage(long imageId) {
         String fileName;
