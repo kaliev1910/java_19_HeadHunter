@@ -9,6 +9,7 @@ import java.util.List;
 
 public enum ResumeSortStrategy {
     BY_ID("id") {
+        @Override
         public List<Resume> sortingResumes(List<Resume> resumes) {
             resumes.sort(Comparator.comparing(Resume::getId));
             return resumes;
@@ -38,16 +39,13 @@ public enum ResumeSortStrategy {
     },
 
 
-
     BY_EXPECTED_SALARY("EXPECTED_SALARY") {
         @Override
-        public List<Resume> sortingResumes (List < Resume > resumes) {
+        public List<Resume> sortingResumes(List<Resume> resumes) {
             resumes.sort(Comparator.comparing(Resume::getExpectedSalary));
             return resumes;
         }
-    }
-
-    ;
+    };
 
     private final String value;
 
@@ -64,6 +62,6 @@ public enum ResumeSortStrategy {
         throw new SortedCriteriaException("Sorted criteria not found");
     }
 
-    public abstract List<Resume> sortingResumes(List<Resume> moviresumess);
+    public abstract List<Resume> sortingResumes(List<Resume> resumes);
 
 }

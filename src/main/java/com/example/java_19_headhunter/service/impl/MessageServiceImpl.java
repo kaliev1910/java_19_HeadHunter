@@ -4,5 +4,5 @@ import com.example.java_19_headhunter.service.MessageService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MessageServiceImpl  implements MessageService {
+public class MessageServiceImpl implements MessageService {
 }

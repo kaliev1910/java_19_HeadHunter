@@ -23,15 +23,14 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final PasswordEncoder encoder;
-    private final DataSource dataSource;
-
     private static final String USER_QUERY = "select email,password,enabled from users where email=?";
     private static final String ROLES_QUERY = """
             select u.email, r.role
             from user_roles ur inner join users u on u.email = ur.user_email
             inner join roles r on r.id = ur.role_id where u.email=?
             """;
+    private final PasswordEncoder encoder;
+    private final DataSource dataSource;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

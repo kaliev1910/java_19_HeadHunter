@@ -1,7 +1,6 @@
 package com.example.java_19_headhunter.dto.updateDto;
 
 import com.example.java_19_headhunter.dto.basicDtos.RespondedApplicantDto;
-import com.example.java_19_headhunter.models.RespondedApplicant;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

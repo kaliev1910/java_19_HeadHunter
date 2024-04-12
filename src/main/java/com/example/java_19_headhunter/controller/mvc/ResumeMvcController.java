@@ -94,6 +94,7 @@ public class ResumeMvcController {
         return "resumes/resume_info";
 
     }
+
     @GetMapping("/resumes/{id}")
     public String getResumeDetails(@PathVariable int id, Model model) {
         ResumeDto resume = resumeService.findById(id);

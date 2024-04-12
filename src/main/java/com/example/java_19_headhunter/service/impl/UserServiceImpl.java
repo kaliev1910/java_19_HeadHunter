@@ -23,6 +23,19 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final PasswordEncoder encoder;
 
+    protected static User fromDto(UserDto userDto) {
+        return User.builder()
+                .name(userDto.getName())
+                .surname(userDto.getSurname())
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
+                .age(userDto.getAge())
+                .avatar(userDto.getAvatar())
+                .accountType(userDto.getAccountType())
+                .enabled(userDto.isEnabled())
+                .build();
+    }
+
     @Override
 
     public void updateUser(UserDto userDto) {
@@ -161,7 +174,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     protected UserDto toDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
@@ -173,19 +185,6 @@ public class UserServiceImpl implements UserService {
                 .avatar(user.getAvatar())
                 .accountType(user.getAccountType())
                 .enabled(user.isEnabled())
-                .build();
-    }
-
-    protected static User fromDto(UserDto userDto) {
-        return User.builder()
-                .name(userDto.getName())
-                .surname(userDto.getSurname())
-                .email(userDto.getEmail())
-                .password(userDto.getPassword())
-                .age(userDto.getAge())
-                .avatar(userDto.getAvatar())
-                .accountType(userDto.getAccountType())
-                .enabled(userDto.isEnabled())
                 .build();
     }
 }

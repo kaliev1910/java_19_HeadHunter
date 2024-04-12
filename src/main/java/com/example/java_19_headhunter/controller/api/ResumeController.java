@@ -27,7 +27,7 @@ public class ResumeController {
 
     @PostMapping("/resume")
     public ResponseEntity<String> createResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
-        resumeService.create(resumeDto,authentication);
+        resumeService.create(resumeDto, authentication);
         return new ResponseEntity<>("Resume created successfully", HttpStatus.CREATED);
     }
 
@@ -42,8 +42,6 @@ public class ResumeController {
         resumeService.deleteById(id);
         return new ResponseEntity<>("Resume deleted successfully", HttpStatus.OK);
     }
-
-
 
 
     @GetMapping("/resumes/category/{id}")

@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -25,6 +24,17 @@ public class ResumeServiceImpl implements ResumeService {
 
     @NotNull
     private final ResumeDao resumeDao;
+
+    public static ResumeDto mapToResumeDto(ResumeCreateDto createDto) {
+        ResumeDto resumeDto = new ResumeDto();
+        resumeDto.setName(createDto.getName());
+        resumeDto.setExpectedSalary(createDto.getExpectedSalary());
+        resumeDto.setCategoryId(createDto.getCategoryId());
+        resumeDto.setActive(true);
+        resumeDto.setCreatedTime(LocalDate.now());
+        resumeDto.setUpdatedTime(LocalDate.now());
+        return resumeDto;
+    }
 
     @Override
     public List<ResumeDto> findByCategory(int category) {
@@ -55,7 +65,6 @@ public class ResumeServiceImpl implements ResumeService {
             throw e;
         }
     }
-
 
     @Override
     public ResumeDto findById(int id) {
@@ -88,12 +97,12 @@ public class ResumeServiceImpl implements ResumeService {
     public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
         try {
 
-            Resume resume = fromCreateDto(resumeCreateDto,authentication);
+            Resume resume = fromCreateDto(resumeCreateDto, authentication);
             resume.setApplicantEmail(authentication.getName());
             resume.setUpdatedTime(LocalDate.now());
             resumeDao.update(resume);
         } catch (Exception e) {
-            log.error("Error updating Resume:  name {} user {} ", resumeCreateDto.getName()  , ((User)authentication.getPrincipal()).getUsername(), e);
+            log.error("Error updating Resume:  name {} user {} ", resumeCreateDto.getName(), ((User) authentication.getPrincipal()).getUsername(), e);
             throw e;
         }
     }
@@ -107,6 +116,7 @@ public class ResumeServiceImpl implements ResumeService {
             throw e;
         }
     }
+
     private Resume fromCreateDto(ResumeCreateDto resumeDto, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
@@ -120,6 +130,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .updatedTime(LocalDate.now())
                 .build();
     }
+
     private Resume fromDto(ResumeDto resumeDto) {
         return Resume.builder()
 
@@ -144,16 +155,6 @@ public class ResumeServiceImpl implements ResumeService {
                 .createdTime(resume.getCreatedTime())
                 .updatedTime(resume.getUpdatedTime())
                 .build();
-    }
-    public static ResumeDto mapToResumeDto(ResumeCreateDto createDto) {
-        ResumeDto resumeDto = new ResumeDto();
-        resumeDto.setName(createDto.getName());
-        resumeDto.setExpectedSalary(createDto.getExpectedSalary());
-        resumeDto.setCategoryId(createDto.getCategoryId());
-        resumeDto.setActive(true);
-        resumeDto.setCreatedTime(LocalDate.now());
-        resumeDto.setUpdatedTime(LocalDate.now());
-        return resumeDto;
     }
 
 }

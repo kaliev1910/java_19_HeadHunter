@@ -2,7 +2,7 @@ package com.example.java_19_headhunter.common;
 
 
 import com.example.java_19_headhunter.exeptions.SortedCriteriaException;
-import com.example.java_19_headhunter.models.Resume;
+import com.example.java_19_headhunter.models.Vacancy;
 
 import java.util.Comparator;
 import java.util.List;
@@ -11,45 +11,58 @@ public enum VacancySortStrategy {
 
     BY_ID("id") {
         @Override
-        public List<Resume> sortingVacancies(List<Resume> resumes) {
-            resumes.sort(Comparator.comparing(Resume::getId));
+        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
+            resumes.sort(Comparator.comparing(Vacancy::getId));
             return resumes;
         }
     },
     BY_NAME("name") {
         @Override
-        public List<Resume> sortingVacancies(List<Resume> resumes) {
-            resumes.sort(Comparator.comparing(Resume::getName));
+        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
+            resumes.sort(Comparator.comparing(Vacancy::getName));
             return resumes;
         }
     },
     BY_UPDATE_TIME("update_time") {
         @Override
-        public List<Resume> sortingVacancies(List<Resume> resumes) {
-            resumes.sort(Comparator.comparing(Resume::getUpdatedTime));
+        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
+            resumes.sort(Comparator.comparing(Vacancy::getUpdateTime));
             return resumes;
         }
     },
 
     BY_CATEGORY_ID("CATEGORY_ID") {
         @Override
-        public List<Resume> sortingVacancies(List<Resume> resumes) {
-            resumes.sort(Comparator.comparing(Resume::getCategoryId));
+        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
+            resumes.sort(Comparator.comparing(Vacancy::getCategoryId));
             return resumes;
         }
     },
 
 
-
-    BY_EXPECTED_SALARY("EXPECTED_SALARY") {
+    BY_SALARY("SALARY") {
         @Override
-        public List<Resume> sortingVacancies(List < Resume > resumes) {
-            resumes.sort(Comparator.comparing(Resume::getExpectedSalary));
+        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
+            resumes.sort(Comparator.comparing(Vacancy::getSalary));
             return resumes;
         }
-    }
+    },
 
-    ;
+    BY_EXP_FROM("EXP_FROM") {
+        @Override
+        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
+            resumes.sort(Comparator.comparing(Vacancy::getSalary));
+            return resumes;
+        }
+    },
+
+    BY_EXP_TO("EXP_TO") {
+        @Override
+        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
+            resumes.sort(Comparator.comparing(Vacancy::getSalary));
+            return resumes;
+        }
+    };
 
     private final String value;
 
@@ -66,6 +79,6 @@ public enum VacancySortStrategy {
         throw new SortedCriteriaException("Sorted criteria not found");
     }
 
-    public abstract List<Resume> sortingVacancies(List<Resume> moviresumess);
+    public abstract List<Vacancy> sortingVacancies(List<Vacancy> vacancies);
 
 }

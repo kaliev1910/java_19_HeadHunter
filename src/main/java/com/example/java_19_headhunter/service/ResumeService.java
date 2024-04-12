@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface ResumeService {
     List<ResumeDto> getAll();
+
     List<ResumeDto> findByCategory(int category);
 
 
@@ -23,6 +24,7 @@ public interface ResumeService {
     int create(ResumeCreateDto resumeDto, Authentication authentication);
 
     void update(@Valid ResumeCreateDto resumeDto, Authentication authentication);
+
     void deleteById(int id);
 
 }

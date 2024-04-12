@@ -5,7 +5,7 @@
     <div class="justify-content-around">
         <div class="card m-1 mb-5">
             <form action="/resume/create" method="post" id="resumeForm">
-                <div class="card-title" >
+                <div class="card-title">
                     <p>Название резюме:</p>
                     <input type="text" id="name" name="name" required><br><br>
                     <label for="categoryId">Категория резюме:</label>
@@ -25,23 +25,26 @@
 
                     <div id="educationSection">
                         <label>Образование:</label>
-                        <button type="button" onclick="addEducation()">Добавить образование</button><br><br>
+                        <button type="button" onclick="addEducation()">Добавить образование</button>
+                        <br><br>
                     </div>
 
 
                     <div id="experienceSection">
                         <label>Опыт работы:</label>
-                        <button type="button" onclick="addExperience()">Добавить опыт работы</button><br><br>
+                        <button type="button" onclick="addExperience()">Добавить опыт работы</button>
+                        <br><br>
                     </div>
 
 
                     <div id="contactSection">
                         <label>Контактная информация:</label>
-                        <button type="button" onclick="addContact()">Добавить контакт</button><br><br>
+                        <button type="button" onclick="addContact()">Добавить контакт</button>
+                        <br><br>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <input type="submit"   value="Создать резюме">
+                    <input type="submit" value="Создать резюме">
                 </div>
             </form>
         </div>

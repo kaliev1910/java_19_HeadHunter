@@ -8,14 +8,16 @@
                         <h3 class="text-center font-weight-bold my-3">Login</h3>
                     </div>
                     <div class="card-body">
-                        <form action="/login" method="post" >
+                        <form action="/login" method="post">
                             <div class="form-group">
                                 <label for="username" class="font-weight-bold">Username:</label>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                                <input type="text" class="form-control" id="username" name="username"
+                                       placeholder="Enter your username" required>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="font-weight-bold">Password:</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                                <input type="password" class="form-control" id="password" name="password"
+                                       placeholder="Enter your password" required>
                             </div>
                             <div class="form-group text-center">
                                 <button type="submit" class="btn btn-primary btn-block">Login</button>

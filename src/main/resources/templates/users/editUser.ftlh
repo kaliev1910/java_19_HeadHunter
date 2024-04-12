@@ -10,19 +10,23 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="name">Имя</label>
-                                <input type="text" id="name" name="name" class="form-control" value="${user.name}" required autofocus>
+                                <input type="text" id="name" name="name" class="form-control" value="${user.name}"
+                                       required autofocus>
                             </div>
                             <div class="form-group">
                                 <label for="surname">Фамилия</label>
-                                <input type="text" id="surname" name="surname" class="form-control" value="${user.surname}" required>
+                                <input type="text" id="surname" name="surname" class="form-control"
+                                       value="${user.surname}" required>
                             </div>
                             <div class="form-group">
                                 <label for="age">Возраст</label>
-                                <input type="number" id="age" name="age" class="form-control" value="${user.age}" required>
+                                <input type="number" id="age" name="age" class="form-control" value="${user.age}"
+                                       required>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" id="email" name="email" class="form-control" value="${user.email}" disabled>
+                                <input type="email" id="email" name="email" class="form-control" value="${user.email}"
+                                       disabled>
                             </div>
                             <div class="form-group">
                                 <label for="password">Новый пароль</label>

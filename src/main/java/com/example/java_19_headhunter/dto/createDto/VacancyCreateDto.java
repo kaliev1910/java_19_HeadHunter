@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class VacancyCreateDto  {
+public class VacancyCreateDto {
     @NotBlank(message = "Name is mandatory")
     @Size(max = 100, message = "Name should not be greater than 100 characters")
     private String name;
