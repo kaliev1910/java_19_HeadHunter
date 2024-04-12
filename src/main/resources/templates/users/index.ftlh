@@ -45,15 +45,15 @@
         <h1 class="center mb-3">Личный кабинет соискателя</h1>
         <div class="row">
             <th scope="col">
-                <#if user.avatar?has_content>
+<#--                <#if user.avatar?has_content>-->
                     <div class="card" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
+                        <img src="/api/images/${user.id}" class="card-img-top" alt="">
                     </div>
-                <#else >
-                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                    </div>
-                </#if>
+<#--                <#else >-->
+<#--                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">-->
+<#--                        <img src="/api/images/n" class="card-img-top" alt="...">-->
+<#--                    </div>-->
+<#--                </#if>-->
             </th>
             <th scope="col">
                 <div class="row">
@@ -106,7 +106,7 @@
             <th scope="col mx-3">
                 <#if user.avatar?has_content>
                     <div class="card" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
+                        <img src="/api/images/${user.id}" class="card-img-top" alt="...">
                     </div>
                 <#else >
                     <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">

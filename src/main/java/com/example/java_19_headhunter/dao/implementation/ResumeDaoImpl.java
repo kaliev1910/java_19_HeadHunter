@@ -29,11 +29,29 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     }
 
     @Override
+    public List<Resume> getAll(int perPage, int offset) {
+        String sql = """
+                select *
+                from RESUMES
+                limit ?
+                offset ?;
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), perPage, offset);
+    }
+
+    @Override
     public List<Resume> findByUserEmail(String userEmail) {
         String sql = "SELECT * FROM resumes WHERE APPLICANT_EMAIL = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), userEmail);
     }
 
+    @Override
+    public Integer getCount() {
+        String sql = """
+                select count(id) from resumes;
+                """;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
 
     @Override
     public Resume findById(int id) {

@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.controller.api;
+package com.example.java_19_headhunter.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.service.ResumeService;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PutMapping("")
-    public ResponseEntity<String> updateProfile(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<String> updateProfile(@Valid @RequestBody UserDto userDto) throws Exception {
         userService.updateUser(userDto);
         return new ResponseEntity<>("Profile updated successfully", HttpStatus.OK);
     }

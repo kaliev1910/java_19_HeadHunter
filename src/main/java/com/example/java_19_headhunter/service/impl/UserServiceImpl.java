@@ -24,27 +24,18 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     protected static User fromDto(UserDto userDto) {
-        return User.builder()
-                .name(userDto.getName())
-                .surname(userDto.getSurname())
-                .email(userDto.getEmail())
-                .password(userDto.getPassword())
-                .age(userDto.getAge())
-                .avatar(userDto.getAvatar())
-                .accountType(userDto.getAccountType())
-                .enabled(userDto.isEnabled())
-                .build();
+        return User.builder().name(userDto.getName()).surname(userDto.getSurname()).email(userDto.getEmail()).password(userDto.getPassword()).age(userDto.getAge()).avatar(userDto.getAvatar()).accountType(userDto.getAccountType()).enabled(userDto.isEnabled()).build();
     }
 
+    @SneakyThrows
     @Override
-
     public void updateUser(UserDto userDto) {
         User user;
         try {
 
             user = fromDto(userDto);
             user.setPassword(encoder.encode(user.getPassword()));
-            User tempUser = userDao.findByEmail(user.getEmail()).get();
+            User tempUser = userDao.findByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
             user.setAccountType(tempUser.getAccountType());
             user.setEnabled(tempUser.isEnabled());
             userDao.updateUser(user);
@@ -59,12 +50,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @SneakyThrows
     public boolean isEmployer(String email) {
-        return userDao.findByEmail(email)
-                .map(user -> {
-                    Optional<UserDto> userDto = findByEmail(user.getEmail());
-                    return userDto.get().getAccountType().equalsIgnoreCase("employer");
-                })
-                .orElseThrow(() -> new UserNotFoundException("Cannot find user"));
+        return userDao.findByEmail(email).map(user -> {
+            Optional<UserDto> userDto = findByEmail(user.getEmail());
+            return userDto.get().getAccountType().equalsIgnoreCase("employer");
+        }).orElseThrow(() -> new UserNotFoundException("Cannot find user"));
     }
 
     @Override
@@ -175,16 +164,6 @@ public class UserServiceImpl implements UserService {
     }
 
     protected UserDto toDto(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .age(user.getAge())
-                .avatar(user.getAvatar())
-                .accountType(user.getAccountType())
-                .enabled(user.isEnabled())
-                .build();
+        return UserDto.builder().id(user.getId()).name(user.getName()).surname(user.getSurname()).email(user.getEmail()).password(user.getPassword()).age(user.getAge()).avatar(user.getAvatar()).accountType(user.getAccountType()).enabled(user.isEnabled()).build();
     }
 }

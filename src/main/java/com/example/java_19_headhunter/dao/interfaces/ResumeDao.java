@@ -8,7 +8,7 @@ import java.util.List;
 @Component
 public interface ResumeDao {
     List<Resume> getAll();
-
+    public List<Resume> getAll(int perPage, int offset);
     List<Resume> findByCategory(int category);
 
     List<Resume> findByUserEmail(String userEmail);
@@ -20,4 +20,5 @@ public interface ResumeDao {
     void update(Resume resume);
 
     void deleteById(int id);
+    public Integer getCount();
 }

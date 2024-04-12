@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,36 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    public List<ResumeDto> getResumesWithPaging(Integer page, Integer pageSize) {
+        int count = resumeDao.getCount();
+        int totalPages = count / pageSize;
+
+        if (totalPages <= page) {
+            page = totalPages;
+        } else if (page < 0) {
+            page = 0;
+        }
+
+        int offset = page * pageSize;
+
+        List<ResumeDto> resumeDtos = new ArrayList<>();
+        List<Resume> list = resumeDao.getAll(pageSize, offset);
+
+        list.forEach(e -> resumeDtos.add(ResumeDto.builder()
+                .id(e.getId())
+                .applicantEmail(e.getApplicantEmail())
+                .name(e.getName())
+                .expectedSalary(e.getExpectedSalary())
+                .categoryId(e.getCategoryId())
+                .isActive(e.isActive())
+                .createdTime(e.getCreatedTime())
+                .updatedTime(e.getUpdatedTime())
+                .build()));
+//        }
+        return resumeDtos;
+    }
+
+    @Override
     public List<ResumeDto> getAll() {
         try {
             return resumeDao.getAll().stream().map(this::toDto).collect(Collectors.toList());
@@ -75,6 +106,7 @@ public class ResumeServiceImpl implements ResumeService {
             throw e;
         }
     }
+
 
     @Override
     public int create(ResumeCreateDto resumeDto, Authentication authentication) {

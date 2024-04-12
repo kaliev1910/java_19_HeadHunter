@@ -36,7 +36,7 @@ public class UserImageDao extends BasicDaoImpl {
         jdbcTemplate.update(con -> {
             UserImage ui = (UserImage) obj;
             PreparedStatement ps = con.prepareStatement(
-                    "insert into movie_images(user_id, file_name) values (?, ?)",
+                    "insert into user_images(user_id, file_name) values (?, ?)",
                     new String[]{"id"}
             );
             ps.setLong(1, ui.getUserId());
