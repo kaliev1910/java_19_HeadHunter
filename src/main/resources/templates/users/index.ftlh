@@ -40,20 +40,54 @@
             height: auto;
         }
 
+        /* Скрыть название по умолчанию */
+        #imageForm label[for="imageUpload"] {
+            display: none;
+        }
+
+        /* Показать название при наведении на поле выбора файла */
+        #imageUpload:hover + label[for="imageUpload"] {
+            display: inline;
+        }
+
     </style>
     <#if user.accountType == "APPLICANT" >
         <h1 class="center mb-3">Личный кабинет соискателя</h1>
         <div class="row">
             <th scope="col">
-<#--                <#if user.avatar?has_content>-->
-                    <div class="card" style="height: 16rem ;width: 13rem;">
-                        <img src="/api/images/${user.id}" class="card-img-top" alt="">
+                <#--                <#if user.avatar?has_content>-->
+
+                <div class="card" style="height: 16rem; width: 13rem;">
+                    <div id="imageContainer">
+                        <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">
                     </div>
-<#--                <#else >-->
-<#--                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">-->
-<#--                        <img src="/api/images/n" class="card-img-top" alt="...">-->
-<#--                    </div>-->
-<#--                </#if>-->
+                    <form id="imageForm" action="api/images/upload" method="post" enctype="multipart/form-data">
+                        <!-- Название будет показываться при наведении на поле выбора файла -->
+                        <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
+                        <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg"><br><br>
+
+                        <!-- Дополнительные поля, скрытые -->
+                        <label for="userId" hidden>Email</label>
+                        <input type="number" id="userId" name="userId" class="form-control" value="${user.id}" hidden>
+
+                        <!-- Перемещенная кнопка "Загрузить" -->
+                        <input type="submit" value="Загрузить">
+                    </form>
+
+
+                </div>
+                <#--                <div class="card" style="height: 16rem; width: 13rem;">-->
+                <#--                    <div id="imageContainer">-->
+                <#--                        <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">-->
+                <#--                    </div>-->
+                <#--                    <button id="uploadButton" style="display: none;">Загрузить изображение</button>-->
+
+                <#--                </div>-->
+                <#--                <#else >-->
+                <#--                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">-->
+                <#--                        <img src="/api/images/n" class="card-img-top" alt="...">-->
+                <#--                    </div>-->
+                <#--                </#if>-->
             </th>
             <th scope="col">
                 <div class="row">
@@ -104,15 +138,17 @@
         <h1 class="center mb-3">Личный кабинет работодателя</h1>
         <div class="row">
             <th scope="col mx-3">
-                <#if user.avatar?has_content>
-                    <div class="card" style="height: 16rem ;width: 13rem;">
-                        <img src="/api/images/${user.id}" class="card-img-top" alt="...">
+                <div class="card" style="height: 16rem; width: 13rem;">
+                    <form id="imageForm" action="/upload" method="post" enctype="multipart/form-data">
+                        <label for="imageUpload">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
+                        <input type="file" id="imageUpload" name="imageUpload" accept=".png, .jpg, .jpeg"><br>
+                        <input type="submit" value="Загрузить" style="display: none;">
+                    </form>
+                    <div id="imageContainer">
+                        <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">
                     </div>
-                <#else >
-                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                    </div>
-                </#if>
+                    <button id="uploadButton">Загрузить изображение</button>
+                </div>
             <th/>
             <th scope="col">
                 <div class="row">
@@ -163,6 +199,9 @@
 
 
     </#if>
+
+
+
 
 
 

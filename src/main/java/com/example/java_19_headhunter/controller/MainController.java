@@ -2,13 +2,16 @@ package com.example.java_19_headhunter.controller;
 
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.UserService;
 import com.example.java_19_headhunter.service.VacancyService;
+import com.example.java_19_headhunter.service.impl.UserImageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ public class MainController {
     private final UserService userService;
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
+    private final UserImageService userImageService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -57,10 +61,9 @@ public class MainController {
     @GetMapping("/profile")
     public String getUserProfile(Model model, Authentication authentication) {
         UserDto user = userService.findByEmail(authentication.getName()).get();
-
+        Long userId = (long) user.getId();
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
-
         model.addAttribute("user", user);
         model.addAttribute("resume", resumes);
         model.addAttribute("vacancies", vacancies);

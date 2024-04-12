@@ -39,10 +39,10 @@ public class UserImageService {
     }
 
     public ResponseEntity<?> getImageByUserId(Long userId) {
-        var mayBeImage = userImageDao.findImageByUserId(userId);
-        if (mayBeImage.isEmpty()) {
+        var optionalUserImage = userImageDao.findImageByUserId(userId);
+        if (optionalUserImage.isEmpty()) {
             return fileService.getOutputFile("no_image.jpeg", SUB_DIR, MediaType.IMAGE_JPEG);
         }
-        return fileService.getOutputFile(mayBeImage.get().getFileName(), SUB_DIR, MediaType.IMAGE_JPEG);
+        return fileService.getOutputFile(optionalUserImage.get().getFileName(), SUB_DIR, MediaType.IMAGE_JPEG);
     }
 }
