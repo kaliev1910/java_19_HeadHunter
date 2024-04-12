@@ -1,3 +1,4 @@
 INSERT INTO roles (role)
-VALUES ('APPLICANT'), ('EMPLOYER');
+VALUES ('APPLICANT'),
+       ('EMPLOYER');
 

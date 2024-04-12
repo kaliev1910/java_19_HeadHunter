@@ -9,12 +9,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +27,6 @@ public class ResumeServiceImpl implements ResumeService {
     private final ResumeDao resumeDao;
 
     @Override
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     public List<ResumeDto> findByCategory(int category) {
         try {
             return resumeDao.findByCategory(category).stream().map(this::toDto).collect(Collectors.toList());
@@ -38,7 +37,36 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EMPLOYER')")
+    public List<ResumeDto> getResumesWithPaging(Integer page, Integer pageSize) {
+        int count = resumeDao.getCount();
+        int totalPages = count / pageSize;
+
+        if (totalPages <= page) {
+            page = totalPages;
+        } else if (page < 0) {
+            page = 0;
+        }
+
+        int offset = page * pageSize;
+
+        List<ResumeDto> resumeDtos = new ArrayList<>();
+        List<Resume> list = resumeDao.getAll(pageSize, offset);
+
+        list.forEach(e -> resumeDtos.add(ResumeDto.builder()
+                .id(e.getId())
+                .applicantEmail(e.getApplicantEmail())
+                .name(e.getName())
+                .expectedSalary(e.getExpectedSalary())
+                .categoryId(e.getCategoryId())
+                .isActive(e.isActive())
+                .createdTime(e.getCreatedTime())
+                .updatedTime(e.getUpdatedTime())
+                .build()));
+//        }
+        return resumeDtos;
+    }
+
+    @Override
     public List<ResumeDto> getAll() {
         try {
             return resumeDao.getAll().stream().map(this::toDto).collect(Collectors.toList());
@@ -49,7 +77,6 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EMPLOYER')")
     public List<ResumeDto> findByUserEmail(String userEmail) {
         try {
             return resumeDao.findByUserEmail(userEmail).stream().map(this::toDto).collect(Collectors.toList());
@@ -69,8 +96,8 @@ public class ResumeServiceImpl implements ResumeService {
         }
     }
 
+
     @Override
-    @PreAuthorize("hasAuthority('APPLICANT')")
     public int create(ResumeCreateDto resumeDto, Authentication authentication) {
         int resumeId;
         try {
@@ -88,22 +115,20 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('APPLICANT')")
     public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
         try {
 
-            Resume resume = fromCreateDto(resumeCreateDto,authentication);
+            Resume resume = fromCreateDto(resumeCreateDto, authentication);
             resume.setApplicantEmail(authentication.getName());
             resume.setUpdatedTime(LocalDate.now());
             resumeDao.update(resume);
         } catch (Exception e) {
-            log.error("Error updating Resume:  name {} user {} ", resumeCreateDto.getName()  , ((User)authentication.getPrincipal()).getUsername(), e);
+            log.error("Error updating Resume:  name {} user {} ", resumeCreateDto.getName(), ((User) authentication.getPrincipal()).getUsername(), e);
             throw e;
         }
     }
 
     @Override
-    @PreAuthorize("hasAuthority('APPLICANT')")
     public void deleteById(int id) {
         try {
             resumeDao.deleteById(id);
@@ -112,6 +137,7 @@ public class ResumeServiceImpl implements ResumeService {
             throw e;
         }
     }
+
     private Resume fromCreateDto(ResumeCreateDto resumeDto, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
@@ -125,6 +151,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .updatedTime(LocalDate.now())
                 .build();
     }
+
     private Resume fromDto(ResumeDto resumeDto) {
         return Resume.builder()
 
@@ -150,6 +177,8 @@ public class ResumeServiceImpl implements ResumeService {
                 .updatedTime(resume.getUpdatedTime())
                 .build();
     }
+
+
     public static ResumeDto mapToResumeDto(ResumeCreateDto createDto) {
         ResumeDto resumeDto = new ResumeDto();
         resumeDto.setName(createDto.getName());
@@ -160,5 +189,4 @@ public class ResumeServiceImpl implements ResumeService {
         resumeDto.setUpdatedTime(LocalDate.now());
         return resumeDto;
     }
-
 }

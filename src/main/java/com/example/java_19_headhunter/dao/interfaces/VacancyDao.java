@@ -10,6 +10,10 @@ import java.util.List;
 public interface VacancyDao {
     List<Vacancy> findAll();
 
+    Integer getCount();
+
+    List<Vacancy> getVacanciesWithPaging(int perPage, int offset);
+
     Vacancy findById(int id);
 
     List<Vacancy> findByCategory(int categoryId);

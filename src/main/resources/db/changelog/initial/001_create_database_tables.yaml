@@ -131,7 +131,7 @@ databaseChangeLog:
               - column:
                   name: is_active
                   type: BOOLEAN
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true
               - column:
                   name: created_date
                   type: TIMESTAMP
@@ -344,6 +344,12 @@ databaseChangeLog:
                   type: INTEGER
                   constraints:
                     nullable: false
+              - column:
+                  name: start_date
+                  type: DATE
+              - column:
+                  name: end_date
+                  type: DATE
         - addForeignKeyConstraint:
             baseTableName: work_experience_info
             baseColumnNames: resume_id

@@ -4,8 +4,6 @@ import com.example.java_19_headhunter.dao.interfaces.CategoryDao;
 import com.example.java_19_headhunter.models.Category;
 import com.example.java_19_headhunter.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +16,6 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getAllCategories() {
         return categoryDao.getAllCategories();
     }
-
 
 
 }

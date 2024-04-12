@@ -10,16 +10,35 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Component
 public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
-
+    //TODO добавить методы для пагинации
+    //TODO переделать методы чтобы возвращал по ордеру
     @Override
     public List<Vacancy> findAll() {
         String sql = "SELECT * FROM vacancies where IS_ACTIVE = true";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class));
+    }
+
+    @Override
+    public Integer getCount() {
+        String sql = """
+                select count(id) from VACANCIES;
+                """;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    @Override
+    public List<Vacancy> getVacanciesWithPaging(int perPage, int offset) {
+        String sql = """
+                select *
+                from VACANCIES order by UPDATE_TIME desc
+                limit ?
+                offset ?;
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), perPage, offset);
     }
 
     @Override
@@ -77,7 +96,7 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
                 UPDATE vacancies SET  name = ?, description = ?, category_id = ?,
                                 salary = ?, exp_from = ?, exp_to = ?, is_active = ?, update_time = ? WHERE id = ?;
                 """;
-        jdbcTemplate.update(sql,  vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
+        jdbcTemplate.update(sql, vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
                 vacancy.getSalary(), vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.isActive(),
                 vacancy.getUpdateTime(), vacancy.getId());
     }
@@ -97,7 +116,7 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
             ps.setInt(6, vacancy.getExpFrom());
             ps.setInt(7, vacancy.getExpTo());
             ps.setBoolean(8, vacancy.isActive());
-            ps.setDate(9,  Date.valueOf(vacancy.getCreatedDate()));
+            ps.setDate(9, Date.valueOf(vacancy.getCreatedDate()));
             return ps;
         }, keyHolder);
         return (int) keyHolder.getKey();

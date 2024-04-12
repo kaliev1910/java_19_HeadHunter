@@ -13,7 +13,7 @@
 
                 <div class="form-group">
                     <label for="categoryId">Job Category:</label>
-                    <select id="categoryId" name="categoryId" class="form-control"   required>
+                    <select id="categoryId" name="categoryId" class="form-control" required>
                         <option value="">--Select Category--</option>
                         <option value=1>IT</option>
                         <option value=6>Accounting</option>
@@ -24,7 +24,8 @@
 
                 <div class="form-group">
                     <label for="salary">Salary:</label>
-                    <input type="number" id="salary" name="salary" class="form-control" min="0" required value="${vacancy.salary}">
+                    <input type="number" id="salary" name="salary" class="form-control" min="0" required
+                           value="${vacancy.salary}">
                 </div>
 
                 <div class="form-group">

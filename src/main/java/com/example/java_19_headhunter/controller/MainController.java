@@ -1,15 +1,17 @@
-package com.example.java_19_headhunter.controller.mvc;
+package com.example.java_19_headhunter.controller;
 
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.UserService;
 import com.example.java_19_headhunter.service.VacancyService;
+import com.example.java_19_headhunter.service.impl.UserImageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,16 +19,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('APPLICANT')")
 public class MainController {
 
     private final UserService userService;
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
+    private final UserImageService userImageService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -37,9 +38,7 @@ public class MainController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.SEE_OTHER)
-    public String registerUser(@Valid @ModelAttribute("user") UserDto userDto,
-                               BindingResult bindingResult,
-                               Model model) {
+    public String registerUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "auth/register";
         }
@@ -54,30 +53,17 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("loginDto", new UserDto());
+    public String showLoginForm() {
         return "/auth/login";
     }
 
-    @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginDto") UserDto userDto,
-                        BindingResult bindingResult,
-                        Model model) {
-        if (bindingResult.hasErrors()) {
-            return "/auth/login";
-        }
-        return "redirect:/home";
-    }
 
     @GetMapping("/profile")
     public String getUserProfile(Model model, Authentication authentication) {
         UserDto user = userService.findByEmail(authentication.getName()).get();
-
+        Long userId = (long) user.getId();
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
-
-        int resumeId = resumes.get(0).getId();
-
         model.addAttribute("user", user);
         model.addAttribute("resume", resumes);
         model.addAttribute("vacancies", vacancies);
@@ -85,15 +71,17 @@ public class MainController {
         return "users/index"; // Это имя вашего шаблона
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/{email}/edit")
     public String showEditUser(@PathVariable String email, Model model, Authentication authentication) {
         model.addAttribute("user", userService.findByEmail(authentication.getName()).get());
         return "users/editUser";
     }
 
-    @PostMapping("/{email}")
-    public String updateUser(String email, @Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
+    @PostMapping("/{email}/edit")
+    public String updateUser(UserDto userDto) {
         userService.updateUser(userDto);
         return "redirect:/profile";
     }
+
+
 }

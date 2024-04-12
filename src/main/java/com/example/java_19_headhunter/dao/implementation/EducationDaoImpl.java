@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 @Component
 public class EducationDaoImpl extends BasicDaoImpl implements EducationDao {
 

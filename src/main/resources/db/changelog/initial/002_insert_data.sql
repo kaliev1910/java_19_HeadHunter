@@ -1,4 +1,3 @@
-
 INSERT INTO categories (parent_id, name)
 VALUES (1, 'IT'),
        (1, 'Programming'),
@@ -14,9 +13,11 @@ VALUES ('Phone'),
        ('LinkedIn'),
        ('Telegram');
 
-INSERT INTO users (name, surname, age, email, password, avatar, account_type,enabled)
-VALUES ('John', 'Doe', 30, 'john@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', 'avatar1.jpg', 'APPLICANT',true),
-       ('Jane', 'Smith', 28, 'jane@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', 'avatar2.jpg', 'EMPLOYER',true);
+INSERT INTO users (name, surname, age, email, password, avatar, account_type, enabled)
+VALUES ('John', 'Doe', 30, 'john@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2',
+        'avatar1.jpg', 'APPLICANT', true),
+       ('Jane', 'Smith', 28, 'jane@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2',
+        'avatar2.jpg', 'EMPLOYER', true);
 
 INSERT INTO resumes (applicant_email, name, category_id, expected_salary, is_active)
 VALUES ('john@example.com', 'Full Stack Developer', 2, 70000, true),
@@ -40,9 +41,12 @@ VALUES (1, 'Tech Company', 'Full Stack Developer', 'Developed web applications u
        (2, 'Finance Firm', 'Financial Analyst', 'Conducted financial analysis and prepared reports.', 4),
        (3, 'Web Development Agency', 'Frontend Developer', 'Designed and implemented user interfaces.', 3);
 INSERT INTO vacancies (author_email, name, description, category_id, salary, exp_from, exp_to)
-VALUES ('jane@example.com', 'Full Stack Developer Position', 'We are looking for a talented Full Stack Developer to join our team.', 2, 80000, 3, 5),
-       ('jane@example.com', 'Financial Analyst Internship', 'Exciting opportunity for a Financial Analyst Intern to gain hands-on experience.', 6, 30000, 1, 2),
-       ('jane@example.com', 'Frontend Developer Position', 'Join our team as a Frontend Developer and help us build amazing web experiences.', 3, 75000, 2, 4);
+VALUES ('jane@example.com', 'Full Stack Developer Position',
+        'We are looking for a talented Full Stack Developer to join our team.', 2, 80000, 3, 5),
+       ('jane@example.com', 'Financial Analyst Internship',
+        'Exciting opportunity for a Financial Analyst Intern to gain hands-on experience.', 6, 30000, 1, 2),
+       ('jane@example.com', 'Frontend Developer Position',
+        'Join our team as a Frontend Developer and help us build amazing web experiences.', 3, 75000, 2, 4);
 
 INSERT INTO responded_applicants (resume_id, vacancy_id, confirmation)
 VALUES (1, 1, true),

@@ -10,25 +10,40 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
+    //TODO добавить методы для пагинации
+    //TODO переделать методы чтобы возвращал по ордеру
     @Override
     public List<Resume> findByCategory(int category) {
         String sql = "SELECT * FROM resumes WHERE category_id like ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), category);
     }
+
     @Override
     public List<Resume> getAll() {
-        String sql = "SELECT * FROM resumes ";
+        String sql = "SELECT * FROM resumes  order by  update_time desc ";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class));
     }
+
+    @Override
+    public List<Resume> getAll(int perPage, int offset) {
+        String sql = """
+                select *
+                from RESUMES
+                limit ?
+                offset ?;
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), perPage, offset);
+    }
+
     @Override
     public List<Resume> findByUserEmail(String userEmail) {
         String sql = "SELECT * FROM resumes WHERE APPLICANT_EMAIL = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), userEmail);
     }
-
 
     @Override
     public Resume findById(int id) {
@@ -37,12 +52,20 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     }
 
     @Override
+    public Integer getCount() {
+        String sql = """
+                select count(id) from resumes;
+                """;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    @Override
     public int create(Resume resume) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
                     .prepareStatement("INSERT INTO resumes (APPLICANT_EMAIL, name, CATEGORY_ID, expected_salary, IS_ACTIVE, created_date, update_time)" +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?)", new String[] {"id"});
+                            "VALUES (?, ?, ?, ?, ?, ?, ?)", new String[]{"id"});
             ps.setString(1, resume.getApplicantEmail());
             ps.setString(2, resume.getName());
             ps.setInt(3, resume.getCategoryId());
@@ -52,12 +75,13 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
             ps.setDate(7, Date.valueOf(resume.getUpdatedTime()));
             return ps;
         }, keyHolder);
-        return (int) keyHolder.getKey();
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
+
     @Override
     public void update(Resume resume) {
         String sql = "UPDATE resumes SET APPLICANT_EMAIL = ?, name = ?, expected_salary = ?,  created_date = ?, update_time = ? WHERE id = ?";
-         jdbcTemplate.update(sql, resume.getApplicantEmail(), resume.getName(), resume.getExpectedSalary(),
+        jdbcTemplate.update(sql, resume.getApplicantEmail(), resume.getName(), resume.getExpectedSalary(),
                 resume.getCreatedTime(), resume.getUpdatedTime(), resume.getId());
     }
 

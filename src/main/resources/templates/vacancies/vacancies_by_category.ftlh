@@ -39,7 +39,8 @@
     <h1 class="text-center mb-3">Вакансии</h1>
 
     <div class="dropdown mb-3">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
             Фильтровать по категориям
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

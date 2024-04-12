@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.controller.api;
+package com.example.java_19_headhunter.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.service.ResumeService;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vacancies")
+@RequestMapping("/api/vacancies")
 @RequiredArgsConstructor
 public class VacancyController {
     private final UserServiceImpl userService;

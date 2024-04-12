@@ -1,4 +1,3 @@
-
 server:
   port: 9999
 
@@ -20,6 +19,7 @@ spring:
 logging:
   level:
     root: info
+  #    org.springframework.security: debug
   file:
     name: logs/headHunter.log
   logback:

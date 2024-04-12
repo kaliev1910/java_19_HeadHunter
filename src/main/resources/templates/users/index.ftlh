@@ -40,20 +40,39 @@
             height: auto;
         }
 
+        /* Скрыть название по умолчанию */
+        #imageForm label[for="imageUpload"] {
+            display: none;
+        }
+
+        /* Показать название при наведении на поле выбора файла */
+        #imageUpload:hover + label[for="imageUpload"] {
+            display: inline;
+        }
+
     </style>
+
     <#if user.accountType == "APPLICANT" >
         <h1 class="center mb-3">Личный кабинет соискателя</h1>
         <div class="row">
             <th scope="col">
-                <#if user.avatar?has_content>
-                    <div class="card" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
+                <#--                <#if user.avatar?has_content>-->
+
+                <div class="card" style="height: 16rem; width: 13rem;">
+                    <div id="imageContainer">
+                        <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">
                     </div>
-                <#else >
-                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                    </div>
-                </#if>
+                </div>
+                <form id="imageForm" action="api/images/upload" method="post" enctype="multipart/form-data">
+                    <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
+                    <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg" required><br><br>
+
+                    <input type="hidden" name="MAX_FILE_SIZE" value="1000000">
+                    <label for="userId" hidden>Email</label>
+                    <input type="number" id="userId" name="userId" class="form-control" value="${user.id}" hidden>
+
+                    <input type="submit" value="Загрузить">
+                </form>
             </th>
             <th scope="col">
                 <div class="row">
@@ -66,7 +85,7 @@
                                 <#else>
                                     <p class="card-text">Возраст: не указан</p>
                                 </#if>
-                                <a href="/${user.email}" class="btn btn-primary"
+                                <a href="/${user.email}/edit" class="btn btn-primary"
                                    methods="PUT">Редактировать</a>
                             </div>
                         </div>
@@ -75,7 +94,7 @@
             </th>
             <th scope="col" class="mx-3">
                 <div class="mx-3">
-                    <a href="/create" class="btn btn-primary p-5">+<br>Создать<br>резюме</a>
+                    <a href="/resumes/create" class="btn btn-primary p-5">+<br>Создать<br>резюме</a>
                 </div>
             </th>
             <th scope="col">
@@ -104,15 +123,26 @@
         <h1 class="center mb-3">Личный кабинет работодателя</h1>
         <div class="row">
             <th scope="col mx-3">
-                <#if user.avatar?has_content>
-                    <div class="card" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
+
+                <div class="card" style="height: 16rem; width: 13rem;">
+                    <div id="imageContainer">
+                        <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">
                     </div>
-                <#else >
-                    <div class="card bg-secondary" style="height: 16rem ;width: 13rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                    </div>
-                </#if>
+                    <form id="imageForm" action="api/images/upload" method="post" enctype="multipart/form-data">
+                        <!-- Название будет показываться при наведении на поле выбора файла -->
+                        <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
+                        <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg"><br><br>
+
+                        <!-- Дополнительные поля, скрытые -->
+                        <label for="userId" hidden>Email</label>
+                        <input type="number" id="userId" name="userId" class="form-control" value="${user.id}" hidden>
+
+                        <!-- Перемещенная кнопка "Загрузить" -->
+                        <input type="submit" value="Загрузить">
+                    </form>
+
+
+                </div>
             <th/>
             <th scope="col">
                 <div class="row">
@@ -120,7 +150,7 @@
                         <div class="card profile border-0">
                             <div class="card-body">
                                 <h3 class="card-title">${user.name}</h3>
-                                <a href="/${user.email}" class="btn btn-primary">Редактировать</a>
+                                <a href="/${user.email}/edit" class="btn btn-primary">Редактировать</a>
                             </div>
                         </div>
                     </div>
@@ -128,7 +158,7 @@
             </th>
             <th scope="col">
                 <div class="mx-3">
-                    <a href="/vacancies/create" class="btn btn-primary p-5">+<br>Создать<br>вакансию</a>
+                    <a href="/vacancy/create" class="btn btn-primary p-5">+<br>Создать<br>вакансию</a>
                 </div>
             </th>
             <th scope="col">
@@ -163,6 +193,9 @@
 
 
     </#if>
+
+
+
 
 
 

@@ -17,16 +17,16 @@
                     <#list contacts as contact>
                         <#if contact?has_content>
                             <#if contact.typeId=1>
-                                <p class="card-text"> Phone  ${contact.contactValue}</p>
+                                <p class="card-text"> Phone ${contact.contactValue}</p>
                             </#if>
                             <#if contact.typeId=2>
-                                <p class="card-text"> Email  ${contact.contactValue}</p>
+                                <p class="card-text"> Email ${contact.contactValue}</p>
                             </#if>
                             <#if contact.typeId=3>
-                                <p class="card-text"> LinkedIn  ${contact.contactValue}</p>
+                                <p class="card-text"> LinkedIn ${contact.contactValue}</p>
                             </#if>
                             <#if contact.typeId=4>
-                                <p class="card-text">Telegram  ${contact.contactValue}</p>
+                                <p class="card-text">Telegram ${contact.contactValue}</p>
                             </#if>
 
 
@@ -35,7 +35,7 @@
                     <p class="card-text">${resume.expectedSalary} KGZ</p>
                 </div>
                 <div class="card-footer">
-                    <a href="/${resume.id}" class="btn btn-primary">Подробнее</a>
+                    <a href="/resume/${resume.id}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
         </#list>

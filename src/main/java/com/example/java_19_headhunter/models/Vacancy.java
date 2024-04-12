@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class Vacancy {
     private int id;
-    private String  authorEmail;
+    private String authorEmail;
     private String name;
     private String description;
     private int categoryId;

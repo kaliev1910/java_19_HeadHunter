@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.controller.api;
+package com.example.java_19_headhunter.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/resume")
+@RequestMapping("/api/resume")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('APPLICANT')")
 public class ResumeController {
@@ -27,7 +27,7 @@ public class ResumeController {
 
     @PostMapping("/resume")
     public ResponseEntity<String> createResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
-        resumeService.create(resumeDto,authentication);
+        resumeService.create(resumeDto, authentication);
         return new ResponseEntity<>("Resume created successfully", HttpStatus.CREATED);
     }
 
@@ -42,8 +42,6 @@ public class ResumeController {
         resumeService.deleteById(id);
         return new ResponseEntity<>("Resume deleted successfully", HttpStatus.OK);
     }
-
-
 
 
     @GetMapping("/resumes/category/{id}")

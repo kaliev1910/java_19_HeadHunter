@@ -4,7 +4,7 @@
 
     <div class="row justify-content-around">
         <div class="card col-8 m-1 mb-5">
-            <form action="" method="post">
+            <form action="/vacancy/create" method="post">
                 <div class="form-group">
                     <label for="name">Job Title:</label>
                     <input type="text" id="name" name="name" class="form-control" required>
@@ -23,7 +23,7 @@
 
                 <div class="form-group">
                     <label for="salary">Salary:</label>
-                    <input type="number" id="salary" name="salary" class="form-control"  min="0" required>
+                    <input type="number" id="salary" name="salary" class="form-control" min="0" required>
                 </div>
 
                 <div class="form-group">

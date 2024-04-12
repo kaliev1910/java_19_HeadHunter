@@ -26,6 +26,8 @@ public interface UserService {
     Optional<UserDto> findByName(String name);
 
     boolean userExists(String email);
+
     boolean getUserType(User user);
+
     boolean getUserType(UserDto userdto);
 }
