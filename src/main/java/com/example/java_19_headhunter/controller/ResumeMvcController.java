@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -27,7 +29,7 @@ public class ResumeMvcController {
 
 
     @GetMapping("/myResumes")
-    public String getResumesForm(Model model, Authentication authentication) {
+    public String getMyResumesForm(Model model, Authentication authentication) {
 
         UserDto user = userService.findByEmail(authentication.getName()).get();
 
@@ -39,6 +41,33 @@ public class ResumeMvcController {
         model.addAttribute("resume", resumes);
         model.addAttribute("contacts", contacts);
         return "resumes/userResumes";
+    }
+
+    @GetMapping("/resumes")
+    public String getResumesForm(@RequestParam(name = "page") Integer page, Model model) {
+
+        List<ResumeDto> resumesDtos = resumeService.getResumesWithPaging(page, 5);
+        List<ResumeListDto> resumes = new ArrayList<>();
+
+        for (ResumeDto resumeDto : resumesDtos) {
+            ResumeListDto resumeListDto = ResumeListDto.builder()
+                    .id(resumeDto.getId())
+                    .applicantEmail(resumeDto.getApplicantEmail())
+                    .name(resumeDto.getName())
+                    .expectedSalary(resumeDto.getExpectedSalary())
+                    .categoryId(resumeDto.getCategoryId())
+                    .isActive(resumeDto.isActive())
+                    .createdTime(resumeDto.getCreatedTime())
+                    .updatedTime(resumeDto.getUpdatedTime())
+                    .educations(educationService.findByResumeId(resumeDto.getId()))
+                    .experiences(experienceService.findByResumeId(resumeDto.getId()))
+                    .contacts(contactInfoService.findByResumeId(resumeDto.getId()))
+                    .build();
+
+            resumes.add(resumeListDto);
+        }
+        model.addAttribute("resumes", resumes);
+        return "resumes/resumes";
     }
 
     @GetMapping("/resumes/create")

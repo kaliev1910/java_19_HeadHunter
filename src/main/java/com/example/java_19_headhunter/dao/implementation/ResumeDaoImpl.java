@@ -46,17 +46,17 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     }
 
     @Override
+    public Resume findById(int id) {
+        String sql = "SELECT * FROM resumes WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Resume.class), id);
+    }
+
+    @Override
     public Integer getCount() {
         String sql = """
                 select count(id) from resumes;
                 """;
         return jdbcTemplate.queryForObject(sql, Integer.class);
-    }
-
-    @Override
-    public Resume findById(int id) {
-        String sql = "SELECT * FROM resumes WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Resume.class), id);
     }
 
     @Override

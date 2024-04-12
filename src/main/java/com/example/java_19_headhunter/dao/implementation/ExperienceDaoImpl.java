@@ -26,7 +26,7 @@ public class ExperienceDaoImpl extends BasicDaoImpl implements ExperienceDao {
 
     @Override
     public List<Experience> findByResumeId(int resumeId) {
-        String sql = "SELECT * FROM work_experience_info WHERE resume_id = ? order by  ";
+        String sql = "SELECT * FROM work_experience_info WHERE resume_id = ? ";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Experience.class), resumeId);
     }
 

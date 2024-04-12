@@ -131,7 +131,7 @@ databaseChangeLog:
               - column:
                   name: is_active
                   type: BOOLEAN
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true
               - column:
                   name: created_date
                   type: TIMESTAMP
