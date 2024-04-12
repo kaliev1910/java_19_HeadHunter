@@ -47,6 +47,7 @@ public enum ResumeSortStrategy {
         }
     };
 
+
     private final String value;
 
     ResumeSortStrategy(String sortedBy) {

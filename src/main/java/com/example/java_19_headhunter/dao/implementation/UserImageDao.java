@@ -49,7 +49,7 @@ public class UserImageDao extends BasicDaoImpl {
 
     public void delete(Long id) {
         jdbcTemplate.update(
-                "delete from user_images where id = ?;",
+                "delete from user_images where user_id = ?;",
                 id
         );
     }
