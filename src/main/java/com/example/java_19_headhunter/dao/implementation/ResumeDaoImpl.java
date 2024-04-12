@@ -10,9 +10,12 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
+    //TODO добавить методы для пагинации
+    //TODO переделать методы чтобы возвращал по ордеру
     @Override
     public List<Resume> findByCategory(int category) {
         String sql = "SELECT * FROM resumes WHERE category_id like ?";
@@ -20,9 +23,10 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     }
     @Override
     public List<Resume> getAll() {
-        String sql = "SELECT * FROM resumes ";
+        String sql = "SELECT * FROM resumes  order by  update_time desc ";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class));
     }
+
     @Override
     public List<Resume> findByUserEmail(String userEmail) {
         String sql = "SELECT * FROM resumes WHERE APPLICANT_EMAIL = ?";
@@ -52,7 +56,7 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
             ps.setDate(7, Date.valueOf(resume.getUpdatedTime()));
             return ps;
         }, keyHolder);
-        return (int) keyHolder.getKey();
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
     @Override
     public void update(Resume resume) {

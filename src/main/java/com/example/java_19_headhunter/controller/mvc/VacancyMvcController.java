@@ -1,7 +1,5 @@
 package com.example.java_19_headhunter.controller.mvc;
 
-import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
-import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
@@ -20,7 +18,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-
 public class VacancyMvcController {
     private final UserService userService;
     private final VacancyService vacancyService;
@@ -29,33 +26,24 @@ public class VacancyMvcController {
     private final CategoryService categoryService;
 
     @GetMapping("/vacancies")
-    public String getVacancies(Model model, Authentication authentication) {
-        List<VacancyDto> vacancies = vacancyService.findByUserEmail(authentication.getName());
+    public String getVacancies(Model model) {
+        List<VacancyDto> vacancies = vacancyService.findAll();
         model.addAttribute("vacancies", vacancies);
         return "vacancies/vacancies";
     }
 
-    @GetMapping("/vacancies/create")
+    @GetMapping("/vacancy/create")
     public String showCreateVacancyForm(Model model) {
         model.addAttribute("vacancy", new VacancyCreateDto());
         return "vacancies/create_vacancy";
     }
 
-    @PostMapping("/vacancies")
+    @PostMapping("/vacancy/create")
     public String createVacancy(VacancyCreateDto vacancyDto, Authentication authentication, Model model) {
         UserDto employer = userService.findByEmail(authentication.getName()).get();
         int vacancyId = vacancyService.create(vacancyDto, authentication);
         model.addAttribute("message", "Vacancy created successfully");
-        return "redirect:/vacancies";
-    }
-
-    @GetMapping("/resumes/{id}")
-    public String getResumeDetails(@PathVariable int id, Model model) {
-        ResumeDto resume = resumeService.findById(id);
-        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(id);
-        model.addAttribute("resume", resume);
-        model.addAttribute("contacts", contacts);
-        return "resumes/resume_info";
+        return "redirect:/vacancy/" + vacancyId;
     }
 
 

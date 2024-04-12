@@ -16,6 +16,8 @@ import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
     private final JdbcTemplate jdbcTemplate;
+    //TODO добавить методы для пагинации
+    //TODO переделать методы чтобы возвращал по ордеру
 
     @Override
     public void updateUser(User user) {
@@ -46,7 +48,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getUsers() {
         String sql = """
-                select * from users
+                select * from users order by NAME desc
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }

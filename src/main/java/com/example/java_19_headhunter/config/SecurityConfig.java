@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -63,7 +62,7 @@ public class SecurityConfig {
                         .permitAll())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/profile").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/resumes/").hasRole(AccountType.EMPLOYER.getValue())
+                        .requestMatchers(HttpMethod.GET, "/vacancy").hasRole(AccountType.EMPLOYER.getValue())
                         .anyRequest().permitAll()
                 )
         ;

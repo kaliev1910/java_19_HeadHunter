@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 public class ExperienceDaoImpl extends BasicDaoImpl implements ExperienceDao {
+    //TODO переделать базу данных: добавить начало\конец работы
+    //TODO добавить методы для пагинации
+    //TODO переделать методы чтобы возвращал по ордеру
     @Override
     public void insert(Experience experience) {
         String sql = "INSERT INTO work_experience_info (resume_id, company_name, position, responsibilities, years) VALUES (?, ?, ?, ?, ?)";
@@ -22,7 +25,7 @@ public class ExperienceDaoImpl extends BasicDaoImpl implements ExperienceDao {
 
     @Override
     public List<Experience> findByResumeId(int resumeId) {
-        String sql = "SELECT * FROM work_experience_info WHERE resume_id = ?";
+        String sql = "SELECT * FROM work_experience_info WHERE resume_id = ? order by  ";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Experience.class), resumeId);
     }
 

@@ -15,7 +15,8 @@ import java.util.List;
 
 @Component
 public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
-
+    //TODO добавить методы для пагинации
+    //TODO переделать методы чтобы возвращал по ордеру
     @Override
     public List<Vacancy> findAll() {
         String sql = "SELECT * FROM vacancies where IS_ACTIVE = true";
