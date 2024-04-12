@@ -8,26 +8,25 @@ import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.service.VacancyService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+
 
 public class VacancyServiceImpl implements VacancyService {
     private final VacancyDao vacancyDao;
     private final UserDao userDao;
-
-    public VacancyServiceImpl(VacancyDao vacancyDao, UserDao userDao) {
-        this.vacancyDao = vacancyDao;
-        this.userDao = userDao;
-    }
 
 
     @Override
@@ -39,6 +38,40 @@ public class VacancyServiceImpl implements VacancyService {
             throw e; // rethrow the exception
         }
     }
+
+    @Override
+    public List<VacancyDto> getVacanciesWithPaging(Integer page, Integer pageSize) {
+        int count = vacancyDao.getCount();
+        int totalPages = count / pageSize;
+
+        if (totalPages <= page) {
+            page = totalPages;
+        } else if (page < 0) {
+            page = 0;
+        }
+
+        int offset = page * pageSize;
+
+        List<VacancyDto> vacancyDtos = new ArrayList<>();
+        List<Vacancy> list = vacancyDao.getVacanciesWithPaging(pageSize, offset);
+
+        list.forEach(e -> vacancyDtos.add(VacancyDto.builder()
+                .id(e.getId())
+                .authorEmail(e.getAuthorEmail())
+                .name(e.getName())
+                .description(e.getDescription())
+                .categoryId(e.getCategoryId())
+                .salary(e.getSalary())
+                .expFrom(e.getExpFrom())
+                .expTo(e.getExpTo())
+                .isActive(e.isActive())
+                .createdDate(e.getCreatedDate())
+                .updateTime(e.getUpdateTime())
+                .build()));
+//        }
+        return vacancyDtos;
+    }
+
 
     @Override
     public VacancyDto findById(int id) {

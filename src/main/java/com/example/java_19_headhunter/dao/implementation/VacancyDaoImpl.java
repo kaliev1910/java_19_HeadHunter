@@ -23,6 +23,25 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
     }
 
     @Override
+    public Integer getCount() {
+        String sql = """
+                select count(id) from VACANCIES;
+                """;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    @Override
+    public List<Vacancy> getVacanciesWithPaging(int perPage, int offset) {
+        String sql = """
+                select *
+                from VACANCIES order by UPDATE_TIME desc
+                limit ?
+                offset ?;
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), perPage, offset);
+    }
+
+    @Override
     public Vacancy findById(int id) {
         String sql = "SELECT * FROM vacancies where ID= ?";
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Vacancy.class), id);

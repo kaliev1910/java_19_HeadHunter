@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class VacancyMvcController {
     private final CategoryService categoryService;
 
     @GetMapping("/vacancies")
-    public String getVacancies(Model model) {
-        List<VacancyDto> vacancies = vacancyService.findAll();
+    public String getVacancies(@RequestParam(name = "page") Integer page, Model model) {
+        List<VacancyDto> vacancies = vacancyService.getVacanciesWithPaging(page, 5);
         model.addAttribute("vacancies", vacancies);
         return "vacancies/vacancies";
     }
@@ -62,7 +63,6 @@ public class VacancyMvcController {
         return "vacancies/edit_vacancy";
     }
 
-    // Метод для обновления вакансии
     @PostMapping("/vacancy/{id}/edit")
     public String updateVacancy(@PathVariable("id") int id, VacancyUpdateDto vacancyDto, Authentication authentication, BindingResult result) {
         if (result.hasErrors()) {

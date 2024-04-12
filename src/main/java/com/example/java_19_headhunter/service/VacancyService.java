@@ -11,6 +11,8 @@ import java.util.List;
 public interface VacancyService {
     List<VacancyDto> findAll();
 
+    List<VacancyDto> getVacanciesWithPaging(Integer page, Integer pageSize);
+
     VacancyDto findById(int id);
 
     List<VacancyDto> findByCategory(int categoryId);

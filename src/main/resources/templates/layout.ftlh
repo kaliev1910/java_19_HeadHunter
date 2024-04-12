@@ -56,7 +56,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/vacancies">All Vacancies</a>
+                        <a class="nav-link" href="/vacancies?page=1">All Vacancies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resumes?page=1">All Resumes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/profile">Profile</a>

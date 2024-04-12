@@ -26,17 +26,6 @@ public class ResumeServiceImpl implements ResumeService {
     @NotNull
     private final ResumeDao resumeDao;
 
-    public static ResumeDto mapToResumeDto(ResumeCreateDto createDto) {
-        ResumeDto resumeDto = new ResumeDto();
-        resumeDto.setName(createDto.getName());
-        resumeDto.setExpectedSalary(createDto.getExpectedSalary());
-        resumeDto.setCategoryId(createDto.getCategoryId());
-        resumeDto.setActive(true);
-        resumeDto.setCreatedTime(LocalDate.now());
-        resumeDto.setUpdatedTime(LocalDate.now());
-        return resumeDto;
-    }
-
     @Override
     public List<ResumeDto> findByCategory(int category) {
         try {
@@ -189,4 +178,15 @@ public class ResumeServiceImpl implements ResumeService {
                 .build();
     }
 
+
+    public static ResumeDto mapToResumeDto(ResumeCreateDto createDto) {
+        ResumeDto resumeDto = new ResumeDto();
+        resumeDto.setName(createDto.getName());
+        resumeDto.setExpectedSalary(createDto.getExpectedSalary());
+        resumeDto.setCategoryId(createDto.getCategoryId());
+        resumeDto.setActive(true);
+        resumeDto.setCreatedTime(LocalDate.now());
+        resumeDto.setUpdatedTime(LocalDate.now());
+        return resumeDto;
+    }
 }

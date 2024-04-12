@@ -37,9 +37,9 @@
     </style>
     <h1 class="text-center mb-3">Вакансии</h1>
     <div class="text-center">
-        <a href="/hh/vacancies?page=0">1</a>
-        <a href="/hh/vacancies?page=1">2</a>
-        <a href="/hh/vacancies?page=2">3</a>
+        <a href="/vacancies?page=1">1</a>
+        <a href="/vacancies?page=2">2</a>
+        <a href="/vacancies?page=3">3</a>
     </div>
     <div class="dropdown mb-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
@@ -59,7 +59,7 @@
     <div class="row justify-content-around">
         <#list vacancies as vacancy>
             <div class="card col-3 m-1 mb-5">
-                <a href="/hh/vacancy/${vacancy.id}">
+                <a href="/vacancy/${vacancy.id}">
                     <h5 class="card-header card-name">${vacancy.name}</h5>
                 </a>
                 <h6 class="card-header">${vacancy.categoryId}</h6>
@@ -70,11 +70,10 @@
                 <div class="card-footer">
                     <p class="card-text"><a href="/hh/guest/${vacancy.authorEmail}">${vacancy.authorEmail}</a></p>
                     <p class="card-text">${vacancy.createdDate}</p>
-                    <a href="/hh/vacancy/${vacancy.id}" class="btn btn-primary">Подробнее</a>
+                    <a href="/vacancy/${vacancy.id}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
         </#list>
     </div>
 
-    <a href="/employer/vacancy/add" class="btn btn-success">Создать новую вакансию</a>
 </@main.layout>
