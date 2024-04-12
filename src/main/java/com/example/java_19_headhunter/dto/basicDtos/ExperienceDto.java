@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -31,4 +33,6 @@ public class ExperienceDto {
     private String responsibilities;
 
     private int years;
+    private Date startDate;
+    private Date endDate;
 }
