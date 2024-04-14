@@ -18,11 +18,6 @@ public class ImageController {
         return userImageService.downloadImage(imageId);
     }
 
-    @PostMapping("/upload")
-    public HttpStatus uploadImage(UserImageDto userImageDto) {
-        userImageService.uploadImage(userImageDto);
-        return HttpStatus.OK;
-    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getImageByMovie(@PathVariable Long userId) {

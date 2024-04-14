@@ -71,6 +71,7 @@ public class MainController {
         return "users/index"; // Это имя вашего шаблона
     }
 
+
     @GetMapping("/{email}/edit")
     public String showEditUser(@PathVariable String email, Model model, Authentication authentication) {
         model.addAttribute("user", userService.findByEmail(authentication.getName()).get());
@@ -84,4 +85,9 @@ public class MainController {
     }
 
 
+    @PostMapping("/upload")
+    public String uploadImage(@RequestBody UserImageDto userImageDto) {
+        userImageService.uploadImage(userImageDto);
+        return "redirect:profile";
+    }
 }

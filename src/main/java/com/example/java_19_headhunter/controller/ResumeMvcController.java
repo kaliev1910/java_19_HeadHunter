@@ -3,6 +3,7 @@ package com.example.java_19_headhunter.controller;
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.*;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -73,11 +74,11 @@ public class ResumeMvcController {
     @GetMapping("/resumes/create")
     public String showCreateResumeForm(Model model) {
         model.addAttribute("resume", new ResumeCreateDto());
-        return "/resumes/createResume";
+        return "resumes/createResume";
     }
 
     @PostMapping("/resume/create")
-    public String createResume(ResumeCreateDto resumeDto, Authentication authentication, Model model) {
+    public String createResume(@RequestBody ResumeCreateDto resumeDto, Authentication authentication, Model model) {
 
         int resumeId = resumeService.create(resumeDto, authentication);
 
@@ -91,7 +92,7 @@ public class ResumeMvcController {
                 educationService.insert(education);
                 log.info("added education for resume {}", education.getResumeId());
             }
-
+            log.info("education = {}", educationDto);
         }
         if (experienceDto != null) {
             for (ExperienceDto experience : experienceDto) {
@@ -109,6 +110,7 @@ public class ResumeMvcController {
                 log.info("added contacts for resume {}", contactInfo.getResumeId());
             }
         }
+        log.info("resume added {}", resumeDto.getName());
 
         model.addAttribute("message", "Resume created successfully");
         return "redirect:/myResumes";

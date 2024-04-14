@@ -71,14 +71,9 @@
 
     <div class="container">
         <!-- Content Goes Here -->
-        <#nested >
-    </div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Your Company Name</p>
-        </div>
-    </footer>
+    </div>
+    <#nested >
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"

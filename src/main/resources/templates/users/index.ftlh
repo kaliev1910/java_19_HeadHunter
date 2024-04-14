@@ -56,23 +56,24 @@
         <h1 class="center mb-3">Личный кабинет соискателя</h1>
         <div class="row">
             <th scope="col">
-                <#--                <#if user.avatar?has_content>-->
 
                 <div class="card" style="height: 16rem; width: 13rem;">
                     <div id="imageContainer">
                         <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">
                     </div>
+
+                    <form id="imageForm" action="/upload" method="post" enctype="multipart/form-data">
+                        <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
+                        <input type="file" id="file" name="file" accept=".jpeg"><br><br>
+
+                        <label for="userId" hidden>Email</label>
+                        <input type="number" id="userId" name="userId" class="form-control" value="${user.id}"
+                               hidden>
+                        <input type="submit" value="Загрузить">
+                    </form>
+
+
                 </div>
-                <form id="imageForm" action="api/images/upload" method="post" enctype="multipart/form-data">
-                    <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
-                    <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg" required><br><br>
-
-                    <input type="hidden" name="MAX_FILE_SIZE" value="1000000">
-                    <label for="userId" hidden>Email</label>
-                    <input type="number" id="userId" name="userId" class="form-control" value="${user.id}" hidden>
-
-                    <input type="submit" value="Загрузить">
-                </form>
             </th>
             <th scope="col">
                 <div class="row">
@@ -128,19 +129,17 @@
                     <div id="imageContainer">
                         <img id="userImage" src="/api/images/${user.id}" class="card-img-top" alt="">
                     </div>
-                    <form id="imageForm" action="api/images/upload" method="post" enctype="multipart/form-data">
-                        <!-- Название будет показываться при наведении на поле выбора файла -->
-                        <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
-                        <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg"><br><br>
+                    <button id="imageUploadButton" class="btn btn-primary" form="imageForm">
+                        <form id="imageForm" action="/upload" method="post" enctype="multipart/form-data">
+                            <label for="file">Выберите изображение для загрузки (PNG, JPG, JPEG):</label><br>
+                            <input type="file" id="file" name="file" accept=".jpeg"><br><br>
 
-                        <!-- Дополнительные поля, скрытые -->
-                        <label for="userId" hidden>Email</label>
-                        <input type="number" id="userId" name="userId" class="form-control" value="${user.id}" hidden>
-
-                        <!-- Перемещенная кнопка "Загрузить" -->
-                        <input type="submit" value="Загрузить">
-                    </form>
-
+                            <label for="userId" hidden>Email</label>
+                            <input type="number" id="userId" name="userId" class="form-control" value="${user.id}"
+                                   hidden>
+                            <input type="submit" value="Загрузить">
+                        </form>
+                    </button>
 
                 </div>
             <th/>
