@@ -28,7 +28,7 @@ public class VacancyMvcController {
 
     @GetMapping("/vacancies")
     public String getVacancies(@RequestParam(name = "page") Integer page, Model model) {
-        List<VacancyDto> vacancies = vacancyService.getVacanciesWithPaging(page, 5);
+        List<VacancyDto> vacancies = vacancyService.getVacanciesWithPaging(page, 6);
         model.addAttribute("vacancies", vacancies);
         return "vacancies/vacancies";
     }

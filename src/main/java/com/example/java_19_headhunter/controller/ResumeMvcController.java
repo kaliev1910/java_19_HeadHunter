@@ -47,7 +47,7 @@ public class ResumeMvcController {
     @GetMapping("/resumes")
     public String getResumesForm(@RequestParam(name = "page") Integer page, Model model) {
 
-        List<ResumeDto> resumesDtos = resumeService.getResumesWithPaging(page, 5);
+        List<ResumeDto> resumesDtos = resumeService.getResumesWithPaging(page, 6);
         List<ResumeListDto> resumes = new ArrayList<>();
 
         for (ResumeDto resumeDto : resumesDtos) {

@@ -13,6 +13,10 @@ VALUES
     ('sophia.garcia@example.com', 'Sales Representative', 3, 70000.00),
     ('matthew.hernandez@example.com', 'Software Developer', 3, 75000.00),
     ('isabella.martinez@example.com', 'Graphic Designer', 4, 65000.00),
+    ('ethan.rodriguez@example.com', 'Data Analyst', 7, 80000.00),
+    ('ethan.rodriguez@example.com', 'Project Analyst', 7, 80000.00),
+    ('ethan.rodriguez@example.com', 'Team Lead', 7, 80000.00),
+    ('ethan.rodriguez@example.com', 'Product  Manager', 7, 80000.00),
     ('ethan.rodriguez@example.com', 'Business Analyst', 7, 80000.00),
     ('ava.gonzalez@example.com', 'Customer Service Representative', 4, 60000.00),
     ('alexander.perez@example.com', 'Product Manager', 5, 85000.00);
@@ -32,5 +36,8 @@ VALUES
     ('jackson.lopez@example.com', 'Sales Manager', 'We are looking for a dynamic sales manager to lead our sales team...', 1, 100000.00, 6, 8),
     ('lily.perez@example.com', 'DevOps Engineer', 'Seeking a skilled DevOps engineer to manage our deployment processes...', 1, 95000.00, 5, 8),
     ('sebastian.gonzalez@example.com', 'Customer Success Manager', 'Join our customer success team and ensure customer satisfaction...', 4, 90000.00, 4, 7),
+    ('charlotte.davis@example.com', 'Project Manager', 'We are hiring a project manager to support our project management team...', 5, 75000.00, 2, 5),
+    ('charlotte.davis@example.com', 'Team lead', 'We are hiring a team lead to support our project management team...', 5, 75000.00, 2, 5),
+    ('charlotte.davis@example.com', 'Alya Programmist', 'We are hiring a project coordinator to support our project management team...', 5, 75000.00, 2, 5),
     ('charlotte.davis@example.com', 'Project Coordinator', 'We are hiring a project coordinator to support our project management team...', 5, 75000.00, 2, 5),
     ('henry.wilson@example.com', 'Technical Writer', 'Seeking a technical writer to create clear and concise technical documentation...', 3, 80000.00, 3, 6);
