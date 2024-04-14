@@ -9,7 +9,7 @@
 
         .container-custom {
             max-width: 960px;
-            margin: 30px auto;
+            margin: 10px auto;
             padding: 20px;
         }
 
@@ -29,7 +29,7 @@
         .avatar-upload {
             position: relative;
             max-width: 205px;
-            margin: 50px auto;
+            margin: 40px auto;
 
             .avatar-edit {
                 position: absolute;
@@ -92,30 +92,21 @@
             }
         }
     </style>
-    <h1 class="center mb-2">Редактировать профиль</h1>
     <div class="container-custom">
-        <h1>jQuery Image Upload
-            <small>with preview</small>
-        </h1>
-
         <div class="avatar-upload">
             <div class="avatar-edit">
-
-
             </div>
             <div class="avatar-preview">
                 <div id="imagePreview" style="background-image: url(http://localhost:9999/api/images/${user.id});">
                 </div>
             </div>
         </div>
-
     </div>
-    <div class="row">
+    <h1 class="center mb-2">Редактировать профиль</h1>
+    <div class="container row d-flex justify-content-center">
         <div class="col-sm-6">
-            <div class="card profile border-0">
+            <div class="card profile border-0 ">
                 <div class="card-body">
-
-
                     <form action="/${user.email}/edit" method="post">
                         <fieldset>
                             <div class="form-group">

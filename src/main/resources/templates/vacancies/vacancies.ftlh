@@ -47,12 +47,12 @@
             Фильтровать по категориям
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="/hh/vacancies/sort/1">IT</a>
-            <a class="dropdown-item" href="/hh/vacancies/sort/2">Юриспруденция</a>
-            <a class="dropdown-item" href="/hh/vacancies/sort/3">Менеджмент</a>
-            <a class="dropdown-item" href="/hh/vacancies/sort/4">Продажи</a>
-            <a class="dropdown-item" href="/hh/vacancies/sort/5">Авто</a>
-            <a class="dropdown-item" href="/hh/vacancies/sort/6">Маркетинг</a>
+            <a class="dropdown-item" href="/vacancies/sort/1">IT</a>
+            <a class="dropdown-item" href="/vacancies/sort/2">Юриспруденция</a>
+            <a class="dropdown-item" href="/vacancies/sort/3">Менеджмент</a>
+            <a class="dropdown-item" href="/vacancies/sort/4">Продажи</a>
+            <a class="dropdown-item" href="/vacancies/sort/5">Авто</a>
+            <a class="dropdown-item" href="/vacancies/sort/6">Маркетинг</a>
         </div>
     </div>
 

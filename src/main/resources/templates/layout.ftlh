@@ -9,7 +9,8 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
               integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
               crossorigin="anonymous">
-        <link href="css/profile.css" rel="stylesheet">
+
+
         <style>
             /* Custom Styles */
             body {
@@ -45,35 +46,54 @@
     </head>
     <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand ml-1" href="/">Your Logo or Site Name</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <#--    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">-->
+    <#--        <div class="container">-->
+    <#--            <a class="navbar-brand ml-1" href="/">Your Logo or Site Name</a>-->
+    <#--            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+    <#--                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+    <#--                <span class="navbar-toggler-icon"></span>-->
+    <#--            </button>-->
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/vacancies?page=1">All Vacancies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/resumes?page=1">All Resumes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile">Profile</a>
-                    </li>
-                </ul>
-            </div>
+    <#--            <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+    <#--                <ul class="navbar-nav ml-auto">-->
+    <#--                    <li class="nav-item">-->
+    <#--                        <a class="nav-link" href="/vacancies?page=1">All Vacancies</a>-->
+    <#--                    </li>-->
+    <#--                    <li class="nav-item">-->
+    <#--                        <a class="nav-link" href="/resumes?page=1">All Resumes</a>-->
+    <#--                    </li>-->
+    <#--                    <li class="nav-item">-->
+    <#--                        <a class="nav-link" href="/profile">Profile</a>-->
+    <#--                    </li>-->
+    <#--                </ul>-->
+    <#--            </div>-->
+    <#--        </div>-->
+    <#--    </nav>-->
+    <div class="container">
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                <ol class="breadcrumb mb-0 container">
+                    <li class="breadcrumb-item "><a href="/vacancies?page=1">All Vacancies</a></li>
+                    <li class="breadcrumb-item "><a href="/resumes?page=1">All Resumes</a></li>
+                    <li class="breadcrumb-item "><a href="/profile">User Profile</a></li>
+                </ol>
+            </nav>
         </div>
-    </nav>
+    </div>
 
     <div class="container">
         <!-- Content Goes Here -->
-
+        <#nested >
     </div>
-    <#nested >
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Your Company Name</p>
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"

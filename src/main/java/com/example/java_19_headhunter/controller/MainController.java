@@ -1,9 +1,7 @@
 package com.example.java_19_headhunter.controller;
 
-import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
-import com.example.java_19_headhunter.dto.basicDtos.UserDto;
-import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
-import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
+import com.example.java_19_headhunter.dto.basicDtos.*;
+import com.example.java_19_headhunter.service.ContactInfoService;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.UserService;
 import com.example.java_19_headhunter.service.VacancyService;
@@ -28,6 +26,7 @@ public class MainController {
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
     private final UserImageService userImageService;
+    private final ContactInfoService contactInfoService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -64,8 +63,10 @@ public class MainController {
         Long userId = (long) user.getId();
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
+
         model.addAttribute("user", user);
-        model.addAttribute("resume", resumes);
+
+        model.addAttribute("resumes", resumes);
         model.addAttribute("vacancies", vacancies);
 
         return "users/index"; // Это имя вашего шаблона
@@ -86,7 +87,7 @@ public class MainController {
 
 
     @PostMapping("/upload")
-    public String uploadImage(@RequestBody UserImageDto userImageDto) {
+    public String uploadImage(UserImageDto userImageDto) {
         userImageService.uploadImage(userImageDto);
         return "redirect:profile";
     }
