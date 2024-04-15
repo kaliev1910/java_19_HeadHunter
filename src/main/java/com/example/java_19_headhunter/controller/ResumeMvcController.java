@@ -65,7 +65,6 @@ public class ResumeMvcController {
                     .experiences(experienceService.findByResumeId(resumeDto.getId()))
                     .contacts(contactInfoService.findByResumeId(resumeDto.getId()))
                     .build();
-
             resumes.add(resumeListDto);
         }
         model.addAttribute("resumes", resumes);
@@ -119,12 +118,14 @@ public class ResumeMvcController {
 
     @GetMapping("/resume/{resumeId}")
     public String showResumeInfo(@PathVariable int resumeId, Model model) {
-        model.addAttribute("contacts", contactInfoService.findByResumeId(resumeId));
-        model.addAttribute("educations", educationService.findByResumeId(resumeId));
-        model.addAttribute("experiences", experienceService.findByResumeId(resumeId));
+        List<EducationDto> educations = educationService.findByResumeId(resumeId);
+        List<ExperienceDto> experiences =  experienceService.findByResumeId(resumeId);
+        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(resumeId);
+        model.addAttribute("contacts", contacts );
+        model.addAttribute("educations", educations);
+        model.addAttribute("experiences", experiences);
         model.addAttribute("resume", resumeService.findById(resumeId));
         return "resumes/resume_info";
-
     }
 
     @GetMapping("/resumes/{id}")

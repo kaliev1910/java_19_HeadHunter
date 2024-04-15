@@ -64,6 +64,8 @@ public class ExperienceServiceImpl implements ExperienceService {
                 .position(experience.getPosition())
                 .responsibilities(experience.getResponsibilities())
                 .years(experience.getYears())
+                .startDate(experience.getStartDate())
+                .endDate(experience.getEndDate())
                 .build();
     }
 }

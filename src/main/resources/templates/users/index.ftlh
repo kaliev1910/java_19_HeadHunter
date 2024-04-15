@@ -142,10 +142,10 @@
                                                 <i class="font-italic me-1">Updated time: </i> ${resume.updatedTime}
                                             </p>
                                                 <div class="buttons">
-                                                    <a href="/resumes/${resume.id}">
+                                                    <a href="/resume/${resume.id}">
                                                         <button type="button" class="btn btn-primary">Подробнее</button>
                                                     </a>
-                                                    <a href="/resumes/${resume.id}/edit">
+                                                    <a href="/resume/${resume.id}/edit">
                                                         <button type="button" class="btn btn-primary">Редактировать</button>
                                                     </a>
                                                 </div>
