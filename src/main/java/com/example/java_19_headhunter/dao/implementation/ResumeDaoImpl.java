@@ -23,13 +23,13 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     @Override
     public List<Resume> findByCategory(int category) {
         String sql = "SELECT * FROM resumes WHERE category_id like ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), category);
+        return jdbcTemplate.query(sql, new ResumeRowMapper(), category);
     }
 
     @Override
     public List<Resume> getAll() {
         String sql = "SELECT * FROM resumes  order by  update_time desc ";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class));
+        return jdbcTemplate.query(sql, new ResumeRowMapper());
     }
 
     @Override
@@ -60,13 +60,13 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     @Override
     public List<Resume> findByUserEmail(String userEmail) {
         String sql = "SELECT * FROM resumes WHERE APPLICANT_EMAIL = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), userEmail);
+        return jdbcTemplate.query(sql,new ResumeRowMapper(), userEmail);
     }
 
     @Override
     public Resume findById(int id) {
         String sql = "SELECT * FROM resumes WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Resume.class), id);
+        return jdbcTemplate.queryForObject(sql, new ResumeRowMapper(), id);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
 import com.example.java_19_headhunter.service.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class VacancyMvcController {
     }
 
     @PostMapping("/vacancy/create")
-    public String createVacancy(VacancyCreateDto vacancyDto, Authentication authentication, Model model) {
+    public String createVacancy(@Valid VacancyCreateDto vacancyDto, Authentication authentication, Model model) {
         UserDto employer = userService.findByEmail(authentication.getName()).get();
         int vacancyId = vacancyService.create(vacancyDto, authentication);
         model.addAttribute("message", "Vacancy created successfully");

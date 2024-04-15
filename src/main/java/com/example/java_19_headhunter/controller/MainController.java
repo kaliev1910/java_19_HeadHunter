@@ -80,7 +80,7 @@ public class MainController {
     }
 
     @PostMapping("/{email}/edit")
-    public String updateUser(UserDto userDto) {
+    public String updateUser(@Valid UserDto userDto) {
         userService.updateUser(userDto);
         return "redirect:/profile";
     }

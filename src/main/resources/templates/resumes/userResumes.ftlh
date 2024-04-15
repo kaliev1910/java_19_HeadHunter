@@ -10,7 +10,7 @@
     <div class="row justify-content-around">
         <#list resume as resume>
             <div class="card col-3 m-1">
-                <div class="card-footer"><a href="/employer/resume/${resume.id}">Должность: ${resume.name}</a></div>
+                <div class="card-footer"><a href="/resume/${resume.id}">Должность: ${resume.name}</a></div>
                 <div class="card-body">
                     <h6 class="card-title">Категория работы: ${resume.categoryId}</h6>
                     <h6 class="card-title">Контактные детали: </h6>

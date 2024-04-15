@@ -8,5 +8,5 @@
         <p class="card-title">${vacancy.description}</p>
         <p class="card-text">${vacancy.updateTime}</p>
     </div>
-    <a href="/hh/vacancies?page=0" class="btn btn-success">Назад к вакансиям</a>
+    <a href="/vacancies?page=0" class="btn btn-success">Назад к вакансиям</a>
 </@main.layout>

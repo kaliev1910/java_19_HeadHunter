@@ -4,6 +4,7 @@ import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.*;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -78,7 +79,7 @@ public class ResumeMvcController {
     }
 
     @PostMapping("/resume/create")
-    public String createResume(@RequestBody ResumeCreateDto resumeDto, Authentication authentication, Model model) {
+    public String createResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication, Model model) {
 
         int resumeId = resumeService.create(resumeDto, authentication);
 
