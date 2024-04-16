@@ -94,6 +94,7 @@ databaseChangeLog:
               - column:
                   name: enabled
                   type: boolean
+                  defaultValueBoolean: true
                   constraints:
                     nullable: false
 

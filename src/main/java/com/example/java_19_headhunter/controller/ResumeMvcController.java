@@ -31,19 +31,30 @@ public class ResumeMvcController {
     private final ContactInfoService contactInfoService;
 
 
-
     @GetMapping("/myResumes")
     public String getMyResumesForm(Model model, Authentication authentication) {
 
         UserDto user = userService.findByEmail(authentication.getName()).get();
+        List<ResumeDto> resumesDtos = resumeService.findByUserEmail(user.getEmail());
+        List<ResumeListDto> resumes = new ArrayList<>();
 
- //TODO переделать чтобы показывал не резюме а resumeListDto и контакты в шаблоне получала контакты этого резюме #list resume.contacts as contact
-
-        List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
-        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(user.getId());
-
-        model.addAttribute("resume", resumes);
-        model.addAttribute("contacts", contacts);
+        for (ResumeDto resumeDto : resumesDtos) {
+            ResumeListDto resumeListDto = ResumeListDto.builder()
+                    .id(resumeDto.getId())
+                    .applicantEmail(resumeDto.getApplicantEmail())
+                    .name(resumeDto.getName())
+                    .expectedSalary(resumeDto.getExpectedSalary())
+                    .categoryId(resumeDto.getCategoryId())
+                    .isActive(resumeDto.isActive())
+                    .createdTime(resumeDto.getCreatedTime())
+                    .updatedTime(resumeDto.getUpdatedTime())
+                    .educations(educationService.findByResumeId(resumeDto.getId()))
+                    .experiences(experienceService.findByResumeId(resumeDto.getId()))
+                    .contacts(contactInfoService.findByResumeId(resumeDto.getId()))
+                    .build();
+            resumes.add(resumeListDto);
+        }
+        model.addAttribute("resumes", resumes);
         return "resumes/userResumes";
     }
 
@@ -128,4 +139,83 @@ public class ResumeMvcController {
         model.addAttribute("resume", resumeService.findById(resumeId));
         return "resumes/resume_info";
     }
+
+    @GetMapping("/resumes/{resumeId}/create")
+    public String editResume(@PathVariable int resumeId, Model model) {
+        List<EducationDto> educations = educationService.findByResumeId(resumeId);
+        List<ExperienceDto> experiences = experienceService.findByResumeId(resumeId);
+        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(resumeId);
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("educations", educations);
+        model.addAttribute("experiences", experiences);
+        model.addAttribute("resume", resumeService.findById(resumeId));
+        return "resumes/createResume";
+    }
+
+    @PostMapping("/resume/{resumeId}/edit")
+    public String editResume(@PathVariable int resumeId, @Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication, Model model) {
+
+        resumeService.update(resumeDto, authentication);
+
+        List<EducationDto> educationDto = resumeDto.getEducation();
+        List<ExperienceDto> experienceDto = resumeDto.getExperience();
+        List<ContactInfoDto> contactInfoDto = resumeDto.getContactInfo();
+
+
+        if (educationDto != null) {
+            for (EducationDto education : educationDto) {
+                education.setResumeId(resumeId);
+                if (education.getResumeId() == resumeId) {
+                    educationService.insert(education);
+                    log.info("added education for resume {}", education.getResumeId());
+                } else {
+                    educationService.update(education);
+                    log.info("education id {} has updated for resume id {}", education.getId(), resumeId);
+                }
+
+            }
+            log.info("education = {}", educationDto);
+        } else {
+            educationService.deleteByResumeId(resumeId);
+        }
+        if (experienceDto != null) {
+            for (ExperienceDto experience : experienceDto) {
+                experience.setResumeId(resumeId);
+                if (experience.getResumeId() == resumeId) {
+                    experienceService.insert(experience);
+                    log.info("added experience for resume {}", experience.getResumeId());
+                } else {
+                    experienceService.update(experience);
+                    log.info("experience id {} has updated", experience.getId());
+                }
+
+            }
+        }
+        else {
+            experienceService.deleteByResumeId(resumeId);
+        }
+
+        if (contactInfoDto != null) {
+            for (ContactInfoDto contactInfo : contactInfoDto) {
+                contactInfo.setResumeId(resumeId);
+                if (contactInfo.getResumeId() == resumeId) {
+                    contactInfoService.insert(contactInfo);
+                    log.info("added contacts for resume {}", contactInfo.getResumeId());
+                }
+                else {
+                    contactInfoService.update(contactInfo);
+                    log.info("contact id {} has updated", contactInfo.getResumeId());
+                }
+            }
+        }
+        else {
+            contactInfoService.deleteByResumeId(resumeId);
+        }
+        log.info("resume edited {}", resumeDto.getName());
+
+        model.addAttribute("message", "Resume edited successfully");
+        return "redirect:/myResumes";
+    }
+
+
 }

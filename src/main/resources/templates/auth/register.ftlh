@@ -25,6 +25,7 @@
                 <input type="password" class="form-control" id="password" name="password" required minlength="8"
                        style="width: 100%;">
             </div>
+
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="accountType" style="width: 100%;">Account Type</label>
                 <select class="form-control" id="accountType" name="accountType" required style="width: 100%;">
@@ -35,4 +36,27 @@
             <button type="submit" class="btn btn-primary btn-block mt-4" style="flex-basis: 100%;">Submit</button>
         </form>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#registrationForm').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/register',
+                    data: $(this).serialize(),
+                    success: function(response) {
+
+                        $('#registrationResultModal .modal-body').text(response);
+                        $('#registrationResultModal').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        $('#registrationResultModal .modal-body').text(xhr.responseText);
+                        $('#registrationResultModal').modal('show');
+                    }
+                });
+            });
+        });
+
+    </script>
 </@main.layout>

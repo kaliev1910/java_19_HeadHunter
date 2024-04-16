@@ -76,9 +76,12 @@
                 </#if>
             </div>
         </div>
-
-            <a href="/resumes?page=0" class="btn btn-primary mt-3">Перейти к списку резюме</a>
-
+        <a href="#" class="btn btn-primary mt-3" onclick="goBack()">Вернуться на предыдущую страницу</a>
     </div>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 
 </@main.layout>

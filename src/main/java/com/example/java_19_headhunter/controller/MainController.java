@@ -32,18 +32,15 @@ public class MainController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new UserDto());
-
         return "auth/register";
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.SEE_OTHER)
-    public String registerUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
+    public String registerUser(@Valid @ModelAttribute("userDto") UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "auth/register";
         }
-
         if (userService.findByEmail(userDto.getEmail()).isPresent()) {
             bindingResult.rejectValue("email", "error.user", "There is already a user registered with the provided email");
             return "auth/register";

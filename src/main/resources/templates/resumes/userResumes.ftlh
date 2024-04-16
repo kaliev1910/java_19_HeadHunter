@@ -1,44 +1,48 @@
 <#import "../layout.ftlh" as main>
 <@main.layout>
 
-    <h1 class="text-center mb-3">Резюме</h1>
-    <div class="text-center">
-        <a href="/resume/resumes?page=0">1</a>
-        <a href="/resume/resumes?page=1">2</a>
-        <a href="/employer/resumes?page=2">3</a>
-    </div>
-    <div class="row justify-content-around">
-        <#list resume as resume>
-            <div class="card col-3 m-1">
-                <div class="card-footer"><a href="/resume/${resume.id}">Должность: ${resume.name}</a></div>
-                <div class="card-body">
-                    <h6 class="card-title">Категория работы: ${resume.categoryId}</h6>
-                    <h6 class="card-title">Контактные детали: </h6>
-                    <#list contacts as contact>
-                        <#if contact?has_content>
-                            <#if contact.typeId=1>
-                                <p class="card-text"> Phone ${contact.contactValue}</p>
-                            </#if>
-                            <#if contact.typeId=2>
-                                <p class="card-text"> Email ${contact.contactValue}</p>
-                            </#if>
-                            <#if contact.typeId=3>
-                                <p class="card-text"> LinkedIn ${contact.contactValue}</p>
-                            </#if>
-                            <#if contact.typeId=4>
-                                <p class="card-text">Telegram ${contact.contactValue}</p>
-                            </#if>
+    <h1 class="text-center mb-3">Мои Резюме</h1>
+    <div class="container mt-5 mb-3">
+        <div class="row">
+            <#list resumes as resume>
+                <div class="col-md-4">
+                    <div class="card p-4 mb-2">
+                        <div class="d-flex justify-content-left">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="ms-2 c-details">
 
+                                    <h6 class="mb-0">${resume.applicantEmail}</h6>
 
-                        </#if>
-                    </#list>
-                    <p class="card-text">${resume.expectedSalary} KGZ</p>
+                                    <span>Last Update ${resume.updatedTime}</span>
+                                </div>
+                            </div>
+                            <div class="badge"><span>Design</span></div>
+                        </div>
+                        <div class="mt-5">
+                            <a href="/resume/${resume.id}">
+                                <h5 class="heading">${resume.name}</h5>
+                            </a>
+                            <h5>${resume.expectedSalary}</h5>
+                            <div class="mt-5">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <a href="/resume/${resume.id}" class="btn btn-primary">Подробнее</a>
+                <div class="buttons">
+                    <a href="/resume/${resume.id}">
+                        <button type="button" class="btn btn-primary">Подробнее</button>
+                    </a>
+                    <a href="/resume/${resume.id}/edit">
+                        <button type="button" class="btn btn-primary">Редактировать</button>
+                    </a>
                 </div>
-            </div>
-        </#list>
+            </#list>
+        </div>
     </div>
+
 
 </@main.layout>

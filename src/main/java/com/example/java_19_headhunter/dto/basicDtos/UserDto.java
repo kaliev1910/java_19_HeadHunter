@@ -32,14 +32,18 @@ public class UserDto {
     private String email;
 
     @NotBlank(message = "Password is mandatory")
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 4, max = 24,
+            message = "Length of password must be >= 4 and <= 24")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$",
+            message = "Password should contain at least one uppercase letter, one number")
     private String password;
 
     private String avatar;
 
     @NotNull(message = "Account type cannot be null")
-    @Pattern(regexp = "applicant|employer", message = "Account type must be either 'applicant' or 'employer'")
+    @Pattern(regexp = "APPLICANT|EMPLOYER", message = "Account type must be either 'APPLICANT' or 'EMPLOYER'")
     private String accountType;
+
     private boolean enabled;
 
 }

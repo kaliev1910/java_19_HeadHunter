@@ -119,11 +119,11 @@
                             </div>
                         </div>
 
-                        <!-- Applicant Resumes -->
+
                         <div class="row">
                             <div class="col-md-12 mb-4">
                                 <h5 class="mb-3">Отклики</h5>
-                                <!-- Place for listing responses -->
+
                             </div>
                         </div>
 

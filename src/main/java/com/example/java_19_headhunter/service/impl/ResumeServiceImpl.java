@@ -108,7 +108,6 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
         try {
-
             Resume resume = fromCreateDto(resumeCreateDto, authentication);
             resume.setApplicantEmail(authentication.getName());
             resume.setUpdatedTime(LocalDate.now());

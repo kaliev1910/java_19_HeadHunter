@@ -36,4 +36,10 @@ public class EducationDaoImpl extends BasicDaoImpl implements EducationDao {
         jdbcTemplate.update(sql, resumeId);
     }
 
+    @Override
+    public Education findById(int id) {
+        String sql = "SELECT * FROM education_info WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Education.class), id);
+    }
+
 }

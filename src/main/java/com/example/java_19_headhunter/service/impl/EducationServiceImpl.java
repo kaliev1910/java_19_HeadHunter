@@ -4,15 +4,19 @@ import com.example.java_19_headhunter.dao.interfaces.EducationDao;
 import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
 import com.example.java_19_headhunter.models.Education;
 import com.example.java_19_headhunter.service.EducationService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 public class EducationServiceImpl implements EducationService {
+    private static final Logger log = LoggerFactory.getLogger(EducationServiceImpl.class);
     private final EducationDao educationDao;
 
     @Autowired
@@ -29,6 +33,15 @@ public class EducationServiceImpl implements EducationService {
         return educations.stream()
                 .map(this::mapToEducationDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Education findEducationById(int educationId) {
+        if ( educationDao.findById(educationId) == null) {
+            log.info("education with id {} not found", educationId);
+            return null;
+        }
+        return educationDao.findById(educationId);
     }
 
     @Override
