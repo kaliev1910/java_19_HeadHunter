@@ -61,7 +61,8 @@ public class MainController {
     }
 
     @GetMapping("/chat")
-    public String showChatPage() {
+    public String showChatPage(Authentication authentication, Model model ) {
+        model.addAttribute("username", authentication.getName() );
         return "chat/chat";
     }
 

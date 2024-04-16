@@ -140,16 +140,18 @@ public class ResumeMvcController {
         return "resumes/resume_info";
     }
 
-    @GetMapping("/resumes/{resumeId}/create")
+    @GetMapping("/resumes/{resumeId}/edit")
     public String editResume(@PathVariable int resumeId, Model model) {
         List<EducationDto> educations = educationService.findByResumeId(resumeId);
         List<ExperienceDto> experiences = experienceService.findByResumeId(resumeId);
         List<ContactInfoDto> contacts = contactInfoService.findByResumeId(resumeId);
+        int eduIndex= 0;
+        model.addAttribute("eduIndex", eduIndex);
         model.addAttribute("contacts", contacts);
         model.addAttribute("educations", educations);
         model.addAttribute("experiences", experiences);
         model.addAttribute("resume", resumeService.findById(resumeId));
-        return "resumes/createResume";
+        return "resumes/edit_resume";
     }
 
     @PostMapping("/resume/{resumeId}/edit")
@@ -161,7 +163,8 @@ public class ResumeMvcController {
         List<ExperienceDto> experienceDto = resumeDto.getExperience();
         List<ContactInfoDto> contactInfoDto = resumeDto.getContactInfo();
 
-
+        // функционал сделан так: если пользователь просто изменил образование используется Update.
+        // если добавил
         if (educationDto != null) {
             for (EducationDto education : educationDto) {
                 education.setResumeId(resumeId);
@@ -178,6 +181,7 @@ public class ResumeMvcController {
         } else {
             educationService.deleteByResumeId(resumeId);
         }
+
         if (experienceDto != null) {
             for (ExperienceDto experience : experienceDto) {
                 experience.setResumeId(resumeId);

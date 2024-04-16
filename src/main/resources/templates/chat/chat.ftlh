@@ -23,10 +23,23 @@
         </div>
     </div>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
-        const userList = ['John Doe', 'Jane Doe', 'Kaliev1910'];
+        let stompClient = null;
         let activeUserIndex = 0;
+        let userList = ['John Doe', 'Jane Doe', 'Kaliev1910'];
+
+        function connect() {
+            let socket = new SockJS('/chat');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/public', function(messageOutput) {
+                    showMessageOutput(JSON.parse(messageOutput.body));
+                });
+            });
+        }
 
         function initUserList() {
             const userListElement = document.getElementById('user-list');
@@ -47,10 +60,10 @@
         }
 
         function getChatMessagesForUser(user) {
-            return [
-                {sender: 'Me', message: 'Hello ' + user + ', how are you?'},
-                {sender: user, message: 'Hi, I\'m good. How about you?'}
-            ];
+            // Здесь вы можете отправить запрос на сервер, чтобы получить сообщения чата для выбранного пользователя
+            // Например, с помощью WebSocket или AJAX запроса к серверу
+            // Вернуть полученные сообщения в виде массива объектов { sender: 'senderName', message: 'messageContent' }
+            return [];
         }
 
         function displayChatMessages(messages) {
@@ -58,10 +71,23 @@
             chatMessagesElement.innerHTML = '';
             messages.forEach(message => {
                 const messageElement = document.createElement('div');
-                messageElement.className = 'message ' + (message.sender === 'Me' ? 'sent' : 'received');
+                messageElement.className = 'message ' + (message.sender === ${username} ? 'sent' : 'received');
                 messageElement.textContent = message.sender + ': ' + message.message;
                 chatMessagesElement.appendChild(messageElement);
             });
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            if (message !== '') {
+                stompClient.send("/app/chat.sendMessage", {}, JSON.stringify({
+                    sender: 'Me',
+                    content: message,
+                    type: 'CHAT'
+                }));
+                messageInput.value = '';
+            }
         }
 
         document.getElementById('send-button').addEventListener('click', sendMessage);
@@ -72,24 +98,10 @@
             }
         });
 
-        function sendMessage() {
-            const messageInput = document.getElementById('message-input');
-            const message = messageInput.value.trim();
-            if (message !== '') {
-                const chatMessages = document.getElementById('chat-messages');
-                const messageElement = document.createElement('div');
-                messageElement.className = 'message sent';
-                messageElement.textContent = '// ' + message;
-                chatMessages.appendChild(messageElement);
-                messageInput.value = '';
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', function () {
             initUserList();
             switchChat(activeUserIndex);
+            connect();
         });
     </script>
-
-
 </@main.layout>
