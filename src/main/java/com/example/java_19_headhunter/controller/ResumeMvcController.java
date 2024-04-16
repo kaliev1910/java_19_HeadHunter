@@ -127,13 +127,4 @@ public class ResumeMvcController {
         model.addAttribute("resume", resumeService.findById(resumeId));
         return "resumes/resume_info";
     }
-
-    @GetMapping("/resumes/{id}")
-    public String getResumeDetails(@PathVariable int id, Model model) {
-        ResumeDto resume = resumeService.findById(id);
-        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(id);
-        model.addAttribute("resume", resume);
-        model.addAttribute("contacts", contacts);
-        return "resumes/resume_info";
-    }
 }

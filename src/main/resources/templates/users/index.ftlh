@@ -69,7 +69,7 @@
     </style>
 
     <#if user.accountType == "APPLICANT" >
-        <!-- Applicant Section -->
+       <h1>Личный кабинет соискателя</h1>
         <section style="background-color: #eee;">
             <div class="container py-5">
                 <div class="row">
@@ -161,16 +161,13 @@
         </section>
 
     <#else>
-        <!-- Employer Section -->
+        <h1>Личный кабинет соискателя</h1>
         <section style="background-color: #eee;">
             <div class="container py-5">
-                <h1 class="center mb-3">Личный кабинет работодателя</h1>
                 <div class="row">
-                    <!-- Employer Profile Card -->
                     <div class="col-lg-4">
                         <div class="card mb-4">
                             <div class="card-body text-center">
-                                <!-- Employer Photo and Info -->
                                 <img src="/api/images/${user.id}" alt="avatar" class="rounded-circle img-fluid"
                                      style="width: 150px;">
                                 <h5 class="my-3">${user.name} ${user.surname}</h5>
@@ -189,11 +186,15 @@
                                         Change photo
                                     </button>
                                 </div>
+                                <!-- Button to create resume -->
+                                <a href="/vacancy/create">
+                                    <button type="button" class="btn btn-primary">Создать вакансию</button>
+                                </a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Employer Details -->
+                    <!-- Applicant Details -->
                     <div class="col-lg-8">
                         <div class="card mb-4">
                             <div class="card-body">
@@ -208,15 +209,37 @@
                             </div>
                         </div>
 
-                        <!-- Employer Vacancies -->
+                        <!-- Applicant Resumes -->
                         <div class="row">
+                            <div class="col-md-12 mb-4">
+                                <h5 class="mb-3">Отклики</h5>
+                                <!-- Place for listing responses -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-3">Мои вакансии</h5>
+                            </div>
                             <#list vacancies as vacancy>
                                 <div class="col-md-6">
-                                    <div class="card mb-4 mb-md-0">
+                                    <div class="card mb-4">
                                         <div class="card-body">
                                             <p class="mb-4">
-                                                <i class="text-primary font-italic me-1">name:</i> ${vacancy.name}
+                                                <i class="font-italic me-1">Resume name: </i> ${vacancy.name}
                                             </p>
+                                            <p class="mb-4">
+                                                <i class="font-italic me-1">Updated time: </i> ${vacancy.updateTime}
+                                            </p>
+                                            <div class="buttons">
+                                                <a href="/vacancy/${vacancy.id}">
+                                                    <button type="button" class="btn btn-primary">Подробнее</button>
+                                                </a>
+                                                <a href="/vacancy/${vacancy.id}/edit">
+                                                    <button type="button" class="btn btn-primary">Редактировать</button>
+                                                </a>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
