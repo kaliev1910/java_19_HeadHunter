@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
     public int createUser(UserDto userDto) {
         User user;
         try {
-
             user = fromDto(userDto);
             user.setPassword(encoder.encode(userDto.getPassword()));
             userDao.createUser(user);

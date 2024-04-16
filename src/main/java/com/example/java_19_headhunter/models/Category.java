@@ -1,10 +1,11 @@
 package com.example.java_19_headhunter.models;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
+@Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Category {
 
     private int id;

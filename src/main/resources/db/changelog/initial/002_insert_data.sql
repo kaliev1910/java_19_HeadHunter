@@ -36,10 +36,10 @@ VALUES (1, 'University of IT', 'Computer Science', 'Bachelor', '2010-09-01', '20
        (2, 'Finance University', 'Finance', 'Bachelor', '2012-09-01', '2016-06-30'),
        (3, 'Web Development Institute', 'Web Development', 'Bachelor', '2014-09-01', '2018-06-30');
 
-INSERT INTO work_experience_info (resume_id, company_name, position, responsibilities, years)
-VALUES (1, 'Tech Company', 'Full Stack Developer', 'Developed web applications using JavaScript, HTML, CSS.', 5),
-       (2, 'Finance Firm', 'Financial Analyst', 'Conducted financial analysis and prepared reports.', 4),
-       (3, 'Web Development Agency', 'Frontend Developer', 'Designed and implemented user interfaces.', 3);
+INSERT INTO work_experience_info (resume_id, company_name, position, responsibilities, years , START_DATE, END_DATE)
+VALUES (1, 'Tech Company', 'Full Stack Developer', 'Developed web applications using JavaScript, HTML, CSS.', 5, '2010-09-01', '2014-06-30'),
+       (2, 'Finance Firm', 'Financial Analyst', 'Conducted financial analysis and prepared reports.', 4, '2010-09-01', '2014-06-30'),
+       (3, 'Web Development Agency', 'Frontend Developer', 'Designed and implemented user interfaces.', 3, '2010-09-01', '2014-06-30');
 INSERT INTO vacancies (author_email, name, description, category_id, salary, exp_from, exp_to)
 VALUES ('jane@example.com', 'Full Stack Developer Position',
         'We are looking for a talented Full Stack Developer to join our team.', 2, 80000, 3, 5),

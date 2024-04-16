@@ -58,13 +58,87 @@
         </div>
     </div>
 
+    <h1 class="text-center mt-5 mb-4">Редактирование резюме</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/resume/update" method="post" id="resumeForm">
+                        <div class="form-group">
+                            <label for="name">Название резюме:</label>
+                            <input type="text" class="form-control" id="name" name="name" value="${resume.name}"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoryId">Категория резюме:</label>
+                            <select class="form-control" id="categoryId" name="categoryId" required>
+                                <option value="">--Выберите категорию--</option>
+                                <option value="1" <#if resume.categoryId == 1>selected</#if>>IT</option>
+                                <option value="2" <#if resume.categoryId == 2>selected</#if>>Web Development</option>
+                                <option value="3" <#if resume.categoryId == 3>selected</#if>>Finance</option>
+                                <option value="4" <#if resume.categoryId == 4>selected</#if>>Accounting</option>
+                                <option value="5" <#if resume.categoryId == 5>selected</#if>>Investment Banking</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expectedSalary">Ожидаемый уровень оклада:</label>
+                            <input type="number" class="form-control" id="expectedSalary" name="expectedSalary"
+                                   value="${resume.expectedSalary}" required>
+                        </div>
+
+                        <div class="form-group" id="education">
+                            <label>Образование:</label>
+                            <#list educations as education>
+                                <div id="education${educationIndex}" class="form-group">
+                                    <label for="institution">Учебное заведение:</label>
+                                    <input type="text" class="form-control"
+                                           name="education[${educationIndex}].institution"
+                                           value="${education.institution}" required><br>
+                                    <input type="text" class="form-control"
+                                           name="education[' + educationIndex + '].program" required><br>
+                                    <label for="degree">Степень:</label>')
+                                    <input type="text" class="form-control"
+                                           name="education[' + educationIndex + '].degree" required><br>
+                                    <label for="startDate">Дата начала:</label>')
+                                    <input type="date" class="form-control"
+                                           name="education[' + educationIndex + '].startDate" required><br>
+                                    <label for="endDate">Дата окончания:</label>')
+                                    <input type="date" class="form-control"
+                                           name="education[' + educationIndex + '].endDate" required><br>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="removeEducation(${educationIndex})">Удалить образование
+                                    </button>
+                                </div>
+                            </#list>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить
+                                образование
+                            </button>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Обновить резюме</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        let educationIndex = 0;
-        let experienceIndex = 0;
-        let contactIndex = 0;
+        window.addEventListener('load' , ()=>{
+
+            let educationIndex = 0;
+            let experienceIndex = 0;
+            let contactIndex = 0;
+            }
+
+        )
 
         function addEducation() {
             var educationSection = document.getElementById("education");
+
+            const a = `sdgsdgkjsdg sdglsjdgljsdgl ${educationSection}`;
+
             var educationFields = '<div id="education' + educationIndex + '" class="form-group">'
                 .concat('<label for="institution">Учебное заведение:</label>')
                 .concat('<input type="text" class="form-control" name="education[' + educationIndex + '].institution" required><br>')

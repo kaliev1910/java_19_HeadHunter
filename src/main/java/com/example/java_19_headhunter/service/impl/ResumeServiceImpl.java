@@ -52,16 +52,7 @@ public class ResumeServiceImpl implements ResumeService {
         List<ResumeDto> resumeDtos = new ArrayList<>();
         List<Resume> list = resumeDao.getAll(pageSize, offset);
 
-        list.forEach(e -> resumeDtos.add(ResumeDto.builder()
-                .id(e.getId())
-                .applicantEmail(e.getApplicantEmail())
-                .name(e.getName())
-                .expectedSalary(e.getExpectedSalary())
-                .categoryId(e.getCategoryId())
-                .isActive(e.isActive())
-                .createdTime(e.getCreatedTime())
-                .updatedTime(e.getUpdatedTime())
-                .build()));
+        list.forEach(e -> resumeDtos.add(toDto(e)));
 //        }
         return resumeDtos;
     }
@@ -103,7 +94,7 @@ public class ResumeServiceImpl implements ResumeService {
         try {
             User user = (User) authentication.getPrincipal();
             Resume resume = fromDto(mapToResumeDto(resumeDto));
-            resume.setCreatedTime(LocalDate.now());
+            resume.setCreatedDate(LocalDate.now());
             resume.setUpdatedTime(LocalDate.now());
             resume.setApplicantEmail(user.getUsername());
             resumeId = resumeDao.create(resume);
@@ -117,7 +108,6 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
         try {
-
             Resume resume = fromCreateDto(resumeCreateDto, authentication);
             resume.setApplicantEmail(authentication.getName());
             resume.setUpdatedTime(LocalDate.now());
@@ -147,7 +137,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .isActive(true)
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
-                .createdTime(LocalDate.now())
+                .createdDate(LocalDate.now())
                 .updatedTime(LocalDate.now())
                 .build();
     }
@@ -160,7 +150,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .isActive(resumeDto.isActive())
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
-                .createdTime(resumeDto.getCreatedTime())
+                .createdDate(resumeDto.getCreatedTime())
                 .updatedTime(LocalDate.now())
                 .build();
     }
@@ -168,12 +158,12 @@ public class ResumeServiceImpl implements ResumeService {
     private ResumeDto toDto(Resume resume) {
         return ResumeDto.builder()
                 .id(resume.getId())
+                .name(resume.getName())
                 .applicantEmail(resume.getApplicantEmail())
                 .categoryId(resume.getCategoryId())
                 .isActive(resume.isActive())
-                .name(resume.getName())
                 .expectedSalary(resume.getExpectedSalary())
-                .createdTime(resume.getCreatedTime())
+                .createdTime(resume.getCreatedDate())
                 .updatedTime(resume.getUpdatedTime())
                 .build();
     }

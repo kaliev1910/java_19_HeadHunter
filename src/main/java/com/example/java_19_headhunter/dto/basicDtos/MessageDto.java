@@ -1,5 +1,6 @@
 package com.example.java_19_headhunter.dto.basicDtos;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -16,12 +17,12 @@ import java.sql.Timestamp;
 public class MessageDto {
 
     private int id;
-    private int respondedApplicantsId;
 
+    private String sender;
     @NotBlank(message = "Content is mandatory")
     @Size(max = 2000, message = "Content should not be greater than 2000 characters")
+    @Email
     private String content;
-
-    // no need to validate 'timestamp' as it is system generated
     private Timestamp timestamp;
+
 }

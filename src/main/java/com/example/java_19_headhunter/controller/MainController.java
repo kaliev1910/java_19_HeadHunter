@@ -4,6 +4,7 @@ import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
+import com.example.java_19_headhunter.service.ContactInfoService;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.UserService;
 import com.example.java_19_headhunter.service.VacancyService;
@@ -11,7 +12,6 @@ import com.example.java_19_headhunter.service.impl.UserImageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,21 +28,19 @@ public class MainController {
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
     private final UserImageService userImageService;
+    private final ContactInfoService contactInfoService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new UserDto());
-
         return "auth/register";
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.SEE_OTHER)
-    public String registerUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
+    public String registerUser(@Valid @ModelAttribute("userDto") UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "auth/register";
         }
-
         if (userService.findByEmail(userDto.getEmail()).isPresent()) {
             bindingResult.rejectValue("email", "error.user", "There is already a user registered with the provided email");
             return "auth/register";
@@ -57,6 +55,17 @@ public class MainController {
         return "/auth/login";
     }
 
+    @GetMapping("/")
+    public String showMainPage() {
+        return "/main";
+    }
+
+    @GetMapping("/chat")
+    public String showChatPage(Authentication authentication, Model model ) {
+        model.addAttribute("username", authentication.getName() );
+        return "chat/chat";
+    }
+
 
     @GetMapping("/profile")
     public String getUserProfile(Model model, Authentication authentication) {
@@ -64,12 +73,15 @@ public class MainController {
         Long userId = (long) user.getId();
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
+
         model.addAttribute("user", user);
-        model.addAttribute("resume", resumes);
+
+        model.addAttribute("resumes", resumes);
         model.addAttribute("vacancies", vacancies);
 
         return "users/index"; // Это имя вашего шаблона
     }
+
 
     @GetMapping("/{email}/edit")
     public String showEditUser(@PathVariable String email, Model model, Authentication authentication) {
@@ -78,10 +90,15 @@ public class MainController {
     }
 
     @PostMapping("/{email}/edit")
-    public String updateUser(UserDto userDto) {
+    public String updateUser(@Valid UserDto userDto) {
         userService.updateUser(userDto);
         return "redirect:/profile";
     }
 
 
+    @PostMapping("/upload")
+    public String uploadImage(UserImageDto userImageDto) {
+        userImageService.uploadImage(userImageDto);
+        return "redirect:profile";
+    }
 }

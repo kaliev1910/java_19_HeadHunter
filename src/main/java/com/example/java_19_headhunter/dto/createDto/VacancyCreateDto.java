@@ -1,11 +1,15 @@
 package com.example.java_19_headhunter.dto.createDto;
 
+import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,5 +27,8 @@ public class VacancyCreateDto {
     private int categoryId;
     private int salary;
     private int expFrom;
+    private LocalDate createdDate;
+    private LocalDate updateTime;
+    private List<ContactInfoDto> contactInfo;
 
 }

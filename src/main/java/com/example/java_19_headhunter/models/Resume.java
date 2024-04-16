@@ -19,7 +19,9 @@ public class Resume {
     private Integer expectedSalary;
     private int categoryId;
     private boolean isActive;
-    private LocalDate createdTime;
+    private LocalDate createdDate;
     private LocalDate updatedTime;
+
+
 
 }

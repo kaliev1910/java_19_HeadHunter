@@ -62,6 +62,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/profile").authenticated()
                         .requestMatchers(HttpMethod.GET, "/vacancy").hasRole(AccountType.EMPLOYER.getValue())
+                        .requestMatchers(HttpMethod.GET, "/resumes").hasRole(AccountType.EMPLOYER.getValue())
+                        .requestMatchers(HttpMethod.GET, "/resume/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .anyRequest().permitAll()
                 )
         ;

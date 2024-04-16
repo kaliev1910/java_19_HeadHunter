@@ -14,4 +14,5 @@ public interface EducationDao {
     List<Education> findByResumeId(int resumeId);
 
     void deleteByResumeId(int resumeId);
+    Education findById(int id);
 }

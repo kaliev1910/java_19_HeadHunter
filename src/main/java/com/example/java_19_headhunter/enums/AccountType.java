@@ -1,7 +1,10 @@
 package com.example.java_19_headhunter.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum AccountType {
-    APPLICANT("Applicant"), EMPLOYER("Employer");
+    APPLICANT("APPLICANT"), EMPLOYER("EMPLOYER");
 
     private final String value;
 
@@ -9,7 +12,4 @@ public enum AccountType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }
