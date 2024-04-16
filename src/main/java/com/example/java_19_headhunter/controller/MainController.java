@@ -1,6 +1,9 @@
 package com.example.java_19_headhunter.controller;
 
-import com.example.java_19_headhunter.dto.basicDtos.*;
+import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
+import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.service.ContactInfoService;
 import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.UserService;
@@ -9,7 +12,6 @@ import com.example.java_19_headhunter.service.impl.UserImageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,6 +56,16 @@ public class MainController {
     @GetMapping("/login")
     public String showLoginForm() {
         return "/auth/login";
+    }
+
+    @GetMapping("/")
+    public String showMainPage() {
+        return "/main";
+    }
+
+    @GetMapping("/chat")
+    public String showChatPage() {
+        return "chat/chat";
     }
 
 

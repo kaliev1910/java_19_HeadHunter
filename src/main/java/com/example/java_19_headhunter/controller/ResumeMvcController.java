@@ -21,6 +21,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+
 public class ResumeMvcController {
 
     private final ResumeService resumeService;
@@ -30,12 +31,13 @@ public class ResumeMvcController {
     private final ContactInfoService contactInfoService;
 
 
+
     @GetMapping("/myResumes")
     public String getMyResumesForm(Model model, Authentication authentication) {
 
         UserDto user = userService.findByEmail(authentication.getName()).get();
 
-//TODO переделать чтобы показывал не резюме а resumeListDto и контакты в шаблоне получала контакты этого резюме #list resume.contacts as contact
+ //TODO переделать чтобы показывал не резюме а resumeListDto и контакты в шаблоне получала контакты этого резюме #list resume.contacts as contact
 
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<ContactInfoDto> contacts = contactInfoService.findByResumeId(user.getId());
@@ -45,9 +47,8 @@ public class ResumeMvcController {
         return "resumes/userResumes";
     }
 
-    @GetMapping("/resumes")
-    public String getResumesForm(@RequestParam(name = "page") Integer page, Model model) {
-
+    @GetMapping("resumes")
+    public String gteResumesForm(@RequestParam(name = "page") Integer page, Model model) {
         List<ResumeDto> resumesDtos = resumeService.getResumesWithPaging(page, 6);
         List<ResumeListDto> resumes = new ArrayList<>();
 
@@ -119,9 +120,9 @@ public class ResumeMvcController {
     @GetMapping("/resume/{resumeId}")
     public String showResumeInfo(@PathVariable int resumeId, Model model) {
         List<EducationDto> educations = educationService.findByResumeId(resumeId);
-        List<ExperienceDto> experiences =  experienceService.findByResumeId(resumeId);
+        List<ExperienceDto> experiences = experienceService.findByResumeId(resumeId);
         List<ContactInfoDto> contacts = contactInfoService.findByResumeId(resumeId);
-        model.addAttribute("contacts", contacts );
+        model.addAttribute("contacts", contacts);
         model.addAttribute("educations", educations);
         model.addAttribute("experiences", experiences);
         model.addAttribute("resume", resumeService.findById(resumeId));
