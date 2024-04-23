@@ -10,7 +10,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
               integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
               crossorigin="anonymous">
-        <link rel="stylesheet" href="/static/chat/styles.css">
+        <link type="text/css"
+                rel="stylesheet" href="/static/chat/styles.css">
+        <script type="text/javascript" src="/static/js/main.js"></script>
+
 
         <style>
 
@@ -75,7 +78,12 @@
         </div>
     </footer>
 
-
+    <script>
+        let logout = document.getElementById('logout')
+        if (logout) {
+            logout.addEventListener('click', () => localStorage.removeItem('user'))
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
             crossorigin="anonymous"></script>

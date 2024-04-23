@@ -413,8 +413,13 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: responded_applicants_id
-                  type: INTEGER
+                  name: sender_email
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: receiver_email
+                  type: varchar(100)
                   constraints:
                     nullable: false
               - column:
@@ -428,8 +433,15 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
         - addForeignKeyConstraint:
             baseTableName: messages
-            baseColumnNames: responded_applicants_id
-            constraintName: fk_ms_responded_applicants_id
-            referencedTableName: responded_applicants
-            referencedColumnNames: id
+            baseColumnNames: sender_email
+            constraintName: fk_ms_sender_email
+            referencedTableName: users
+            referencedColumnNames: email
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: messages
+            baseColumnNames: receiver_email
+            constraintName: fk_ms_receiver_email
+            referencedTableName: users
+            referencedColumnNames: email
             onDelete: CASCADE
