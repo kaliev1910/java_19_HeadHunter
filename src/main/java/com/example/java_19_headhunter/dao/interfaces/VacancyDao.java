@@ -30,7 +30,7 @@ public interface VacancyDao {
 
     int createVacancy(Vacancy vacancy);
 
-    void applyForVacancy(User user, int vacancyId);
+    void applyForVacancy(int resumeId, int vacancyId);
 
     List<Vacancy> findByApplicantEmail(String applicantEmail);
 }

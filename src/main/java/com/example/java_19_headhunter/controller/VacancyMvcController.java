@@ -5,9 +5,13 @@ import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
-import com.example.java_19_headhunter.service.*;
+import com.example.java_19_headhunter.service.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +22,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class VacancyMvcController {
     private final UserService userService;
     private final VacancyService vacancyService;
@@ -49,16 +53,18 @@ public class VacancyMvcController {
         vacancyDto.setCreatedDate(LocalDate.now());
         vacancyDto.setUpdateTime(LocalDate.now());
         int vacancyId = vacancyService.create(vacancyDto, authentication);
+        log.info(authentication.getAuthorities().toString());
         model.addAttribute("message", "Vacancy created successfully");
         return "redirect:/vacancy/" + vacancyId;
     }
 
-
+@PreAuthorize("isAuthenticated()")
     @GetMapping("/vacancy/{id}")
     public String showVacancyInfo(@PathVariable("id") int id, Model model) {
         VacancyDto vacancy = vacancyService.findById(id);
         List<ContactInfoDto> contacts = contactInfoService.findByResumeId(id);
         model.addAttribute("vacancy", vacancy);
+
         model.addAttribute("contacts", contacts );
         return "vacancies/vacancy_info"; //
     }
@@ -82,6 +88,5 @@ public class VacancyMvcController {
         vacancyService.update(vacancyDto, authentication);
         return "redirect:/vacancy/{id}";
     }
-
 
 }

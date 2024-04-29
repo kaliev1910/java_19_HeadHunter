@@ -82,7 +82,8 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
-                    .prepareStatement("INSERT INTO resumes (APPLICANT_EMAIL, name, CATEGORY_ID, expected_salary, IS_ACTIVE, created_date, update_time)" +
+                    .prepareStatement("INSERT INTO resumes (APPLICANT_EMAIL, name, CATEGORY_ID, expected_salary, IS_ACTIVE," +
+                            " created_date, update_time)" +
                             "VALUES (?, ?, ?, ?, ?, ?, ?)", new String[]{"id"});
             ps.setString(1, resume.getApplicantEmail());
             ps.setString(2, resume.getName());

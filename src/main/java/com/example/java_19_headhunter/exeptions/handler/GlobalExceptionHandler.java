@@ -4,7 +4,7 @@ package com.example.java_19_headhunter.exeptions.handler;
 import com.example.java_19_headhunter.exeptions.ErrorResponseBody;
 import com.example.java_19_headhunter.exeptions.ResumeNotFoundException;
 import com.example.java_19_headhunter.exeptions.SortedCriteriaException;
-import com.example.java_19_headhunter.service.ErrorService;
+import com.example.java_19_headhunter.service.interfaces.ErrorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

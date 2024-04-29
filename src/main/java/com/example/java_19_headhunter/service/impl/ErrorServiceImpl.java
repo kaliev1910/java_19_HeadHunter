@@ -1,7 +1,7 @@
 package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.exeptions.ErrorResponseBody;
-import com.example.java_19_headhunter.service.ErrorService;
+import com.example.java_19_headhunter.service.interfaces.ErrorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

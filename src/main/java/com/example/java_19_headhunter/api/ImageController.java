@@ -1,9 +1,7 @@
 package com.example.java_19_headhunter.api;
 
-import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.service.impl.UserImageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +18,7 @@ public class ImageController {
 
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getImageByMovie(@PathVariable Long userId) {
+    public ResponseEntity<?> getImageByUserId(@PathVariable Long userId) {
         return userImageService.getImageByUserId(userId);
     }
 }

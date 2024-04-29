@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RespondedApplicant {
+public class UserResponse {
     private int id;
     private int resumeId;
     private int vacancyId;

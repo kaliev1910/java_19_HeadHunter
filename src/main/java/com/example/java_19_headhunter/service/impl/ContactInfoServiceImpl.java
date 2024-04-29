@@ -3,7 +3,7 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dao.interfaces.ContactInfoDao;
 import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
 import com.example.java_19_headhunter.models.ContactInfo;
-import com.example.java_19_headhunter.service.ContactInfoService;
+import com.example.java_19_headhunter.service.interfaces.ContactInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

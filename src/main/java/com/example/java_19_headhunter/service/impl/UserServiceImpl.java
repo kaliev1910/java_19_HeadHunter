@@ -4,7 +4,7 @@ import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
-import com.example.java_19_headhunter.service.UserService;
+import com.example.java_19_headhunter.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -163,6 +163,8 @@ public class UserServiceImpl implements UserService {
     }
 
     protected UserDto toDto(User user) {
-        return UserDto.builder().id(user.getId()).name(user.getName()).surname(user.getSurname()).email(user.getEmail()).password(user.getPassword()).age(user.getAge()).avatar(user.getAvatar()).accountType(user.getAccountType()).enabled(user.isEnabled()).build();
+        return UserDto.builder().id(user.getId()).name(user.getName()).surname(user.getSurname())
+                .email(user.getEmail()).password(user.getPassword()).age(user.getAge()).avatar(user.getAvatar())
+                .accountType(user.getAccountType()).enabled(user.isEnabled()).build();
     }
 }

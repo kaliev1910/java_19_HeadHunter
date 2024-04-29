@@ -48,9 +48,9 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
     }
 
     @Override
-    public void applyForVacancy(User user, int vacancyId) {
+    public void applyForVacancy(int resumeId, int vacancyId) {
         String sql = "INSERT INTO responded_applicants (resume_id, vacancy_id) VALUES (?, ?)";
-        jdbcTemplate.update(sql, user.getId(), vacancyId);
+        jdbcTemplate.update(sql, resumeId, vacancyId);
     }
 
     @Override

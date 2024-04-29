@@ -3,7 +3,7 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dao.implementation.UserImageDao;
 import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.models.UserImage;
-import com.example.java_19_headhunter.service.FileService;
+import com.example.java_19_headhunter.service.interfaces.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

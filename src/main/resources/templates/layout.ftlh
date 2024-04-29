@@ -53,6 +53,7 @@
     <div class="container">
 
     </div>
+
     <div class="row">
         <div class="col">
             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
@@ -60,8 +61,21 @@
                     <li class="breadcrumb-item "><a href="/">Main Page</a></li>
                     <li class="breadcrumb-item "><a href="/vacancies?page=1">All Vacancies</a></li>
                     <li class="breadcrumb-item "><a href="/resumes?page=1">All Resumes</a></li>
-                    <li class="breadcrumb-item "><a href="/profile">User Profile</a></li>
                     <li class="breadcrumb-item "><a href="/chat">Chat</a></li>
+                    <#assign
+                    known = SPRING_SECURITY_CONTEXT??
+                    >
+                    <#if known>
+                        <#assign
+                        user = SPRING_SECURITY_CONTEXT.authentication.principal
+                        name = user.getUsername()
+                        >
+                        <li class="breadcrumb-item "><a href="/profile">Hi, ${name}</a></li>
+                        <li class="breadcrumb-item "><a href="/logout">logout</a></li>
+                    <#else>
+                        <li class="breadcrumb-item "><a href="/login">SignIn</a></li>
+                        <li class="breadcrumb-item "><a href="/register">SignUp</a></li>
+                    </#if>
                 </ol>
             </nav>
         </div>
