@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.service;
+package com.example.java_19_headhunter.service.interfaces;
 
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
@@ -29,6 +29,6 @@ public interface VacancyService {
 
     int create(VacancyCreateDto vacancyDto, Authentication authentication);
 
-    void applyForVacancy(String email, int vacancyId);
+    void applyForVacancy(int resumeId, int vacancyId);
 
 }

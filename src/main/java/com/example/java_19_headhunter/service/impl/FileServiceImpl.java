@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.service.FileService;
+import com.example.java_19_headhunter.service.interfaces.FileService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;

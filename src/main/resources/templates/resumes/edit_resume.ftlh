@@ -1,62 +1,5 @@
 <#import "../layout.ftlh" as main>
 <@main.layout>
-    <h1 class="text-center mt-5 mb-4">Создание резюме</h1>
-
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <form action="/resume/create" method="post" id="resumeForm">
-                        <div class="form-group">
-                            <label for="name">Название резюме:</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="categoryId">Категория резюме:</label>
-                            <select class="form-control" id="categoryId" name="categoryId" required>
-                                <option value="">--Выберите категорию--</option>
-                                <option value="1">IT</option>
-                                <option value="2">Web Development</option>
-                                <option value="3">Finance</option>
-                                <option value="4">Accounting</option>
-                                <option value="5">Investment Banking</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="expectedSalary">Ожидаемый уровень оклада:</label>
-                            <input type="number" class="form-control" id="expectedSalary" name="expectedSalary"
-                                   required>
-                        </div>
-
-                        <div class="form-group" id="education">
-                            <label>Образование:</label>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить
-                                образование
-                            </button>
-                        </div>
-
-                        <div class="form-group" id="experience">
-                            <label>Опыт работы:</label>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="addExperience()">Добавить
-                                опыт работы
-                            </button>
-                        </div>
-
-                        <div class="form-group" id="contact">
-                            <label>Контактная информация:</label>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="addContact()">Добавить
-                                контакт
-                            </button>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-block">Создать резюме</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <h1 class="text-center mt-5 mb-4">Редактирование резюме</h1>
 
@@ -92,24 +35,61 @@
                         <div class="form-group" id="education">
                             <label>Образование:</label>
                             <#list educations as education>
-                                <div id="education${educationIndex}" class="form-group">
+                                <div id="education-{{educationIndex}}" class="form-group">
                                     <label for="institution">Учебное заведение:</label>
                                     <input type="text" class="form-control"
-                                           name="education[${educationIndex}].institution"
+                                           name="education[' + educationIndex + '].institution"
                                            value="${education.institution}" required><br>
                                     <input type="text" class="form-control"
-                                           name="education[' + educationIndex + '].program" required><br>
+                                           name="education[' + educationIndex + '].program" required
+                                           value="${education.program}"><br>
                                     <label for="degree">Степень:</label>')
                                     <input type="text" class="form-control"
-                                           name="education[' + educationIndex + '].degree" required><br>
+                                           name="education[' + educationIndex + '].degree"
+                                           value="${education.degree}" required><br>
                                     <label for="startDate">Дата начала:</label>')
                                     <input type="date" class="form-control"
-                                           name="education[' + educationIndex + '].startDate" required><br>
+                                           name="education[' + educationIndex + '].startDate"
+                                           value="${education.startDate}" required><br>
                                     <label for="endDate">Дата окончания:</label>')
                                     <input type="date" class="form-control"
-                                           name="education[' + educationIndex + '].endDate" required><br>
+                                           name="education[' + educationIndex + '].endDate"
+                                           value="${education.endDate}" required><br>
                                     <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="removeEducation(${educationIndex})">Удалить образование
+                                            onclick="removeEducation(this.dataset.educationIndex)">Удалить образование
+                                    </button>
+                                </div>
+                            </#list>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить
+                                образование
+                            </button>
+                        </div>
+
+                        <div class="form-group" id="experience">
+                            <label>Experience:</label>
+                            <#list experiences as experience>
+                                <div id="experience[' + experienceIndex + ']" class="form-group">
+                                    <label for="company">Компания: </label>
+                                    <input type="text" class="form-control"
+                                           name="experience[' + experienceIndex + '].institution"
+                                           value="${experience.companyName}" required><br>
+                                    <input type="text" class="form-control"
+                                           name="experience[' + experienceIndex + '].program" required
+                                           value="${experience.program}"><br>
+                                    <label for="degree">Степень:</label>')
+                                    <input type="text" class="form-control"
+                                           name="experience[' + experienceIndex + '].degree"
+                                           value="${experience.degree}" required><br>
+                                    <label for="startDate">Дата начала:</label>')
+                                    <input type="date" class="form-control"
+                                           name="experience[' + experienceIndex + '].startDate"
+                                           value="${experience.startDate}" required><br>
+                                    <label for="endDate">Дата окончания:</label>')
+                                    <input type="date" class="form-control"
+                                           name="experience[' + experienceIndex + '].endDate"
+                                           value="${experience.endDate}" required><br>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="removeEducation(this.dataset.educationIndex)">Удалить образование
                                     </button>
                                 </div>
                             </#list>

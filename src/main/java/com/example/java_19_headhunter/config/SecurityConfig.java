@@ -61,10 +61,10 @@ public class SecurityConfig {
                         .permitAll())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/profile").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/vacancy").hasRole(AccountType.EMPLOYER.getValue())
-                        .requestMatchers(HttpMethod.GET, "/resumes").hasRole(AccountType.EMPLOYER.getValue())
-                        .requestMatchers(HttpMethod.GET, "/resume/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/resumes").hasRole(AccountType.EMPLOYER.getValue())
+//                        .requestMatchers(HttpMethod.GET, "/resume/**").authenticated()
+//                        .requestMatchers(HttpMethod.GET, "/resume/**/edit").hasRole(AccountType.APPLICANT.getValue())
+//                        .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .anyRequest().permitAll()
                 )
         ;

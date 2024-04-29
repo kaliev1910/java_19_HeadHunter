@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.service.MessageService;
+import com.example.java_19_headhunter.service.interfaces.MessageService;
 import org.springframework.stereotype.Service;
 
 @Service

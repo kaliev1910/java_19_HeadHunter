@@ -4,10 +4,10 @@ import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
-import com.example.java_19_headhunter.service.ContactInfoService;
-import com.example.java_19_headhunter.service.ResumeService;
-import com.example.java_19_headhunter.service.UserService;
-import com.example.java_19_headhunter.service.VacancyService;
+import com.example.java_19_headhunter.service.interfaces.ContactInfoService;
+import com.example.java_19_headhunter.service.interfaces.ResumeService;
+import com.example.java_19_headhunter.service.interfaces.UserService;
+import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import com.example.java_19_headhunter.service.impl.UserImageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -101,4 +101,6 @@ public class MainController {
         userImageService.uploadImage(userImageDto);
         return "redirect:profile";
     }
+
+
 }

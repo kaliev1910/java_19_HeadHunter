@@ -1,6 +1,5 @@
 package com.example.java_19_headhunter.dto.basicDtos;
 
-import com.example.java_19_headhunter.models.RespondedApplicant;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +10,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Builder
@@ -39,5 +37,5 @@ public class VacancyDto {
     private boolean isActive;
     private LocalDate createdDate;
     private LocalDate updateTime;
-    private List<RespondedApplicant> respondedApplicantList;
+
 }

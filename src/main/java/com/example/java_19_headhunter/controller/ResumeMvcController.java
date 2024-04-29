@@ -2,7 +2,7 @@ package com.example.java_19_headhunter.controller;
 
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
-import com.example.java_19_headhunter.service.*;
+import com.example.java_19_headhunter.service.interfaces.*;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

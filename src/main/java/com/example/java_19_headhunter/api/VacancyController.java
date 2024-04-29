@@ -1,9 +1,9 @@
 package com.example.java_19_headhunter.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
-import com.example.java_19_headhunter.service.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
+import com.example.java_19_headhunter.service.interfaces.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +52,8 @@ public class VacancyController {
     }
 
     @PostMapping("/apply/{vacancyId}")
-    public ResponseEntity<Void> applyForVacancy(@RequestBody String email, @PathVariable int vacancyId) {
-        vacancyService.applyForVacancy(email, vacancyId);
+    public ResponseEntity<Void> applyForVacancy(@RequestBody Integer resumeId, @PathVariable int vacancyId) {
+        vacancyService.applyForVacancy(resumeId, vacancyId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

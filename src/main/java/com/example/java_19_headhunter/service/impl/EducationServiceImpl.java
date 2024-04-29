@@ -3,7 +3,7 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dao.interfaces.EducationDao;
 import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
 import com.example.java_19_headhunter.models.Education;
-import com.example.java_19_headhunter.service.EducationService;
+import com.example.java_19_headhunter.service.interfaces.EducationService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,9 +5,8 @@ import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
-import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
-import com.example.java_19_headhunter.service.VacancyService;
+import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -155,13 +153,11 @@ public class VacancyServiceImpl implements VacancyService {
 
 
     @Override
-    public void applyForVacancy(String email, int vacancyId) {
+    public void applyForVacancy(int resumeId, int vacancyId) {
         try {
-            Optional<User> user = userDao.findByEmail(email);
-
-            vacancyDao.applyForVacancy(user.get(), vacancyId);
+            vacancyDao.applyForVacancy(resumeId, vacancyId);
         } catch (Exception e) {
-            log.error("Error applying for vacancy {}, with user email {}", vacancyId, email, e);
+            log.error("Error applying for vacancy {}, with resume {}", vacancyId, resumeId, e);
             throw e; // rethrow the exception
         }
     }

@@ -1,4 +1,4 @@
-package com.example.java_19_headhunter.service;
+package com.example.java_19_headhunter.service.interfaces;
 
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.models.User;

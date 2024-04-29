@@ -2,7 +2,7 @@ package com.example.java_19_headhunter.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
-import com.example.java_19_headhunter.service.ResumeService;
+import com.example.java_19_headhunter.service.interfaces.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
 import jakarta.validation.Valid;
