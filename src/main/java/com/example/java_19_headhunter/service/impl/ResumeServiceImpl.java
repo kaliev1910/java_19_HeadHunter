@@ -3,11 +3,13 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
+import com.example.java_19_headhunter.exeptions.ResumeNotFoundException;
 import com.example.java_19_headhunter.models.Resume;
 import com.example.java_19_headhunter.service.interfaces.ResumeService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -77,14 +79,10 @@ public class ResumeServiceImpl implements ResumeService {
         }
     }
 
+    @SneakyThrows
     @Override
     public ResumeDto findById(int id) {
-        try {
-            return toDto(resumeDao.findById(id));
-        } catch (Exception e) {
-            log.error("Error finding Resume by id: {}", id, e);
-            throw e;
-        }
+            return toDto(resumeDao.findById(id).orElseThrow(() -> new ResumeNotFoundException("Error finding Resume by id: " + id)));
     }
 
 

@@ -67,6 +67,9 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .anyRequest().permitAll()
                 )
+//                .exceptionHandling(handle -> handle
+//                        .accessDeniedHandler()
+//                )
         ;
 
         return http.build();

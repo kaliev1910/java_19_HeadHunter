@@ -3,8 +3,7 @@ package com.example.java_19_headhunter.dao.implementation;
 import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.mapper.ResumeRowMapper;
 import com.example.java_19_headhunter.models.Resume;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -15,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
@@ -35,11 +35,11 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     @Override
     public List<Resume> getAll(int perPage, int offset) {
         String sql = """
-            select *
-            from resumes
-            limit ?
-            offset ?;
-            """;
+                select *
+                from resumes
+                limit ?
+                offset ?;
+                """;
         return jdbcTemplate.query(sql, new ResumeRowMapper(), perPage, offset);
     }
 
@@ -57,16 +57,21 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
         resume.setUpdatedTime(rs.getTimestamp("update_time").toLocalDateTime().toLocalDate());
         return resume;
     }
+
     @Override
     public List<Resume> findByUserEmail(String userEmail) {
         String sql = "SELECT * FROM resumes WHERE APPLICANT_EMAIL = ?";
-        return jdbcTemplate.query(sql,new ResumeRowMapper(), userEmail);
+        return jdbcTemplate.query(sql, new ResumeRowMapper(), userEmail);
     }
 
     @Override
-    public Resume findById(int id) {
+    public Optional<Resume> findById(int id) {
         String sql = "SELECT * FROM resumes WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new ResumeRowMapper(), id);
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        jdbcTemplate.query(sql, new ResumeRowMapper(), id)
+                )
+        );
     }
 
     @Override

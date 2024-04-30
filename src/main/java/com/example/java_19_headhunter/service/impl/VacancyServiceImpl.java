@@ -5,6 +5,7 @@ import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
+import com.example.java_19_headhunter.exeptions.VacancyNotFoundException;
 import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +74,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public VacancyDto findById(int id) {
-        return toDto(vacancyDao.findById(id));
+        return toDto(vacancyDao.findById(id).orElseThrow(() -> new VacancyNotFoundException("Vacancy Not Found")));
     }
 
     @Override

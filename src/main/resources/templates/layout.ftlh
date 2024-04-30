@@ -71,7 +71,7 @@
                         name = user.getUsername()
                         >
                         <li class="breadcrumb-item "><a href="/profile">Hi, ${name}</a></li>
-                        <li class="breadcrumb-item "><a href="/logout">logout</a></li>
+                        <li id="logout" class="breadcrumb-item "><a href="/logout">logout</a></li>
                     <#else>
                         <li class="breadcrumb-item "><a href="/login">SignIn</a></li>
                         <li class="breadcrumb-item "><a href="/register">SignUp</a></li>

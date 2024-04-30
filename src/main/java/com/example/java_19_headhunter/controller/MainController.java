@@ -43,6 +43,7 @@ public class MainController {
         }
         if (userService.findByEmail(userDto.getEmail()).isPresent()) {
             bindingResult.rejectValue("email", "error.user", "There is already a user registered with the provided email");
+            model.addAttribute("userDto", userDto);
             return "auth/register";
         }
 

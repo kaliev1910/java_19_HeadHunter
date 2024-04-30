@@ -5,6 +5,7 @@ import com.example.java_19_headhunter.models.Vacancy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public interface VacancyDao {
@@ -14,7 +15,7 @@ public interface VacancyDao {
 
     List<Vacancy> getVacanciesWithPaging(int perPage, int offset);
 
-    Vacancy findById(int id);
+    Optional<Vacancy> findById(int id);
 
     List<Vacancy> findByCategory(int categoryId);
 
