@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum AccountType {
-    APPLICANT("APPLICANT"), EMPLOYER("EMPLOYER");
+    APPLICANT("APPLICANT"),
+    EMPLOYER("EMPLOYER");
 
     private final String value;
 

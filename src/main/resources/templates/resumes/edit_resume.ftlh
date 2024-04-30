@@ -9,8 +9,10 @@
                 <div class="card-body">
                     <form action="/resume/update" method="post" id="resumeForm">
 
-                            <input type="text" class="form-control" id="applicantEmail" name="applicantEmail" value="${resume.applicantEmail}"
-                                   required>
+                        <label for="applicantEmail"></label><input type="text" class="form-control" id="applicantEmail"
+                                                                   name="applicantEmail"
+                                                                   value="${resume.applicantEmail}"
+                                                                   required hidden="hidden">
 
                         <div class="form-group">
                             <label for="name">Название резюме:</label>
@@ -39,25 +41,25 @@
                         <div class="form-group" id="education">
                             <label>Образование:</label>
                             <#list educations as education>
-                                <div id="education-{{educationIndex}}" class="form-group">
+                                <div id="education" class="form-group">
                                     <label for="institution">Учебное заведение:</label>
                                     <input type="text" class="form-control"
-                                           name="education[' + educationIndex + '].institution"
+                                           name="education.institution"
                                            value="${education.institution}" required><br>
                                     <input type="text" class="form-control"
-                                           name="education[' + educationIndex + '].program" required
+                                           name="education.program" required
                                            value="${education.program}"><br>
                                     <label for="degree">Степень:</label>')
                                     <input type="text" class="form-control"
-                                           name="education[' + educationIndex + '].degree"
+                                           name="education.degree"
                                            value="${education.degree}" required><br>
                                     <label for="startDate">Дата начала:</label>')
                                     <input type="date" class="form-control"
-                                           name="education[' + educationIndex + '].startDate"
+                                           name="education.startDate"
                                            value="${education.startDate}" required><br>
                                     <label for="endDate">Дата окончания:</label>')
-                                    <input type="datetime-local" class="form-control"
-                                           name="education[' + educationIndex + '].endDate"
+                                    <input type="date" class="form-control"
+                                           name="education.endDate"
                                            value="${education.endDate}" required><br>
                                     <button type="button" class="btn btn-danger btn-sm"
                                             onclick="removeEducation(this.dataset.educationIndex)">Удалить образование
@@ -72,25 +74,26 @@
                         <div class="form-group" id="experience">
                             <label>Experience:</label>
                             <#list experiences as experience>
-                                <div id="experience[' + experienceIndex + ']" class="form-group">
+
+                                <div id="experience" class="form-group">
                                     <label for="company">Компания: </label>
                                     <input type="text" class="form-control"
-                                           name="experience[' + experienceIndex + '].institution"
+                                           name="experience{{{experienceIndex}}}.companyName"
                                            value="${experience.companyName}" required><br>
                                     <input type="text" class="form-control"
-                                           name="experience[' + experienceIndex + '].program" required
+                                           name="experience.position" required
                                            value="${experience.position}"><br>
                                     <label for="degree">Обязанности:</label>')
                                     <input type="text" class="form-control"
-                                           name="experience[' + experienceIndex + ']."
+                                           name="experience.responsibilities"
                                            value="${experience.responsibilities}" required><br>
                                     <label for="startDate">Дата начала:</label>')
                                     <input type="date" class="form-control"
-                                           name="experience[' + experienceIndex + '].startDate"
+                                           name="experience.startDate"
                                            value="${experience.startDate}" required><br>
                                     <label for="endDate">Дата окончания:</label>')
                                     <input type="date" class="form-control"
-                                           name="experience[' + experienceIndex + '].endDate"
+                                           name="experience.endDate"
                                            value="${experience.endDate}" required><br>
                                     <button type="button" class="btn btn-danger btn-sm"
                                             onclick="removeEducation(this.dataset.educationIndex)">Удалить образование
@@ -99,7 +102,7 @@
                             </#list>
                             <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить
                                 образование
-                             </button>
+                            </button>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Обновить резюме</button>
                     </form>
@@ -109,13 +112,12 @@
     </div>
 
     <script>
-        window.addEventListener('load' , ()=>{
+        window.addEventListener('load', () => {
 
-            let educationIndex = 0;
-            let experienceIndex = 0;
-            let contactIndex = 0;
+                let educationIndex = 0;
+                let experienceIndex = 0;
+                let contactIndex = 0;
             }
-
         )
 
         function addEducation() {

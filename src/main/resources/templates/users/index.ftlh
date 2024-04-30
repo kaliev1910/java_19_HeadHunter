@@ -69,7 +69,7 @@
     </style>
 
     <#if user.accountType == "APPLICANT" >
-       <h1>Личный кабинет соискателя</h1>
+        <h1>Личный кабинет соискателя</h1>
         <section style="background-color: #eee;">
             <div class="container py-5">
                 <div class="row">
@@ -124,6 +124,23 @@
                             <div class="col-md-12 mb-4">
                                 <h5 class="mb-3">Отклики</h5>
 
+                                <#if responses?has_content>
+
+
+                                    <#list responses as response>
+                                        <div class="col-md-6">
+                                            <div class="card mb-4">
+                                                <div class="card-body">
+                                                    <p class="mb-4">
+                                                        <i class="font-italic me-1">Response name: </i> ${response.id}
+                                                    </p>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </#if>
                             </div>
                         </div>
 
@@ -141,14 +158,14 @@
                                             <p class="mb-4">
                                                 <i class="font-italic me-1">Updated time: </i> ${resume.updatedTime}
                                             </p>
-                                                <div class="buttons">
-                                                    <a href="/resume/${resume.id}">
-                                                        <button type="button" class="btn btn-primary">Подробнее</button>
-                                                    </a>
-                                                    <a href="/resumes/${resume.id}/edit">
-                                                        <button type="button" class="btn btn-primary">Редактировать</button>
-                                                    </a>
-                                                </div>
+                                            <div class="buttons">
+                                                <a href="/resume/${resume.id}">
+                                                    <button type="button" class="btn btn-primary">Подробнее</button>
+                                                </a>
+                                                <a href="/resumes/${resume.id}/edit">
+                                                    <button type="button" class="btn btn-primary">Редактировать</button>
+                                                </a>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -208,14 +225,33 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Applicant Resumes -->
-                        <div class="row">
-                            <div class="col-md-12 mb-4">
-                                <h5 class="mb-3">Отклики</h5>
-                                <!-- Place for listing responses -->
+                        <#if responses?has_content>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Отклики
+                        </button>
+                        </#if>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="row">
+                                        <#list responses as response>
+                                            <div class="card bg-light mb-3" style="max-width: 18rem;">
+                                                <div class="card-header"></div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Light card title</h5>
+                                                    <p class="card-text">Some quick example text to build on the card
+                                                        title
+                                                        and make up the bulk of the card's content.</p>
+                                                </div>
+                                            </div>
+                                        </#list>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
 
                         <div class="row">
                             <div class="col-md-12">
@@ -250,4 +286,30 @@
             </div>
         </section>
     </#if>
+    <script>
+        function getResumeById(id) {
+            // Замени URL на свой серверный эндпоинт
+            const url = `/api/resume/resume/`;
+            url.concat(id)
+            // Отправляем GET запрос на сервер
+            fetch(url)
+                .then(response => {
+                    // Проверяем статус ответа
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Если статус ответа OK, парсим JSON
+                    return response.json();
+                })
+                .then(resume => {
+                    // Выводим полученный объект в консоль (можно изменить на свою логику обработки)
+                    console.log(resume);
+                })
+                .catch(error => {
+                    // Выводим ошибку в консоль
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+    </script>
 </@main.layout>

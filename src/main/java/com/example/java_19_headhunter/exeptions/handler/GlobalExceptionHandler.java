@@ -1,16 +1,11 @@
 package com.example.java_19_headhunter.exeptions.handler;
 
 
-import com.example.java_19_headhunter.exeptions.ErrorResponseBody;
-import com.example.java_19_headhunter.exeptions.ResumeNotFoundException;
-import com.example.java_19_headhunter.exeptions.SortedCriteriaException;
-import com.example.java_19_headhunter.service.interfaces.ErrorService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -45,5 +40,12 @@ public class GlobalExceptionHandler {
         model.addAttribute("details", request);
         return "errors/error";
 
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public String  accessDeniedHandler(Model model, HttpServletRequest request){
+        model.addAttribute("status", HttpStatus.FORBIDDEN.value());
+        model.addAttribute("reason", HttpStatus.FORBIDDEN.getReasonPhrase());
+        model.addAttribute("details", request);
+        return "errors/error";
     }
 }

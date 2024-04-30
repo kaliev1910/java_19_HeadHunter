@@ -1,6 +1,5 @@
 package com.example.java_19_headhunter.dto.updateDto;
 
-import com.example.java_19_headhunter.dto.basicDtos.RespondedApplicantDto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,8 +10,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Builder
@@ -41,5 +38,5 @@ public class VacancyUpdateDto {
     private int expTo;
     private boolean isActive;
     private Timestamp updatedDate;
-    private List<RespondedApplicantDto> respondedApplicantDtos;
+
 }
