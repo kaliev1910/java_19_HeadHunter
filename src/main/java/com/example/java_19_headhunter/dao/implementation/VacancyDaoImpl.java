@@ -123,7 +123,7 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
             ps.setInt(6, vacancy.getExpFrom());
             ps.setInt(7, vacancy.getExpTo());
             ps.setBoolean(8, vacancy.isActive());
-            ps.setDate(9, Date.valueOf(vacancy.getCreatedDate()));
+            ps.setTimestamp(9, vacancy.getCreatedDate());
             return ps;
         }, keyHolder);
         return (int) keyHolder.getKey();

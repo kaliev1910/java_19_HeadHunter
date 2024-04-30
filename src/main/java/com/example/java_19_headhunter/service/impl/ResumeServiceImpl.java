@@ -11,11 +11,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,7 +85,7 @@ public class ResumeServiceImpl implements ResumeService {
     @SneakyThrows
     @Override
     public ResumeDto findById(int id) {
-            return toDto(resumeDao.findById(id).orElseThrow(() -> new ResumeNotFoundException("Error finding Resume by id: " + id)));
+        return toDto(resumeDao.findById(id).orElseThrow(() -> new ResumeNotFoundException("Error finding Resume by id: " + id)));
     }
 
 
@@ -92,8 +95,8 @@ public class ResumeServiceImpl implements ResumeService {
         try {
             User user = (User) authentication.getPrincipal();
             Resume resume = fromDto(mapToResumeDto(resumeDto));
-            resume.setCreatedDate(LocalDate.now());
-            resume.setUpdatedTime(LocalDate.now());
+            resume.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
+            resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
             resume.setApplicantEmail(user.getUsername());
             resumeId = resumeDao.create(resume);
         } catch (Exception e) {
@@ -106,15 +109,21 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
         try {
-            Resume resume = fromCreateDto(resumeCreateDto, authentication);
-            resume.setApplicantEmail(authentication.getName());
-            resume.setUpdatedTime(LocalDate.now());
-            resumeDao.update(resume);
+            if (resumeCreateDto.getApplicantEmail().equals(authentication.getName())) {
+                Resume resume = fromCreateDto(resumeCreateDto, authentication);
+                resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
+                resumeDao.update(resume);
+            } else {
+                throw new AccessDeniedException("Access denied, only authors can edit");
+            }
+
         } catch (Exception e) {
             log.error("Error updating Resume:  name {} user {} ", resumeCreateDto.getName(), ((User) authentication.getPrincipal()).getUsername(), e);
-            throw e;
+
         }
     }
+
+
 
     @Override
     public void deleteById(int id) {
@@ -135,8 +144,8 @@ public class ResumeServiceImpl implements ResumeService {
                 .isActive(true)
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
-                .createdDate(LocalDate.now())
-                .updatedTime(LocalDate.now())
+                .createdDate(Timestamp.valueOf(LocalDateTime.now()))
+                .updatedTime(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
     }
 
@@ -149,7 +158,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
                 .createdDate(resumeDto.getCreatedTime())
-                .updatedTime(LocalDate.now())
+                .updatedTime(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
     }
 
@@ -170,11 +179,12 @@ public class ResumeServiceImpl implements ResumeService {
     public static ResumeDto mapToResumeDto(ResumeCreateDto createDto) {
         ResumeDto resumeDto = new ResumeDto();
         resumeDto.setName(createDto.getName());
+        resumeDto.setApplicantEmail(createDto.getApplicantEmail());
         resumeDto.setExpectedSalary(createDto.getExpectedSalary());
         resumeDto.setCategoryId(createDto.getCategoryId());
         resumeDto.setActive(true);
-        resumeDto.setCreatedTime(LocalDate.now());
-        resumeDto.setUpdatedTime(LocalDate.now());
+        resumeDto.setCreatedTime(Timestamp.valueOf(LocalDateTime.now()));
+        resumeDto.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
         return resumeDto;
     }
 }

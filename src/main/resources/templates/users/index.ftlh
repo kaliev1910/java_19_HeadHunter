@@ -145,7 +145,7 @@
                                                     <a href="/resume/${resume.id}">
                                                         <button type="button" class="btn btn-primary">Подробнее</button>
                                                     </a>
-                                                    <a href="/resume/${resume.id}/edit">
+                                                    <a href="/resumes/${resume.id}/edit">
                                                         <button type="button" class="btn btn-primary">Редактировать</button>
                                                     </a>
                                                 </div>

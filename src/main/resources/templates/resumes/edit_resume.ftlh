@@ -8,6 +8,10 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/resume/update" method="post" id="resumeForm">
+
+                            <input type="text" class="form-control" id="applicantEmail" name="applicantEmail" value="${resume.applicantEmail}"
+                                   required>
+
                         <div class="form-group">
                             <label for="name">Название резюме:</label>
                             <input type="text" class="form-control" id="name" name="name" value="${resume.name}"
@@ -52,7 +56,7 @@
                                            name="education[' + educationIndex + '].startDate"
                                            value="${education.startDate}" required><br>
                                     <label for="endDate">Дата окончания:</label>')
-                                    <input type="date" class="form-control"
+                                    <input type="datetime-local" class="form-control"
                                            name="education[' + educationIndex + '].endDate"
                                            value="${education.endDate}" required><br>
                                     <button type="button" class="btn btn-danger btn-sm"
@@ -75,11 +79,11 @@
                                            value="${experience.companyName}" required><br>
                                     <input type="text" class="form-control"
                                            name="experience[' + experienceIndex + '].program" required
-                                           value="${experience.program}"><br>
-                                    <label for="degree">Степень:</label>')
+                                           value="${experience.position}"><br>
+                                    <label for="degree">Обязанности:</label>')
                                     <input type="text" class="form-control"
-                                           name="experience[' + experienceIndex + '].degree"
-                                           value="${experience.degree}" required><br>
+                                           name="experience[' + experienceIndex + ']."
+                                           value="${experience.responsibilities}" required><br>
                                     <label for="startDate">Дата начала:</label>')
                                     <input type="date" class="form-control"
                                            name="experience[' + experienceIndex + '].startDate"
@@ -95,7 +99,7 @@
                             </#list>
                             <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить
                                 образование
-                            </button>
+                             </button>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Обновить резюме</button>
                     </form>
@@ -115,11 +119,11 @@
         )
 
         function addEducation() {
-            var educationSection = document.getElementById("education");
+            let educationSection = document.getElementById("education");
 
-            const a = `sdgsdgkjsdg sdglsjdgljsdgl ${educationSection}`;
+            const a = ``;
 
-            var educationFields = '<div id="education' + educationIndex + '" class="form-group">'
+            let educationFields = '<div id="education' + educationIndex + '" class="form-group">'
                 .concat('<label for="institution">Учебное заведение:</label>')
                 .concat('<input type="text" class="form-control" name="education[' + educationIndex + '].institution" required><br>')
                 .concat('<label for="program">Программа/Специализация:</label>')
@@ -137,8 +141,8 @@
         }
 
         function addExperience() {
-            var experienceSection = document.getElementById("experience");
-            var experienceFields = '<div id="experience' + experienceIndex + '" class="form-group">'
+            let experienceSection = document.getElementById("experience");
+            let experienceFields = '<div id="experience' + experienceIndex + '" class="form-group">'
                 .concat('<label for="companyName">Название компании:</label>')
                 .concat('<input type="text" class="form-control" name="experience[' + experienceIndex + '].companyName" required><br>')
                 .concat('<label for="position">Должность:</label>')
@@ -154,8 +158,8 @@
         }
 
         function addContact() {
-            var contactSection = document.getElementById("contact");
-            var contactFields = '<div id="contact' + contactIndex + '" class="form-group">'
+            let contactSection = document.getElementById("contact");
+            let contactFields = '<div id="contact' + contactIndex + '" class="form-group">'
                 .concat('<label for="contactValue">Контактная информация:</label>')
                 .concat('<input type="text" class="form-control" name="contactInfo[' + contactIndex + '].contactValue" required><br>')
                 .concat('<label for="typeId">Тип контакта:</label>')
@@ -174,17 +178,17 @@
 
 
         function removeEducation(index) {
-            var educationToRemove = document.getElementById("education" + index);
+            let educationToRemove = document.getElementById("education" + index);
             educationToRemove.remove();
         }
 
         function removeExperience(index) {
-            var experienceToRemove = document.getElementById("experience" + index);
+            let experienceToRemove = document.getElementById("experience" + index);
             experienceToRemove.remove();
         }
 
         function removeContact(index) {
-            var contactToRemove = document.getElementById("contact" + index);
+            let contactToRemove = document.getElementById("contact" + index);
             contactToRemove.remove();
         }
     </script>

@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,6 +40,6 @@ public class VacancyUpdateDto {
     private int expFrom;
     private int expTo;
     private boolean isActive;
-    private LocalDate updatedDate;
+    private Timestamp updatedDate;
     private List<RespondedApplicantDto> respondedApplicantDtos;
 }

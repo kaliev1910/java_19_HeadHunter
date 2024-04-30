@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data
@@ -30,7 +31,7 @@ public class ResumeDto {
     private Integer expectedSalary;
     private int categoryId;
     private boolean isActive;
-    private LocalDate createdTime;
-    private LocalDate updatedTime;
+    private Timestamp createdTime;
+    private Timestamp updatedTime;
 
 }

@@ -13,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -130,7 +132,7 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     public void update(VacancyUpdateDto vacancyDto, Authentication a) {
         try {
-            vacancyDto.setUpdatedDate(LocalDate.now());
+            vacancyDto.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
             vacancyDao.updateVacancy(fromUpdateDto(vacancyDto, a));
         } catch (Exception e) {
             log.error("Error updating vacancy {}", vacancyDto, e);
@@ -203,8 +205,8 @@ public class VacancyServiceImpl implements VacancyService {
                 .categoryId(vacancyDto.getCategoryId())
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
-                .createdDate(LocalDate.now())
-                .updateTime(LocalDate.now())
+                .createdDate(Timestamp.valueOf(LocalDateTime.now()))
+                .updateTime(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
     }
 
@@ -216,8 +218,8 @@ public class VacancyServiceImpl implements VacancyService {
                 .categoryId(vacancyDto.getCategoryId())
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
-                .createdDate(LocalDate.now())
-                .updateTime(LocalDate.now())
+                .createdDate(Timestamp.valueOf(LocalDateTime.now()))
+                .updateTime(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
     }
 
