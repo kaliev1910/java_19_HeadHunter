@@ -51,14 +51,14 @@ public class MainController {
     public String showLoginForm() {
         return "/auth/login";
     }
- @GetMapping("/erorr")
+ @GetMapping("/error")
     public String showAccessDeniedPage() {
         return "/errors/accessDenied";
     }
 
     @GetMapping("/")
     public String showMainPage() {
-        return "/main";
+        return "redirect:/vacancies?page=1";
     }
 
     @GetMapping("/chat")

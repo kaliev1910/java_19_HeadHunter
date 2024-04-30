@@ -31,7 +31,7 @@ public class ResponseServiceImpl implements ResponseService {
     @Override
     public boolean confirmResume(int resumeId, int vacancyId, boolean confirmValue) {
         try {
-            confirmResume(resumeId, vacancyId, confirmValue);
+            responseDao.confirmResume(resumeId, vacancyId, confirmValue);
             return true;
         } catch (Exception e) {
             log.info("Error confirming resume");
