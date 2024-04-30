@@ -71,4 +71,9 @@ public class ResumeController {
         ResumeDto resume = resumeService.findById(id);
         return new ResponseEntity<>(resume, HttpStatus.OK);
     }
+    @PostMapping("/apply/{resumeId}")
+    public ResponseEntity<?> applyForResume(@RequestBody Integer vacancyId, @PathVariable int resumeId) {
+        vacancyService.applyForVacancy(resumeId, vacancyId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

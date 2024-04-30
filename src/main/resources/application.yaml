@@ -10,7 +10,8 @@ spring:
 
   liquibase:
     change-log: classpath:/db/changelog/master.yaml
-
+  mvc:
+    static-path-pattern: /static/**
   h2:
     console:
       enabled: true
@@ -19,7 +20,8 @@ spring:
 logging:
   level:
     root: info
-  #    org.springframework.security: debug
+    org.springframework.security: debug
+#      org.springframework.security: debug
   file:
     name: logs/headHunter.log
   logback:

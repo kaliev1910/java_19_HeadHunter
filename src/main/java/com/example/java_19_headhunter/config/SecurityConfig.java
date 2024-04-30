@@ -61,11 +61,19 @@ public class SecurityConfig {
                         .permitAll())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/profile").authenticated()
-//                        .requestMatchers(HttpMethod.GET, "/resumes").hasRole(AccountType.EMPLOYER.getValue())
+                        .requestMatchers("/resumes").authenticated()
+                        .requestMatchers( "/resumes").hasAnyAuthority("EMPLOYER")
+                        .requestMatchers( "/chat").authenticated()
+
 //                        .requestMatchers(HttpMethod.GET, "/resume/**").authenticated()
-//                        .requestMatchers(HttpMethod.GET, "/resume/**/edit").hasRole(AccountType.APPLICANT.getValue())
+                        .requestMatchers( "/resume/*/edit").hasAnyAuthority("APPLICANT")
+                        .requestMatchers("/vacancy/*/edit").hasAnyAuthority("EMPLOYER")
 //                        .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .anyRequest().permitAll()
+                )
+                .exceptionHandling(handle -> handle
+                        .accessDeniedPage("/error")
+
                 )
         ;
 

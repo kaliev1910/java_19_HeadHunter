@@ -1,6 +1,7 @@
 package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dao.interfaces.ResponseDao;
+import com.example.java_19_headhunter.dto.basicDtos.UserResponseDto;
 import com.example.java_19_headhunter.models.UserResponse;
 import com.example.java_19_headhunter.service.interfaces.ResponseService;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class ResponseServiceImpl implements ResponseService {
     @Override
     public boolean confirmResume(int resumeId, int vacancyId, boolean confirmValue) {
         try {
-            confirmResume(resumeId, vacancyId, confirmValue);
+            responseDao.confirmResume(resumeId, vacancyId, confirmValue);
             return true;
         } catch (Exception e) {
             log.info("Error confirming resume");
@@ -39,9 +40,10 @@ public class ResponseServiceImpl implements ResponseService {
     }
 
     @Override
-    public List<UserResponse> getEmployerResponses(String email) {
+    public List<UserResponseDto> getEmployerResponses(String email) {
         try {
-            return responseDao.getEmployerResponses(email);
+            List<UserResponse> responses = responseDao.getEmployerResponses(email);
+            return responses.stream().map(this::todto).toList();
         } catch (Exception e) {
             log.info("Error getting employer responses: {}", e.toString());
             return null;
@@ -82,13 +84,24 @@ public class ResponseServiceImpl implements ResponseService {
     }
 
     @Override
-    public List<UserResponse> getApplicantResponses(String email) {
+    public List<UserResponseDto> getApplicantResponses(String email) {
         try {
-            return responseDao.getApplicantResponses(email);
+            List<UserResponse> responses = responseDao.getApplicantResponses(email);
+           return responses.stream().map(this::todto).toList();
         } catch (Exception e) {
 
             log.info("Error getting applicant responses: {}", e.toString());
             return null;
         }
+    }
+
+
+    private UserResponseDto todto(UserResponse response){
+        return  UserResponseDto.builder()
+                .id(response.getId())
+                .resumeId(response.getResumeId())
+                .vacancyId(response.getVacancyId())
+                .confirmation(response.isConfirmation())
+                .build();
     }
 }

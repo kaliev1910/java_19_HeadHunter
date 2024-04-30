@@ -52,7 +52,7 @@ public class VacancyController {
     }
 
     @PostMapping("/apply/{vacancyId}")
-    public ResponseEntity<Void> applyForVacancy(@RequestBody Integer resumeId, @PathVariable int vacancyId) {
+    public ResponseEntity<?> applyForVacancy(@RequestBody Integer resumeId, @PathVariable int vacancyId) {
         vacancyService.applyForVacancy(resumeId, vacancyId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

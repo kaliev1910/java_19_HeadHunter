@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class VacancyCreateDto {
     private int categoryId;
     private int salary;
     private int expFrom;
-    private LocalDate createdDate;
-    private LocalDate updateTime;
+    private Timestamp createdDate;
+    private Timestamp updateTime;
     private List<ContactInfoDto> contactInfo;
 
 }

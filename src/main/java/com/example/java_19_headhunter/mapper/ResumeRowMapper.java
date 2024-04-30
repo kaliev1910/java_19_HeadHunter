@@ -21,8 +21,8 @@ public class ResumeRowMapper implements RowMapper<Resume> {
         resume.setExpectedSalary(rs.getInt("expected_salary"));
         resume.setCategoryId(rs.getInt("category_id"));
         resume.setActive(rs.getBoolean("IS_ACTIVE"));
-        resume.setCreatedDate(rs.getDate("created_date").toLocalDate());
-        resume.setUpdatedTime(rs.getDate("update_time").toLocalDate());
+        resume.setCreatedDate(rs.getTimestamp("created_date"));
+        resume.setUpdatedTime(rs.getTimestamp("update_time"));
         return resume;
     }
 }

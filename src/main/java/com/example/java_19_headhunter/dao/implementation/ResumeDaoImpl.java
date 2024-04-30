@@ -3,18 +3,15 @@ package com.example.java_19_headhunter.dao.implementation;
 import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.mapper.ResumeRowMapper;
 import com.example.java_19_headhunter.models.Resume;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
@@ -35,11 +32,11 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
     @Override
     public List<Resume> getAll(int perPage, int offset) {
         String sql = """
-            select *
-            from resumes
-            limit ?
-            offset ?;
-            """;
+                select *
+                from resumes
+                limit ?
+                offset ?;
+                """;
         return jdbcTemplate.query(sql, new ResumeRowMapper(), perPage, offset);
     }
 
@@ -53,20 +50,25 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
         resume.setExpectedSalary(rs.getInt("expected_salary"));
         resume.setCategoryId(rs.getInt("category_id"));
         resume.setActive(rs.getBoolean("is_active"));
-        resume.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime().toLocalDate());
-        resume.setUpdatedTime(rs.getTimestamp("update_time").toLocalDateTime().toLocalDate());
+        resume.setCreatedDate(rs.getTimestamp("created_date"));
+        resume.setUpdatedTime(rs.getTimestamp("update_time"));
         return resume;
-    }
-    @Override
-    public List<Resume> findByUserEmail(String userEmail) {
-        String sql = "SELECT * FROM resumes WHERE APPLICANT_EMAIL = ?";
-        return jdbcTemplate.query(sql,new ResumeRowMapper(), userEmail);
     }
 
     @Override
-    public Resume findById(int id) {
+    public List<Resume> findByUserEmail(String userEmail) {
+        String sql = "SELECT * FROM resumes WHERE APPLICANT_EMAIL = ?";
+        return jdbcTemplate.query(sql, new ResumeRowMapper(), userEmail);
+    }
+
+    @Override
+    public Optional<Resume> findById(int id) {
         String sql = "SELECT * FROM resumes WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new ResumeRowMapper(), id);
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        jdbcTemplate.query(sql, new ResumeRowMapper(), id)
+                )
+        );
     }
 
     @Override
@@ -90,8 +92,8 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
             ps.setInt(3, resume.getCategoryId());
             ps.setInt(4, resume.getExpectedSalary());
             ps.setBoolean(5, resume.isActive());
-            ps.setDate(6, Date.valueOf(resume.getCreatedDate()));
-            ps.setDate(7, Date.valueOf(resume.getUpdatedTime()));
+            ps.setTimestamp(6, resume.getCreatedDate());
+            ps.setTimestamp(7, resume.getUpdatedTime());
             return ps;
         }, keyHolder);
         return Objects.requireNonNull(keyHolder.getKey()).intValue();

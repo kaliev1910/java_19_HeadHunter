@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
         try {
             user = fromDto(userDto);
             user.setPassword(encoder.encode(userDto.getPassword()));
+            user.setEnabled(true);
             userDao.createUser(user);
             Optional<User> newUser = userDao.findByEmail(user.getEmail());
 
@@ -114,6 +115,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @SneakyThrows
     @Override
     public Optional<UserDto> findByName(String name) {
         try {
@@ -122,7 +124,7 @@ public class UserServiceImpl implements UserService {
             return user.map(this::toDto);
         } catch (Exception e) {
             log.error("Error while trying to find user by name: {}", name, e);
-            throw e;
+            throw new UserNotFoundException("User not found");
         }
     }
 

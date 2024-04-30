@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public interface ResumeDao {
@@ -15,7 +16,7 @@ public interface ResumeDao {
 
     List<Resume> findByUserEmail(String userEmail);
 
-    Resume findById(int id);
+    Optional<Resume> findById(int id);
 
     int create(Resume resume);
 

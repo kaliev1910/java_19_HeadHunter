@@ -21,7 +21,7 @@ public class UserCreateDto {
 
     @NotNull(message = "Age cannot be null")
     @Min(value = 18, message = "Age should not be less than 18")
-    @Max(value = 150, message = "Age should not be greater than 150")
+    @Max(value = 120, message = "Age should not be greater than 150")
     private byte age;
 
     @NotNull
@@ -29,7 +29,10 @@ public class UserCreateDto {
     private String email;
 
     @NotBlank(message = "Password is mandatory")
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 4, max = 24,
+            message = "Length of password must be >= 4 and <= 24")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$",
+            message = "Password should contain at least one uppercase letter, one number")
     private String password;
 
 

@@ -141,17 +141,24 @@ public class ResumeMvcController {
     }
 
     @GetMapping("/resumes/{resumeId}/edit")
-    public String editResume(@PathVariable int resumeId, Model model) {
-        List<EducationDto> educations = educationService.findByResumeId(resumeId);
-        List<ExperienceDto> experiences = experienceService.findByResumeId(resumeId);
-        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(resumeId);
-        int eduIndex= 0;
-        model.addAttribute("eduIndex", eduIndex);
-        model.addAttribute("contacts", contacts);
-        model.addAttribute("educations", educations);
-        model.addAttribute("experiences", experiences);
-        model.addAttribute("resume", resumeService.findById(resumeId));
-        return "resumes/edit_resume";
+    public String editResume(@PathVariable int resumeId, Authentication authentication, Model model) {
+        ResumeDto resumeDto = resumeService.findById(resumeId);
+
+        if (resumeDto.getApplicantEmail().equals(authentication.getName())) {
+            List<EducationDto> educations = educationService.findByResumeId(resumeId);
+            List<ExperienceDto> experiences = experienceService.findByResumeId(resumeId);
+            List<ContactInfoDto> contacts = contactInfoService.findByResumeId(resumeId);
+            int eduIndex = 0;
+            model.addAttribute("eduIndex", eduIndex);
+            model.addAttribute("contacts", contacts);
+            model.addAttribute("educations", educations);
+            model.addAttribute("experiences", experiences);
+            model.addAttribute("resume", resumeDto);
+            return "resumes/edit_resume";
+        } else {
+            return "redirect:/resumes";
+        }
+
     }
 
     @PostMapping("/resume/{resumeId}/edit")
@@ -194,8 +201,7 @@ public class ResumeMvcController {
                 }
 
             }
-        }
-        else {
+        } else {
             experienceService.deleteByResumeId(resumeId);
         }
 
@@ -205,14 +211,12 @@ public class ResumeMvcController {
                 if (contactInfo.getResumeId() == resumeId) {
                     contactInfoService.insert(contactInfo);
                     log.info("added contacts for resume {}", contactInfo.getResumeId());
-                }
-                else {
+                } else {
                     contactInfoService.update(contactInfo);
                     log.info("contact id {} has updated", contactInfo.getResumeId());
                 }
             }
-        }
-        else {
+        } else {
             contactInfoService.deleteByResumeId(resumeId);
         }
         log.info("resume edited {}", resumeDto.getName());

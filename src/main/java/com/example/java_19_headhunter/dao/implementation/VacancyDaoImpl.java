@@ -3,6 +3,7 @@ package com.example.java_19_headhunter.dao.implementation;
 import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
@@ -42,9 +44,14 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
     }
 
     @Override
-    public Vacancy findById(int id) {
+    public Optional<Vacancy> findById(int id) {
         String sql = "SELECT * FROM vacancies where ID= ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Vacancy.class), id);
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        jdbcTemplate.query(
+                                sql, new BeanPropertyRowMapper<>(Vacancy.class), id)
+                )
+        );
     }
 
     @Override
@@ -116,7 +123,7 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
             ps.setInt(6, vacancy.getExpFrom());
             ps.setInt(7, vacancy.getExpTo());
             ps.setBoolean(8, vacancy.isActive());
-            ps.setDate(9, Date.valueOf(vacancy.getCreatedDate()));
+            ps.setTimestamp(9, vacancy.getCreatedDate());
             return ps;
         }, keyHolder);
         return (int) keyHolder.getKey();

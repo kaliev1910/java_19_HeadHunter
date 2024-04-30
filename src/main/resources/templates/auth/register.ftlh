@@ -2,7 +2,7 @@
 <@main.layout>
     <div class="container">
         <h2 class="text-center mb-4">Registration Form</h2>
-        <form action="/register" method="post" style="max-width: 400px; margin: auto; display: flex; flex-wrap: wrap;">
+        <form action="/register" id="registrationForm" method="post" style="max-width: 400px; margin: auto; display: flex; flex-wrap: wrap;">
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="name" style="width: 100%;">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required style="width: 100%;">
@@ -13,7 +13,7 @@
             </div>
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="age" style="width: 100%;">Age</label>
-                <input type="number" class="form-control" id="age" name="age" required min="18" max="150"
+                <input type="number" class="form-control" id="age" name="age" required min="18" max="120"
                        style="width: 100%;">
             </div>
             <div class="form-group" style="flex-basis: 100%;">
@@ -22,7 +22,7 @@
             </div>
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="password" style="width: 100%;">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required minlength="8"
+                <input type="password" class="form-control" id="password" name="password" required minlength="4" maxlength="24"
                        style="width: 100%;">
             </div>
 
