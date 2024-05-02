@@ -5,14 +5,18 @@ import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
+import com.example.java_19_headhunter.exeptions.VacancyNotFoundException;
+import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
+import com.example.java_19_headhunter.repository.VacancyRepository;
 import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +30,12 @@ public class VacancyServiceImpl implements VacancyService {
     private final VacancyDao vacancyDao;
     private final UserDao userDao;
 
+    private final VacancyRepository vacancyRepository;
 
     @Override
     public List<VacancyDto> findAll() {
         try {
-            return vacancyDao.findAll().stream().map(this::toDto).collect(Collectors.toList());
+            return vacancyRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error finding all vacancies", e);
             throw e; // rethrow the exception
@@ -39,7 +44,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<VacancyDto> getVacanciesWithPaging(Integer page, Integer pageSize) {
-        int count = vacancyDao.getCount();
+        int count = (int) vacancyRepository.count();
         int totalPages = count / pageSize;
 
         if (totalPages <= page) {
@@ -55,10 +60,10 @@ public class VacancyServiceImpl implements VacancyService {
 
         list.forEach(e -> vacancyDtos.add(VacancyDto.builder()
                 .id(e.getId())
-                .authorEmail(e.getAuthorEmail())
+                .authorEmail(e.getAuthorEmail().getEmail())
                 .name(e.getName())
                 .description(e.getDescription())
-                .categoryId(e.getCategoryId())
+                .categoryId(e.getCategoryId().getId())
                 .salary(e.getSalary())
                 .expFrom(e.getExpFrom())
                 .expTo(e.getExpTo())
@@ -73,13 +78,13 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public VacancyDto findById(int id) {
-        return toDto(vacancyDao.findById(id));
+        return toDto(vacancyRepository.findById(id).orElseThrow(() -> new VacancyNotFoundException("Vacancy Not Found")));
     }
 
     @Override
     public List<VacancyDto> findByCategory(int categoryId) {
         try {
-            return vacancyDao.findByCategory(categoryId).stream().map(this::toDto).collect(Collectors.toList());
+            return vacancyRepository.getListByCategoryId(categoryId).stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error finding vacancies by category {}", categoryId, e);
             throw e; // rethrow the exception
@@ -99,7 +104,7 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     public List<VacancyDto> findByUserEmail(String applicantEmail) {
         try {
-            return vacancyDao.findByApplicantEmail(applicantEmail).stream().map(this::toDto).collect(Collectors.toList());
+            return vacancyRepository.getListByAuthorEmail(applicantEmail).stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error finding vacancies by applicantEmail {}", applicantEmail, e);
             throw e; // rethrow the exception
@@ -109,7 +114,7 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     public List<VacancyDto> findActiveVacancies() {
         try {
-            return vacancyDao.findActiveVacancies().stream().map(this::toDto).collect(Collectors.toList());
+            return vacancyRepository.findActiveVacancies().stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error finding active vacancies", e);
             throw e; // rethrow the exception
@@ -129,8 +134,8 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     public void update(VacancyUpdateDto vacancyDto, Authentication a) {
         try {
-            vacancyDto.setUpdatedDate(LocalDate.now());
-            vacancyDao.updateVacancy(fromUpdateDto(vacancyDto, a));
+            vacancyDto.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
+            vacancyRepository.save(fromUpdateDto(vacancyDto, a));
         } catch (Exception e) {
             log.error("Error updating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
@@ -139,16 +144,16 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public int create(VacancyCreateDto vacancyDto, Authentication authentication) {
-        int vacancyId;
+        Vacancy vacancyId;
         try {
             Vacancy vacancy = fromCreateDto(vacancyDto, authentication);
-            vacancy.setAuthorEmail(authentication.getName());
-            vacancyId = vacancyDao.createVacancy(vacancy);
+            vacancy.getAuthorEmail().setEmail(authentication.getName());
+            vacancyId = vacancyRepository.save(vacancy);
         } catch (Exception e) {
             log.error("Error creating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
         }
-        return vacancyId;
+        return vacancyId.getId();
     }
 
 
@@ -165,10 +170,10 @@ public class VacancyServiceImpl implements VacancyService {
     private VacancyDto toDto(Vacancy vacancy) {
         return VacancyDto.builder()
                 .id(vacancy.getId())
-                .authorEmail(vacancy.getAuthorEmail())
+                .authorEmail(vacancy.getAuthorEmail().getEmail())
                 .name(vacancy.getName())
                 .description(vacancy.getDescription())
-                .categoryId(vacancy.getCategoryId())
+                .categoryId(vacancy.getCategoryId().getId())
                 .salary(vacancy.getSalary())
                 .expFrom(vacancy.getExpFrom())
                 .expTo(vacancy.getExpTo())
@@ -181,10 +186,10 @@ public class VacancyServiceImpl implements VacancyService {
     private Vacancy fromDto(VacancyDto vacancyDto) {
         return Vacancy.builder()
                 .id(vacancyDto.getId())
-                .authorEmail(vacancyDto.getAuthorEmail())
+                .authorEmail(vacancyRepository.findByAuthorEmail(vacancyDto.getAuthorEmail()))
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
-                .categoryId(vacancyDto.getCategoryId())
+                .categoryId(vacancyRepository.findByCategoryId(vacancyDto.getCategoryId()))
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
                 .expTo(vacancyDto.getExpTo())
@@ -196,27 +201,27 @@ public class VacancyServiceImpl implements VacancyService {
 
     private Vacancy fromCreateDto(VacancyCreateDto vacancyDto, Authentication authentication) {
         return Vacancy.builder()
-                .authorEmail(authentication.getName())
+                .authorEmail((User)authentication.getPrincipal())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
-                .categoryId(vacancyDto.getCategoryId())
+                .categoryId(vacancyRepository.findByCategoryId(vacancyDto.getCategoryId()))
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
-                .createdDate(LocalDate.now())
-                .updateTime(LocalDate.now())
+                .createdDate(Timestamp.valueOf(LocalDateTime.now()))
+                .updateTime(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
     }
 
     private Vacancy fromUpdateDto(VacancyUpdateDto vacancyDto, Authentication authentication) {
         return Vacancy.builder()
-                .authorEmail(authentication.getName())
+                .authorEmail(vacancyRepository.findByAuthorEmail(authentication.getName()))
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
-                .categoryId(vacancyDto.getCategoryId())
+                .categoryId(vacancyRepository.findByCategoryId(vacancyDto.getCategoryId()))
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
-                .createdDate(LocalDate.now())
-                .updateTime(LocalDate.now())
+                .createdDate(Timestamp.valueOf(LocalDateTime.now()))
+                .updateTime(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
     }
 

@@ -54,7 +54,7 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
     }
 
     @Override
-    public List<Vacancy> findByApplicantEmail(String applicantEmail) {
+    public List<Vacancy> findByAuthorEmail(String applicantEmail) {
         String sql = "SELECT * FROM vacancies where AUTHOR_EMAIL = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), applicantEmail);
 
@@ -108,15 +108,15 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
             PreparedStatement ps = connection
                     .prepareStatement("INSERT INTO vacancies (AUTHOR_EMAIL, name, description, category_id, salary, exp_from, exp_to, is_active, update_time) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new String[]{"id"});
-            ps.setString(1, vacancy.getAuthorEmail());
+            ps.setString(1, vacancy.getAuthorEmail().getEmail());
             ps.setString(2, vacancy.getName());
             ps.setString(3, vacancy.getDescription());
-            ps.setInt(4, vacancy.getCategoryId());
+            ps.setInt(4, vacancy.getCategoryId().getId());
             ps.setInt(5, vacancy.getSalary());
             ps.setInt(6, vacancy.getExpFrom());
             ps.setInt(7, vacancy.getExpTo());
             ps.setBoolean(8, vacancy.isActive());
-            ps.setDate(9, Date.valueOf(vacancy.getCreatedDate()));
+            ps.setTimestamp(9, vacancy.getCreatedDate());
             return ps;
         }, keyHolder);
         return (int) keyHolder.getKey();

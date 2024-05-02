@@ -3,7 +3,9 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dao.interfaces.EducationDao;
 import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
 import com.example.java_19_headhunter.models.Education;
+import com.example.java_19_headhunter.repository.EducationRepository;
 import com.example.java_19_headhunter.service.interfaces.EducationService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +17,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Slf4j
 @Service
+@AllArgsConstructor
 public class EducationServiceImpl implements EducationService {
-    private static final Logger log = LoggerFactory.getLogger(EducationServiceImpl.class);
     private final EducationDao educationDao;
+    private final EducationRepository educationRepository;
 
-    @Autowired
-    public EducationServiceImpl(EducationDao educationDao) {
-        this.educationDao = educationDao;
-    }
+
 
     @Override
     public List<EducationDto> findByResumeId(int resumeId) {
@@ -68,7 +68,7 @@ public class EducationServiceImpl implements EducationService {
     private Education mapToEducation(EducationDto educationDto) {
         return Education.builder()
                 .id(educationDto.getId())
-                .resumeId(educationDto.getResumeId())
+                .resumeId(educationRepository.findByResumeId(educationDto.getResumeId()))
                 .institution(educationDto.getInstitution())
                 .program(educationDto.getProgram())
                 .degree(educationDto.getDegree())
@@ -80,7 +80,7 @@ public class EducationServiceImpl implements EducationService {
     private EducationDto mapToEducationDto(Education education) {
         return EducationDto.builder()
                 .id(education.getId())
-                .resumeId(education.getResumeId())
+                .resumeId(education.getResumeId().getId())
                 .institution(education.getInstitution())
                 .program(education.getProgram())
                 .degree(education.getDegree())

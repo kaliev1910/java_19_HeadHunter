@@ -31,13 +31,13 @@ public enum VacancySortStrategy {
         }
     },
 
-    BY_CATEGORY_ID("CATEGORY_ID") {
-        @Override
-        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
-            resumes.sort(Comparator.comparing(Vacancy::getCategoryId));
-            return resumes;
-        }
-    },
+//    BY_CATEGORY_ID("CATEGORY_ID") {
+//        @Override
+//        public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
+//            resumes.sort(Comparator.comparing(Vacancy::getCategoryId));
+//            return resumes;
+//        }
+//    },
 
 
     BY_SALARY("SALARY") {

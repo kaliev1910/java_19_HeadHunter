@@ -39,7 +39,7 @@ public class UserImageDao extends BasicDaoImpl {
                     "insert into user_images(user_id, file_name) values (?, ?)",
                     new String[]{"id"}
             );
-            ps.setLong(1, ui.getUserId());
+            ps.setLong(1, ui.getUserId().getId());
             ps.setString(2, ui.getFileName());
             return ps;
         }, keyHolder);

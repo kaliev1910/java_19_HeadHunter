@@ -1,19 +1,24 @@
 package com.example.java_19_headhunter.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.sql.Date;
 
+@Getter
+@Setter
 @Builder
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "experiences")
 public class Experience {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int resumeId;
+    @JoinColumn(name = "resume_id")
+    @ManyToOne
+    private Resume resumeId;
     private String companyName;
     private String position;
     private String responsibilities;

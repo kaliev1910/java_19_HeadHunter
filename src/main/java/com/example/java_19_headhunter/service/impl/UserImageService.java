@@ -3,6 +3,7 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dao.implementation.UserImageDao;
 import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.models.UserImage;
+import com.example.java_19_headhunter.repository.UserImageRepository;
 import com.example.java_19_headhunter.service.interfaces.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -17,12 +18,13 @@ public class UserImageService {
     private static final String SUB_DIR = "images";
     private final FileService fileService;
     private final UserImageDao userImageDao;
+    private final UserImageRepository userImageRepository;
 
     public void uploadImage(UserImageDto userImageDto) {
         userImageDao.delete(userImageDto.getUserId());
         String fileName = fileService.saveUploadedFile(userImageDto.getFile(), SUB_DIR);
         UserImage ui = UserImage.builder()
-                .userId(userImageDto.getUserId())
+                .userId(userImageRepository.findByUserId(userImageDto.getUserId()))
                 .fileName(fileName)
                 .build();
         userImageDao.save(ui);

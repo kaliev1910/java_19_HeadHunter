@@ -1,27 +1,37 @@
 package com.example.java_19_headhunter.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.sql.Time;
 import java.time.LocalDate;
+import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
+@Entity
+@Table(name = "vacancies")
 public class Vacancy {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String authorEmail;
+    @JoinColumn(name = "author_email")
+    @ManyToOne
+    public User authorEmail;
     private String name;
     private String description;
-    private int categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    public Category categoryId;
     private int salary;
+
     private int expFrom;
     private int expTo;
     private boolean isActive;
-    private LocalDate createdDate;
-    private LocalDate updateTime;
+    private Timestamp createdDate;
+    private Timestamp updateTime;
 
 }

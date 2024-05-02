@@ -32,5 +32,5 @@ public interface VacancyDao {
 
     void applyForVacancy(int resumeId, int vacancyId);
 
-    List<Vacancy> findByApplicantEmail(String applicantEmail);
+    List<Vacancy> findByAuthorEmail(String applicantEmail);
 }
