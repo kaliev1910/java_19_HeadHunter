@@ -3,7 +3,9 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dao.interfaces.ContactInfoDao;
 import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
 import com.example.java_19_headhunter.models.ContactInfo;
+import com.example.java_19_headhunter.repository.ContactInfoRepository;
 import com.example.java_19_headhunter.service.interfaces.ContactInfoService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +14,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
+
 public class ContactInfoServiceImpl implements ContactInfoService {
     private final ContactInfoDao contactInfoDao;
+    private final ContactInfoRepository contactInfoRepository;
 
-    @Autowired
-    public ContactInfoServiceImpl(ContactInfoDao contactInfoDao) {
-        this.contactInfoDao = contactInfoDao;
-    }
+
 
     @Override
     public List<ContactInfoDto> findByResumeId(int resumeId) {
@@ -55,8 +57,8 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     private ContactInfo mapToContactInfo(ContactInfoDto contactInfoDto) {
         return ContactInfo.builder()
                 .id(contactInfoDto.getId())
-                .resumeId(contactInfoDto.getResumeId())
-                .typeId(contactInfoDto.getTypeId())
+                .resumeId(contactInfoRepository.findContactInfoByResumeId(contactInfoDto.getResumeId()).getResumeId())
+                .typeId(contactInfoRepository.findByTypeId(contactInfoDto.getTypeId()).getTypeId())
                 .contactValue(contactInfoDto.getContactValue())
                 .build();
     }
@@ -64,8 +66,8 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     private ContactInfoDto mapToContactInfoDto(ContactInfo contactInfo) {
         return ContactInfoDto.builder()
                 .id(contactInfo.getId())
-                .resumeId(contactInfo.getResumeId())
-                .typeId(contactInfo.getTypeId())
+                .resumeId(contactInfo.getResumeId().getId())
+                .typeId(contactInfo.getTypeId().getId())
                 .contactValue(contactInfo.getContactValue())
                 .build();
     }
