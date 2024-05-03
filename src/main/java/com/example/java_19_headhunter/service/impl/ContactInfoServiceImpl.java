@@ -6,7 +6,6 @@ import com.example.java_19_headhunter.models.ContactInfo;
 import com.example.java_19_headhunter.repository.ContactInfoRepository;
 import com.example.java_19_headhunter.service.interfaces.ContactInfoService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -23,8 +22,8 @@ public class ContactInfoServiceImpl implements ContactInfoService {
 
 
     @Override
-    public List<ContactInfoDto> findByResumeId(int resumeId) {
-        List<ContactInfo> contactInfos = contactInfoDao.findByResumeId(resumeId);
+    public List<ContactInfoDto> findListByResumeId(int resumeId) {
+        List<ContactInfo> contactInfos = contactInfoRepository.findCIListByResumeId(resumeId);
         if (contactInfos.isEmpty()) {
             return Collections.emptyList(); // Возвращаем пустой список, если контакты не найдены
         }
@@ -35,9 +34,9 @@ public class ContactInfoServiceImpl implements ContactInfoService {
 
     @Override
     public void deleteByResumeId(int resumeId) {
-        List<ContactInfo> contactInfos = contactInfoDao.findByResumeId(resumeId);
+        List<ContactInfo> contactInfos = contactInfoRepository.findCIListByResumeId(resumeId);
         if (!contactInfos.isEmpty()) { // Проверяем, есть ли контакты для удаления
-            contactInfoDao.deleteByResumeId(resumeId);
+            contactInfoRepository.deleteByResumeId_Id(resumeId);
         }
         // Если контакты отсутствуют, ничего не делаем
     }
@@ -45,7 +44,7 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     @Override
     public void insert(ContactInfoDto contactInfoDto) {
         ContactInfo contactInfo = mapToContactInfo(contactInfoDto);
-        contactInfoDao.insert(contactInfo);
+        contactInfoRepository.save(contactInfo);
     }
 
     @Override
@@ -57,8 +56,8 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     private ContactInfo mapToContactInfo(ContactInfoDto contactInfoDto) {
         return ContactInfo.builder()
                 .id(contactInfoDto.getId())
-                .resumeId(contactInfoRepository.findContactInfoByResumeId(contactInfoDto.getResumeId()).getResumeId())
-                .typeId(contactInfoRepository.findByTypeId(contactInfoDto.getTypeId()).getTypeId())
+                .resumeId(contactInfoRepository.findById(contactInfoDto.getResumeId()).get().getResumeId())
+                .typeId(contactInfoRepository.findById(contactInfoDto.getTypeId()).get().getTypeId())
                 .contactValue(contactInfoDto.getContactValue())
                 .build();
     }

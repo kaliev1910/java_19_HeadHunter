@@ -9,19 +9,19 @@ import java.util.Optional;
 @Component
 
 public interface UserDao {
-    public List<User> getUsers();
+//    public List<User> getUsers();
 
     public void updateUser(User user);
 
     public void createUser(User user);
 
-    Optional<User> findByEmail(String email);
+//    Optional<User> findByEmail(String email);
 
     Optional<User> findByPhoneNumber(String phoneNumber);
 
-    Optional<User> findByName(String name);
+//    Optional<User> findByName(String name);
 
-    boolean userExists(String email);
+//    boolean userExists(String email);
 
-    boolean getUserType(User user);
+//    boolean getUserType(User user);
 }

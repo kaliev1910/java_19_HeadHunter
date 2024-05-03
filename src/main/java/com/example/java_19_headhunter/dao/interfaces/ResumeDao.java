@@ -19,7 +19,7 @@ public interface ResumeDao {
 
 //    int create(Resume resume);
 
-    void update(Resume resume);
+//    void update(Resume resume);
 
 //    void deleteById(int id);
 //    public Integer getCount();

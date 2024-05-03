@@ -12,7 +12,7 @@ public interface ContactInfoService {
 
     void update(ContactInfoDto contactInfoDto);
 
-    List<ContactInfoDto> findByResumeId(int resumeId);
+    List<ContactInfoDto> findListByResumeId(int resumeId);
 
     void deleteByResumeId(int resumeId);
 }

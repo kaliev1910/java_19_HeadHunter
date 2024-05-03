@@ -42,22 +42,22 @@ public class UserDaoImpl implements UserDao {
         jdbcTemplate.update(sqlUserRole, user.getEmail(), roleId);
     }
 
-
-    @Override
-    public List<User> getUsers() {
-        String sql = """
-                select * from users order by NAME desc
-                """;
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
-        String sql = """
-                select * from users where email = ?;
-                """;
-        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), email)));
-    }
+//
+//    @Override
+//    public List<User> getUsers() {
+//        String sql = """
+//                select * from users order by NAME desc
+//                """;
+//        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+//    }
+//
+//    @Override
+//    public Optional<User> findByEmail(String email) {
+//        String sql = """
+//                select * from users where email = ?;
+//                """;
+//        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), email)));
+//    }
 
     @Override
     public Optional<User> findByPhoneNumber(String phoneNumber) {
@@ -69,25 +69,25 @@ public class UserDaoImpl implements UserDao {
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber)));
     }
 
-    @Override
-    public Optional<User> findByName(String name) {
-        String sql = """
-                SELECT * FROM users WHERE name = ?;
-                    """;
-        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), name)));
-    }
+//    @Override
+//    public Optional<User> findByName(String name) {
+//        String sql = """
+//                SELECT * FROM users WHERE name = ?;
+//                    """;
+//        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), name)));
+//    }
+//
+//    @Override
+//    public boolean userExists(String email) {
+//        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+//        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+//        return count != null && count > 0;
+//    }
 
-    @Override
-    public boolean userExists(String email) {
-        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
-        return count != null && count > 0;
-    }
-
-    @Override
-    public boolean getUserType(User user) {
-        return false;
-    }
-
+//    @Override
+//    public boolean getUserType(User user) {
+//        return false;
+//    }
+//
 
 }

@@ -8,11 +8,11 @@ import java.util.List;
 
 @Component
 public interface MessageDao {
-    List<Message> getAllMessages(String email);
-    Message getMessageById(int id, String email);
-    Message addMessage(Message message);
-
-    Message updateMessage(Message message);
-    Message deleteMessage(int id, String email);
+//    List<Message> getAllMessages(String email);
+//    Message getMessageById(int id, String email);
+//    Message addMessage(Message message);
+//
+//    Message updateMessage(Message message);
+//    Message deleteMessage(int id, String email);
 
 }

@@ -12,7 +12,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "educations")
+@Table(name = "education_info")
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,9 @@ public class Education {
     private String institution;
     private String program;
     private String degree;
+    @Column(name = "start_date")
     private Date startDate;
+    @Column(name = "end_date")
     private Date endDate;
 
 }

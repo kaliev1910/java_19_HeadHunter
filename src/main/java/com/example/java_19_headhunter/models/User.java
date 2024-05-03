@@ -1,9 +1,6 @@
 package com.example.java_19_headhunter.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -22,6 +19,7 @@ public class User {
     private String email;
     private String password;
     private String avatar;
+    @Column(name = "account_type")
     private String accountType;
     private boolean enabled;
 

@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ResumeRepository extends JpaRepository<Resume, Integer> {
     List<Resume> findResumesByApplicantEmail_Email(String userEmail);
@@ -15,8 +16,6 @@ public interface ResumeRepository extends JpaRepository<Resume, Integer> {
     Resume findResumeById(int id);
 
     List<Resume> findResumesByCategoryId_Id(int category);
-
-    Category findResumeByCategoryId_Id(int categoryId);
 
     User findResumeByApplicantEmail(String applicantEmail);
 }

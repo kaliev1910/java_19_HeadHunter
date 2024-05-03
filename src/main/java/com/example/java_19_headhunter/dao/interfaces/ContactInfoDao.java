@@ -7,11 +7,11 @@ import java.util.List;
 
 @Component
 public interface ContactInfoDao {
-    void insert(ContactInfo contactInfo);
+//    void insert(ContactInfo contactInfo);
 
     void update(ContactInfo contactInfo);
 
-    List<ContactInfo> findByResumeId(int resumeId);
+//    List<ContactInfo> findByResumeId(int resumeId);
 
-    void deleteByResumeId(int resumeId);
+//    void deleteByResumeId(int resumeId);
 }

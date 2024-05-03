@@ -7,11 +7,11 @@ import java.util.List;
 
 @Component
 public interface ExperienceDao {
-    void insert(Experience experience);
+//    void insert(Experience experience);
 
     void update(Experience experience);
 
-    List<Experience> findByResumeId(int resumeId);
+//    List<Experience> findByResumeId(int resumeId);
 
-    void deleteByResumeId(int resumeId);
+//    void deleteByResumeId(int resumeId);
 }

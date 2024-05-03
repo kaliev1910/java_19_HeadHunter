@@ -22,7 +22,7 @@ public class Message {
     @JoinColumn(name = "sender_email")
     private User sender;
     @ManyToOne
-    @JoinColumn(name = "reciever_email")
+    @JoinColumn(name = "receiver_email")
     private User reciever;
     private String content;
     private Timestamp timestamp;

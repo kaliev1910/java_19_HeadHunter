@@ -21,12 +21,16 @@ public class Resume {
     @ManyToOne
     private User applicantEmail;
     private String name;
+    @Column(name = "expected_salary")
     private Integer expectedSalary;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category categoryId;
+    @Column(name = "is_active")
     private boolean isActive;
+    @Column(name = "created_date")
     private Timestamp createdDate;
+    @Column(name = "updated_time")
     private Timestamp updatedTime;
 
 

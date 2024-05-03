@@ -18,6 +18,7 @@ public class UserImage {
     @JoinColumn(name = "user_id")
     @ManyToOne
     private User userId;
+    @Column(name = "file_name")
     private String fileName;
 
 }

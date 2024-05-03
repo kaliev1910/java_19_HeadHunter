@@ -27,11 +27,15 @@ public class Vacancy {
     @JoinColumn(name = "category_id")
     public Category categoryId;
     private int salary;
-
+    @Column(name = "exp_from")
     private int expFrom;
+    @Column(name = "exp_to")
     private int expTo;
+    @Column(name = "is_active")
     private boolean isActive;
+    @Column(name = "created_date")
     private Timestamp createdDate;
+    @Column(name = "update_time")
     private Timestamp updateTime;
 
 }

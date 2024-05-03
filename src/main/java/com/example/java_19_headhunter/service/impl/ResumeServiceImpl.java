@@ -139,7 +139,7 @@ public class ResumeServiceImpl implements ResumeService {
 
         return Resume.builder()
                 .applicantEmail(userRepository.findUserByEmail(user.getUsername()))
-                .categoryId(resumeRepository.findResumeByCategoryId_Id(resumeDto.getCategoryId()))
+                .categoryId(resumeRepository.findResumeById(resumeDto.getCategoryId()).getCategoryId())
                 .isActive(true)
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
@@ -151,8 +151,8 @@ public class ResumeServiceImpl implements ResumeService {
     private Resume fromDto(ResumeDto resumeDto) {
         return Resume.builder()
 
-                .applicantEmail(resumeRepository.findResumeByApplicantEmail(resumeDto.getApplicantEmail()))
-                .categoryId(resumeRepository.findResumeByCategoryId_Id(resumeDto.getCategoryId()))
+                .applicantEmail(resumeRepository.findResumeById(resumeDto.getId()).getApplicantEmail())
+                .categoryId(resumeRepository.findResumeById(resumeDto.getId()).getCategoryId())
                 .isActive(resumeDto.isActive())
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())

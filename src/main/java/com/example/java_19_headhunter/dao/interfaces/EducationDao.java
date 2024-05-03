@@ -7,12 +7,12 @@ import java.util.List;
 
 @Component
 public interface EducationDao {
-    void insert(Education education);
+//    void insert(Education education);
 
-    void update(Education education);
+//    void update(Education education);
 
-    List<Education> findByResumeId(int resumeId);
+//    List<Education> findByResumeId(int resumeId);
 
-    void deleteByResumeId(int resumeId);
-    Education findById(int id);
+//    void deleteByResumeId(int resumeId);
+//    Education findById(int id);
 }

@@ -20,6 +20,7 @@ public class ContactInfo {
     @ManyToOne
     @JoinColumn(name = "type_id")
     private ContactType typeId;
+    @Column(name = "contact_value", length = 255)
     private String contactValue;
 
 
