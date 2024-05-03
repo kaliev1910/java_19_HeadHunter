@@ -11,7 +11,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "work_experince_info")
+@Table(name = "work_experience_info")
 public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

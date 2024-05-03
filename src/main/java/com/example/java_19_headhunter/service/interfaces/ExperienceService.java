@@ -7,8 +7,8 @@ import java.util.List;
 
 @Service
 public interface ExperienceService {
-//    void insert(ExperienceDto experienceDto);
-
+    void insert(ExperienceDto experienceDto);
+//
     void update(ExperienceDto experienceDto);
 
     List<ExperienceDto> findListByResumeId(int resumeId);

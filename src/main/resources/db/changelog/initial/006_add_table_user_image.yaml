@@ -14,7 +14,7 @@ databaseChangeLog:
                     primaryKey: true
               - column:
                   name: user_id
-                  type: INTEGER
+                  type: VARCHAR(255)
               - column:
                   name: file_name
                   type: VARCHAR(255)
@@ -22,6 +22,6 @@ databaseChangeLog:
               - foreignKeyConstraint:
                   name: mfk_user_id
                   baseTableName: user_images
-                  baseColumnNames: user_id
+                  baseColumnNames: user_email
                   referencedTableName: users
-                  referencedColumnNames: id
+                  referencedColumnNames: email

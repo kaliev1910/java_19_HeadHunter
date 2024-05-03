@@ -4,6 +4,7 @@ import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
+import com.example.java_19_headhunter.repository.UserRepository;
 import com.example.java_19_headhunter.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -22,10 +23,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final PasswordEncoder encoder;
-
-    protected static User fromDto(UserDto userDto) {
-        return User.builder().name(userDto.getName()).surname(userDto.getSurname()).email(userDto.getEmail()).password(userDto.getPassword()).age(userDto.getAge()).avatar(userDto.getAvatar()).accountType(userDto.getAccountType()).enabled(userDto.isEnabled()).build();
-    }
+    private final UserRepository userRepository;
 
     @SneakyThrows
     @Override
@@ -35,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
             user = fromDto(userDto);
             user.setPassword(encoder.encode(user.getPassword()));
-            User tempUser = userDao.findByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
+            User tempUser = userRepository.findUserByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
             user.setAccountType(tempUser.getAccountType());
             user.setEnabled(tempUser.isEnabled());
             userDao.updateUser(user);
@@ -50,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @SneakyThrows
     public boolean isEmployer(String email) {
-        return userDao.findByEmail(email).map(user -> {
+        return userRepository.findUserByEmail(email).map(user -> {
             Optional<UserDto> userDto = findByEmail(user.getEmail());
             return userDto.get().getAccountType().equalsIgnoreCase("employer");
         }).orElseThrow(() -> new UserNotFoundException("Cannot find user"));
@@ -62,8 +60,8 @@ public class UserServiceImpl implements UserService {
         try {
             user = fromDto(userDto);
             user.setPassword(encoder.encode(userDto.getPassword()));
-            userDao.createUser(user);
-            Optional<User> newUser = userDao.findByEmail(user.getEmail());
+            userRepository.save(user);
+            Optional<User> newUser = userRepository.findUserByEmail(user.getEmail());
 
             if (newUser.isPresent()) {
                 log.info("User with email {} has been created", userDto.getEmail());
@@ -81,7 +79,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getUsers() {
         try {
-            var users = userDao.getUsers();
+            var users = userRepository.findAll();
             log.info("Retrieved {} users", users.size());
             return users.stream().map(this::toDto).collect(Collectors.toList());
         } catch (Exception e) {
@@ -93,7 +91,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDto> findByEmail(String email) {
         try {
-            var user = userDao.findByEmail(email);
+            var user = userRepository.findUserByEmail(email);
             log.info("Retrieved user by email: {}", email);
             return user.map(this::toDto);
         } catch (Exception e) {
@@ -117,7 +115,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDto> findByName(String name) {
         try {
-            var user = userDao.findByName(name);
+            var user = userRepository.findUserByName(name);
             log.info("Retrieved user by name: {}", name);
             return user.map(this::toDto);
         } catch (Exception e) {
@@ -129,7 +127,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userExists(String email) {
         try {
-            var exists = userDao.userExists(email);
+            var exists = userRepository.existsByEmail(email);
             log.info("Checked if user exists by email: {} result {}", email, exists);
             return exists;
         } catch (Exception e) {
@@ -166,5 +164,13 @@ public class UserServiceImpl implements UserService {
         return UserDto.builder().id(user.getId()).name(user.getName()).surname(user.getSurname())
                 .email(user.getEmail()).password(user.getPassword()).age(user.getAge()).avatar(user.getAvatar())
                 .accountType(user.getAccountType()).enabled(user.isEnabled()).build();
+    }
+
+    protected static User fromDto(UserDto userDto) {
+        return User.builder()
+                .name(userDto.getName()).
+                surname(userDto.getSurname()).
+                email(userDto.getEmail()).password(userDto.getPassword())
+                .age(userDto.getAge()).avatar(userDto.getAvatar()).accountType(userDto.getAccountType()).enabled(userDto.isEnabled()).build();
     }
 }

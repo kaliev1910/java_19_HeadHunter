@@ -17,4 +17,5 @@ public interface ContactInfoRepository extends JpaRepository<ContactInfo, Intege
     ContactInfo findByTypeId(int typeId);
 
     void deleteByResumeId_Id(int resumeId);
+
 }

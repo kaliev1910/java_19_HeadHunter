@@ -50,7 +50,7 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     @Override
     public void update(ContactInfoDto contactInfoDto) {
         ContactInfo contactInfo = mapToContactInfo(contactInfoDto);
-        contactInfoDao.update(contactInfo);
+        contactInfoRepository.save(contactInfo);
     }
 
     private ContactInfo mapToContactInfo(ContactInfoDto contactInfoDto) {

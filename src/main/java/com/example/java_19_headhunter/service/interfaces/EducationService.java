@@ -18,5 +18,5 @@ public interface EducationService {
 
     Optional<Education> findEducationById(int educationId);
 
-    void deleteResumesByResumeId(int resumeId);
+    void deleteEducationsByResumeId(int resumeId);
 }

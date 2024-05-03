@@ -102,7 +102,7 @@ public class ResumeServiceImpl implements ResumeService {
             Resume resume = fromDto(mapToResumeDto(resumeDto));
             resume.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
             resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
-            resume.setApplicantEmail(userRepository.findUserByEmail(user.getUsername()));
+            resume.setApplicantEmail(userRepository.findUserByEmail(user.getUsername()).get());
             resumeId = resumeRepository.save(resume);
         } catch (Exception e) {
             log.error("Error inserting Resume: {}", resumeDto, e);
@@ -115,7 +115,7 @@ public class ResumeServiceImpl implements ResumeService {
     public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
         try {
             Resume resume = fromCreateDto(resumeCreateDto, authentication);
-            resume.setApplicantEmail(userRepository.findUserByEmail(authentication.getName()));
+            resume.setApplicantEmail(userRepository.findUserByEmail(authentication.getName()).get());
             resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
             resumeDao.update(resume);
         } catch (Exception e) {
@@ -138,7 +138,7 @@ public class ResumeServiceImpl implements ResumeService {
         User user = (User) authentication.getPrincipal();
 
         return Resume.builder()
-                .applicantEmail(userRepository.findUserByEmail(user.getUsername()))
+                .applicantEmail(userRepository.findUserByEmail(user.getUsername()).get())
                 .categoryId(resumeRepository.findResumeById(resumeDto.getCategoryId()).getCategoryId())
                 .isActive(true)
                 .name(resumeDto.getName())

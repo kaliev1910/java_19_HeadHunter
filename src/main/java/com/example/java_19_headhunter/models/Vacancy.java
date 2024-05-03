@@ -3,8 +3,6 @@ package com.example.java_19_headhunter.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Time;
-import java.time.LocalDate;
 import java.sql.Timestamp;
 
 @Getter
@@ -35,7 +33,7 @@ public class Vacancy {
     private boolean isActive;
     @Column(name = "created_date")
     private Timestamp createdDate;
-    @Column(name = "update_time")
-    private Timestamp updateTime;
+    @Column(name = "updated_time")
+    private Timestamp updatedTime;
 
 }

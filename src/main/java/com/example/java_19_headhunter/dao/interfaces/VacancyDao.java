@@ -20,7 +20,7 @@ public interface VacancyDao {
 
 //    List<Vacancy> findByUserId(int userId);
 
-    List<User> findRespondedApplicantsForVacancy(int vacancyId);
+//    List<User> findRespondedApplicantsForVacancy(int vacancyId);
 
 //    List<Vacancy> findActiveVacancies();
 

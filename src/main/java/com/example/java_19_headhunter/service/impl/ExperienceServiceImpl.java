@@ -19,11 +19,11 @@ public class ExperienceServiceImpl implements ExperienceService {
     private final ExperienceDao experienceDao;
     private final ExperienceRepository experienceRepository;
 
-//    @Override
-//    public void insert(ExperienceDto experienceDto) {
-//        Experience experience = mapToExperience(experienceDto);
-//        experienceDao.insert(experience);
-//    }
+    @Override
+    public void insert(ExperienceDto experienceDto) {
+        Experience experience = mapToExperience(experienceDto);
+        experienceRepository.save(experience);
+    }
 
     @Override
     public void update(ExperienceDto experienceDto) {
@@ -35,11 +35,15 @@ public class ExperienceServiceImpl implements ExperienceService {
     public List<ExperienceDto> findListByResumeId(int resumeId) {
         List<Experience> experiences = experienceRepository.findListByResumeId(resumeId);
         if (experiences.isEmpty()) {
-            return Collections.emptyList(); // Возвращаем пустой список, если опыт работы не найден
+            return Collections.emptyList();
         }
         return experiences.stream()
                 .map(this::mapToExperienceDto)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteEducationById(int educationId) {
+        experienceRepository.deleteById(educationId);
     }
 
     @Override

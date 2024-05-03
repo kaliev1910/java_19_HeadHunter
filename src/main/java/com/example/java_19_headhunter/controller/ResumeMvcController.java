@@ -179,8 +179,8 @@ public class ResumeMvcController {
             }
             log.info("education = {}", educationDto);
         } else {
-            //TODO переделать метод deleteByResumeId т.к он удаляет все образования связанные с резюме
-            educationService.deleteResumesByResumeId(resumeId);
+            educationService.deleteEducationsByResumeId(resumeId);
+            // если с шаблона приходит пустой список, то удаляет все образования связанные с резюме
         }
 
         if (experienceDto != null) {

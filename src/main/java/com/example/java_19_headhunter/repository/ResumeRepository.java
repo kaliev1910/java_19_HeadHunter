@@ -17,5 +17,5 @@ public interface ResumeRepository extends JpaRepository<Resume, Integer> {
 
     List<Resume> findResumesByCategoryId_Id(int category);
 
-    User findResumeByApplicantEmail(String applicantEmail);
+//    User findUserByApplicantEmail(String applicantEmail);
 }

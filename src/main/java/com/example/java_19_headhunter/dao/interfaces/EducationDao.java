@@ -7,6 +7,7 @@ import java.util.List;
 
 @Component
 public interface EducationDao {
+//    void update(Education education);
 //    void insert(Education education);
 
 //    void update(Education education);

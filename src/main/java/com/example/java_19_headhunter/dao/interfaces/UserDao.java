@@ -19,6 +19,7 @@ public interface UserDao {
 
     Optional<User> findByPhoneNumber(String phoneNumber);
 
+
 //    Optional<User> findByName(String name);
 
 //    boolean userExists(String email);

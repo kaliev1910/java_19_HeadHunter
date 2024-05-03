@@ -232,7 +232,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: salary
-                  type: DECIMAL
+                  type: INTEGER
               - column:
                   name: exp_from
                   type: INTEGER

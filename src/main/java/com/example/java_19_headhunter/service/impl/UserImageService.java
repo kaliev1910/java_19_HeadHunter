@@ -1,6 +1,5 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.implementation.UserImageDao;
 import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.models.UserImage;
 import com.example.java_19_headhunter.repository.UserImageRepository;
@@ -17,25 +16,24 @@ import java.util.NoSuchElementException;
 public class UserImageService {
     private static final String SUB_DIR = "images";
     private final FileService fileService;
-    private final UserImageDao userImageDao;
+
     private final UserImageRepository userImageRepository;
 
     public void uploadImage(UserImageDto userImageDto) {
-        userImageDao.delete(userImageDto.getUserId());
+        userImageRepository.deleteByUserId_Id(userImageDto.getUserId());
         String fileName = fileService.saveUploadedFile(userImageDto.getFile(), SUB_DIR);
         UserImage ui = UserImage.builder()
-                .userId(userImageRepository.findByUserId(userImageDto.getUserId()))
+                .userId(userImageRepository.findByUserId_Id(userImageDto.getUserId()).get().getUserId())
                 .fileName(fileName)
                 .build();
-        userImageDao.save(ui);
+        userImageRepository.save(ui);
     }
-
 
 
     public ResponseEntity<?> downloadImage(long imageId) {
         String fileName;
         try {
-            UserImage ui = userImageDao.getImageById(imageId);
+            UserImage ui = userImageRepository.findByImageId(imageId);
             fileName = ui.getFileName();
         } catch (NullPointerException e) {
             throw new NoSuchElementException("Image not found");
@@ -44,7 +42,7 @@ public class UserImageService {
     }
 
     public ResponseEntity<?> getImageByUserId(Long userId) {
-        var optionalUserImage = userImageDao.findImageByUserId(userId);
+        var optionalUserImage = userImageRepository.findByUserId_Id(userId);
         if (optionalUserImage.isEmpty()) {
             return fileService.getOutputFile("no_image.jpeg", SUB_DIR, MediaType.IMAGE_JPEG);
         }

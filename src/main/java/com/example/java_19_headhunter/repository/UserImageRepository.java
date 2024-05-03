@@ -5,7 +5,12 @@ import com.example.java_19_headhunter.models.UserImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface UserImageRepository  extends JpaRepository<UserImage, Integer> {
-    @Query("select u from UserImage u where u.userId = :userId")
-    User findByUserId(long userId);
+    Optional<UserImage> findByUserId_Id(long userId);
+
+    void deleteByUserId_Id(long userId);
+
+    UserImage findByImageId(long imageId);
 }

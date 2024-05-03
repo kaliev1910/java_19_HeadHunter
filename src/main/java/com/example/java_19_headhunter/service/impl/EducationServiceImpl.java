@@ -45,10 +45,10 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
-    public void deleteResumesByResumeId(int resumeId) {
+    public void deleteEducationsByResumeId(int resumeId) {
         List<Education> educations = educationRepository.findEducationsByResumeId_Id(resumeId);
         if (!educations.isEmpty()) { // Проверяем, есть ли образование для удаления
-            educationRepository.delete();
+            educationRepository.deleteAll(educations);
         }
         // Если образование отсутствует, ничего не делаем
     }
@@ -62,7 +62,7 @@ public class EducationServiceImpl implements EducationService {
     @Override
     public void update(EducationDto educationDto) {
         Education education = mapToEducation(educationDto);
-        educationDao.update(education);
+        educationRepository.save(education);
     }
 
     private Education mapToEducation(EducationDto educationDto) {

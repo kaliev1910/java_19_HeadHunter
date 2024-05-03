@@ -80,12 +80,12 @@ public class ResumeDaoImpl extends BasicDaoImpl implements ResumeDao {
 //        return Objects.requireNonNull(keyHolder.getKey()).intValue();
 //    }
 //
-//    @Override
-//    public void update(Resume resume) {
-//        String sql = "UPDATE resumes SET APPLICANT_EMAIL = ?, name = ?, expected_salary = ?,  created_date = ?, update_time = ? WHERE id = ?";
-//        jdbcTemplate.update(sql, resume.getApplicantEmail(), resume.getName(), resume.getExpectedSalary(),
-//                resume.getCreatedDate(), resume.getUpdatedTime(), resume.getId());
-//    }
+    @Override
+    public void update(Resume resume) {
+        String sql = "UPDATE resumes SET APPLICANT_EMAIL = ?, name = ?, expected_salary = ?,  created_date = ?, update_time = ? WHERE id = ?";
+        jdbcTemplate.update(sql, resume.getApplicantEmail(), resume.getName(), resume.getExpectedSalary(),
+                resume.getCreatedDate(), resume.getUpdatedTime(), resume.getId());
+    }
 
 //    @Override
 //    public void deleteById(int id) {
