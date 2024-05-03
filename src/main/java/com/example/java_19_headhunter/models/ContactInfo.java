@@ -1,20 +1,26 @@
 package com.example.java_19_headhunter.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-
+@Getter
+@Setter
 @Builder
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "contacts_info")
 public class ContactInfo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int resumeId;
-    private int typeId;
+    @JoinColumn(name = "resume_id")
+    @ManyToOne
+    private Resume resumeId;
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private ContactType typeId;
+    @Column(name = "contact_value", length = 255)
     private String contactValue;
 
 

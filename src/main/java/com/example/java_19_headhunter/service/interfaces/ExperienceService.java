@@ -8,10 +8,10 @@ import java.util.List;
 @Service
 public interface ExperienceService {
     void insert(ExperienceDto experienceDto);
-
+//
     void update(ExperienceDto experienceDto);
 
-    List<ExperienceDto> findByResumeId(int resumeId);
+    List<ExperienceDto> findListByResumeId(int resumeId);
 
-    void deleteByResumeId(int resumeId);
+    void deleteEducationsByResumeId(int resumeId);
 }

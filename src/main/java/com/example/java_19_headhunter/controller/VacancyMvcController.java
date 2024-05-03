@@ -9,8 +9,6 @@ import com.example.java_19_headhunter.service.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -64,7 +62,7 @@ public class VacancyMvcController {
     @GetMapping("/vacancy/{id}")
     public String showVacancyInfo(@PathVariable("id") int id, Model model) {
         VacancyDto vacancy = vacancyService.findById(id);
-        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(id);
+        List<ContactInfoDto> contacts = contactInfoService.findListByResumeId(id);
         model.addAttribute("vacancy", vacancy);
 
         model.addAttribute("contacts", contacts );

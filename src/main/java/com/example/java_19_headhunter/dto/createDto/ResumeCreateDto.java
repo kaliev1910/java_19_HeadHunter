@@ -18,7 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class ResumeCreateDto {
-    private String applicantEmail;
     @NotBlank(message = "Name is mandatory")
     @Size(max = 100, message = "Name should not be greater than 100 characters")
     @NotNull

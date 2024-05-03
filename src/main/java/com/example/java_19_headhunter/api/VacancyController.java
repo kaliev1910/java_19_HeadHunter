@@ -1,6 +1,7 @@
 package com.example.java_19_headhunter.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
+import com.example.java_19_headhunter.service.impl.ResponseServiceImpl;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
 import com.example.java_19_headhunter.service.interfaces.ResumeService;
@@ -18,6 +19,7 @@ public class VacancyController {
     private final UserServiceImpl userService;
     private final ResumeService resumeService;
     private final VacancyServiceImpl vacancyService;
+    private final ResponseServiceImpl responseServiceImpl;
 
 
     @GetMapping("/")
@@ -52,8 +54,8 @@ public class VacancyController {
     }
 
     @PostMapping("/apply/{vacancyId}")
-    public ResponseEntity<?> applyForVacancy(@RequestBody Integer resumeId, @PathVariable int vacancyId) {
-        vacancyService.applyForVacancy(resumeId, vacancyId);
+    public ResponseEntity<Void> applyForVacancy(@RequestBody Integer resumeId, @PathVariable int vacancyId) {
+        responseServiceImpl.makeResponse(resumeId, vacancyId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

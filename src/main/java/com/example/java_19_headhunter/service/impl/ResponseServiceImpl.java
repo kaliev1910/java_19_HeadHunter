@@ -1,8 +1,9 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.ResponseDao;
-import com.example.java_19_headhunter.dto.basicDtos.UserResponseDto;
 import com.example.java_19_headhunter.models.UserResponse;
+import com.example.java_19_headhunter.repository.ResumeRepository;
+import com.example.java_19_headhunter.repository.UserResponseRepository;
+import com.example.java_19_headhunter.repository.VacancyRepository;
 import com.example.java_19_headhunter.service.interfaces.ResponseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,46 +16,52 @@ import java.util.List;
 @Slf4j
 public class ResponseServiceImpl implements ResponseService {
 
-    private final ResponseDao responseDao;
+    private final UserResponseRepository userResponseRepository;
+    private final ResumeRepository resumeRepository;
+    private final VacancyRepository vacancyRepository;
 
     @Override
-    public boolean makeResponse(UserResponse response) {
+    public boolean makeResponse(int resumeId, int vacancyId) {
+        UserResponse  response;
         try {
-            responseDao.applyForVacancy(response);
+            response =  UserResponse.builder()
+                    .resumeId(resumeRepository.findResumeById(resumeId).get())
+                    .vacancyId(vacancyRepository.findById(vacancyId).get())
+                    .build();
+            userResponseRepository.save(response);
             return true;
         } catch (Exception e) {
-            log.info("Error making response for response: {}", response.toString());
+            log.info("Error making response ");
             return false;
         }
     }
 
-    @Override
-    public boolean confirmResume(int resumeId, int vacancyId, boolean confirmValue) {
-        try {
-            responseDao.confirmResume(resumeId, vacancyId, confirmValue);
-            return true;
-        } catch (Exception e) {
-            log.info("Error confirming resume");
-            return false;
-        }
-    }
+//    @Override
+//    public boolean confirmResume(int resumeId, int vacancyId, boolean confirmValue) {
+//        try {
+//            confirmResume(resumeId, vacancyId, confirmValue);
+//            return true;
+//        } catch (Exception e) {
+//            log.info("Error confirming resume");
+//            return false;
+//        }
+//    }
 
-    @Override
-    public List<UserResponseDto> getEmployerResponses(String email) {
-        try {
-            List<UserResponse> responses = responseDao.getEmployerResponses(email);
-            return responses.stream().map(this::todto).toList();
-        } catch (Exception e) {
-            log.info("Error getting employer responses: {}", e.toString());
-            return null;
-        }
-
-    }
+//    @Override
+//    public List<UserResponse> getEmployerResponses(String email) {
+//        try {
+//            return userResponseRepository.findByEmail(email);
+//        } catch (Exception e) {
+//            log.info("Error getting employer responses: {}", e.toString());
+//            return null;
+//        }
+//
+//    }
 
     @Override
     public List<UserResponse> getVacancyResponsesByVacancyId(int vacancyId) {
         try {
-            return responseDao.getVacancyResponsesByVacancyId(vacancyId);
+            return userResponseRepository.findUserResponsesByVacancyId_id(vacancyId);
         } catch (Exception e) {
             log.info("Error getting Vacancy responses by Vacancy ID: {}", e.toString());
             return null;
@@ -65,7 +72,7 @@ public class ResponseServiceImpl implements ResponseService {
     @Override
     public void revokeResponse(int vacancyId, int resumeId) {
         try {
-            responseDao.revokeResponse(vacancyId, resumeId);
+            userResponseRepository.deleteUserResponseByVacancyId_IdAndResumeId_Id(vacancyId, resumeId);
         } catch (Exception e) {
             log.info("Error revoking response: {}", e.toString());
         }
@@ -74,7 +81,7 @@ public class ResponseServiceImpl implements ResponseService {
     @Override
     public List<UserResponse> getResponsesByResumeId(int resumeId) {
         try {
-            return responseDao.getResponsesByResumeId(resumeId);
+            return userResponseRepository.findUserResponsesByResumeId_id(resumeId);
 
         } catch (Exception e) {
             log.info("Error getting responses by Resume ID: {}", e.toString());
@@ -82,12 +89,11 @@ public class ResponseServiceImpl implements ResponseService {
         }
 
     }
-
+//
     @Override
-    public List<UserResponseDto> getApplicantResponses(String email) {
+    public List<UserResponse> getUserResponses(String email) {
         try {
-            List<UserResponse> responses = responseDao.getApplicantResponses(email);
-           return responses.stream().map(this::todto).toList();
+            return userResponseRepository.getApplicantResponses(email);
         } catch (Exception e) {
 
             log.info("Error getting applicant responses: {}", e.toString());
@@ -96,12 +102,4 @@ public class ResponseServiceImpl implements ResponseService {
     }
 
 
-    private UserResponseDto todto(UserResponse response){
-        return  UserResponseDto.builder()
-                .id(response.getId())
-                .resumeId(response.getResumeId())
-                .vacancyId(response.getVacancyId())
-                .confirmation(response.isConfirmation())
-                .build();
-    }
 }

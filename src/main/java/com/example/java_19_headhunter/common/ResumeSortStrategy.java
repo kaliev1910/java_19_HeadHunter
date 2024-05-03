@@ -30,13 +30,13 @@ public enum ResumeSortStrategy {
         }
     },
 
-    BY_CATEGORY_ID("CATEGORY_ID") {
-        @Override
-        public List<Resume> sortingResumes(List<Resume> resumes) {
-            resumes.sort(Comparator.comparing(Resume::getCategoryId));
-            return resumes;
-        }
-    },
+//    BY_CATEGORY_ID("CATEGORY_ID") {
+//        @Override
+//        public List<Resume> sortingResumes(List<Resume> resumes) {
+//            resumes.sort(Comparator.comparing(Resume::getCategoryId));
+//            return resumes;
+//        }
+//    },
 
 
     BY_EXPECTED_SALARY("EXPECTED_SALARY") {

@@ -1,8 +1,8 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.ExperienceDao;
 import com.example.java_19_headhunter.dto.basicDtos.ExperienceDto;
 import com.example.java_19_headhunter.models.Experience;
+import com.example.java_19_headhunter.repository.ExperienceRepository;
 import com.example.java_19_headhunter.service.interfaces.ExperienceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,40 +15,44 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ExperienceServiceImpl implements ExperienceService {
 
-    private final ExperienceDao experienceDao;
+    private final ExperienceRepository experienceRepository;
 
     @Override
     public void insert(ExperienceDto experienceDto) {
         Experience experience = mapToExperience(experienceDto);
-        experienceDao.insert(experience);
+        experienceRepository.save(experience);
     }
 
     @Override
     public void update(ExperienceDto experienceDto) {
         Experience experience = mapToExperience(experienceDto);
-        experienceDao.update(experience);
+        experienceRepository.save(experience);
     }
 
     @Override
-    public List<ExperienceDto> findByResumeId(int resumeId) {
-        List<Experience> experiences = experienceDao.findByResumeId(resumeId);
+    public List<ExperienceDto> findListByResumeId(int resumeId) {
+        List<Experience> experiences = experienceRepository.findListByResumeId(resumeId);
         if (experiences.isEmpty()) {
-            return Collections.emptyList(); // Возвращаем пустой список, если опыт работы не найден
+            return Collections.emptyList();
         }
         return experiences.stream()
                 .map(this::mapToExperienceDto)
                 .collect(Collectors.toList());
     }
 
+    public void deleteEducationById(int educationId) {
+        experienceRepository.deleteById(educationId);
+    }
+
     @Override
-    public void deleteByResumeId(int resumeId) {
-        experienceDao.deleteByResumeId(resumeId);
+    public void deleteEducationsByResumeId(int resumeId) {
+        experienceRepository.deleteEducationsByResumeId(resumeId);
     }
 
     private Experience mapToExperience(ExperienceDto experienceDto) {
         return Experience.builder()
                 .id(experienceDto.getId())
-                .resumeId(experienceDto.getResumeId())
+                .resumeId(experienceRepository.findById(experienceDto.getId()).get().getResumeId())
                 .companyName(experienceDto.getCompanyName())
                 .position(experienceDto.getPosition())
                 .responsibilities(experienceDto.getResponsibilities())
@@ -59,7 +63,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     private ExperienceDto mapToExperienceDto(Experience experience) {
         return ExperienceDto.builder()
                 .id(experience.getId())
-                .resumeId(experience.getResumeId())
+                .resumeId(experience.getResumeId().getId())
                 .companyName(experience.getCompanyName())
                 .position(experience.getPosition())
                 .responsibilities(experience.getResponsibilities())

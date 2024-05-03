@@ -43,10 +43,7 @@ public class UserController {
         return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
     }
 
-    @GetMapping("/users/phoneNumber/{phoneNumber}")
-    public ResponseEntity<Optional<UserDto>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
-        return new ResponseEntity<>(userService.findByPhoneNumber(phoneNumber), HttpStatus.OK);
-    }
+
 
     @GetMapping("/users/name/{name}")
     public ResponseEntity<Optional<UserDto>> getUserByName(@PathVariable String name) {

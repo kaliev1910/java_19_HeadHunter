@@ -48,9 +48,9 @@ public class ResumeMvcController {
                     .isActive(resumeDto.isActive())
                     .createdTime(resumeDto.getCreatedTime())
                     .updatedTime(resumeDto.getUpdatedTime())
-                    .educations(educationService.findByResumeId(resumeDto.getId()))
-                    .experiences(experienceService.findByResumeId(resumeDto.getId()))
-                    .contacts(contactInfoService.findByResumeId(resumeDto.getId()))
+                    .educations(educationService.findListByResumeId(resumeDto.getId()))
+                    .experiences(experienceService.findListByResumeId(resumeDto.getId()))
+                    .contacts(contactInfoService.findListByResumeId(resumeDto.getId()))
                     .build();
             resumes.add(resumeListDto);
         }
@@ -73,9 +73,9 @@ public class ResumeMvcController {
                     .isActive(resumeDto.isActive())
                     .createdTime(resumeDto.getCreatedTime())
                     .updatedTime(resumeDto.getUpdatedTime())
-                    .educations(educationService.findByResumeId(resumeDto.getId()))
-                    .experiences(experienceService.findByResumeId(resumeDto.getId()))
-                    .contacts(contactInfoService.findByResumeId(resumeDto.getId()))
+                    .educations(educationService.findListByResumeId(resumeDto.getId()))
+                    .experiences(experienceService.findListByResumeId(resumeDto.getId()))
+                    .contacts(contactInfoService.findListByResumeId(resumeDto.getId()))
                     .build();
             resumes.add(resumeListDto);
         }
@@ -130,9 +130,9 @@ public class ResumeMvcController {
 
     @GetMapping("/resume/{resumeId}")
     public String showResumeInfo(@PathVariable int resumeId, Model model) {
-        List<EducationDto> educations = educationService.findByResumeId(resumeId);
-        List<ExperienceDto> experiences = experienceService.findByResumeId(resumeId);
-        List<ContactInfoDto> contacts = contactInfoService.findByResumeId(resumeId);
+        List<EducationDto> educations = educationService.findListByResumeId(resumeId);
+        List<ExperienceDto> experiences = experienceService.findListByResumeId(resumeId);
+        List<ContactInfoDto> contacts = contactInfoService.findListByResumeId(resumeId);
         model.addAttribute("contacts", contacts);
         model.addAttribute("educations", educations);
         model.addAttribute("experiences", experiences);
@@ -141,24 +141,17 @@ public class ResumeMvcController {
     }
 
     @GetMapping("/resumes/{resumeId}/edit")
-    public String editResume(@PathVariable int resumeId, Authentication authentication, Model model) {
-        ResumeDto resumeDto = resumeService.findById(resumeId);
-
-        if (resumeDto.getApplicantEmail().equals(authentication.getName())) {
-            List<EducationDto> educations = educationService.findByResumeId(resumeId);
-            List<ExperienceDto> experiences = experienceService.findByResumeId(resumeId);
-            List<ContactInfoDto> contacts = contactInfoService.findByResumeId(resumeId);
-            int eduIndex = 0;
-            model.addAttribute("eduIndex", eduIndex);
-            model.addAttribute("contacts", contacts);
-            model.addAttribute("educations", educations);
-            model.addAttribute("experiences", experiences);
-            model.addAttribute("resume", resumeDto);
-            return "resumes/edit_resume";
-        } else {
-            return "redirect:/resumes";
-        }
-
+    public String editResume(@PathVariable int resumeId, Model model) {
+        List<EducationDto> educations = educationService.findListByResumeId(resumeId);
+        List<ExperienceDto> experiences = experienceService.findListByResumeId(resumeId);
+        List<ContactInfoDto> contacts = contactInfoService.findListByResumeId(resumeId);
+        int eduIndex= 0;
+        model.addAttribute("eduIndex", eduIndex);
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("educations", educations);
+        model.addAttribute("experiences", experiences);
+        model.addAttribute("resume", resumeService.findById(resumeId));
+        return "resumes/edit_resume";
     }
 
     @PostMapping("/resume/{resumeId}/edit")
@@ -186,7 +179,8 @@ public class ResumeMvcController {
             }
             log.info("education = {}", educationDto);
         } else {
-            educationService.deleteByResumeId(resumeId);
+            educationService.deleteEducationsByResumeId(resumeId);
+            // если с шаблона приходит пустой список, то удаляет все образования связанные с резюме
         }
 
         if (experienceDto != null) {
@@ -201,8 +195,9 @@ public class ResumeMvcController {
                 }
 
             }
-        } else {
-            experienceService.deleteByResumeId(resumeId);
+        }
+        else {
+            experienceService.deleteEducationsByResumeId(resumeId);
         }
 
         if (contactInfoDto != null) {
@@ -211,12 +206,14 @@ public class ResumeMvcController {
                 if (contactInfo.getResumeId() == resumeId) {
                     contactInfoService.insert(contactInfo);
                     log.info("added contacts for resume {}", contactInfo.getResumeId());
-                } else {
+                }
+                else {
                     contactInfoService.update(contactInfo);
                     log.info("contact id {} has updated", contactInfo.getResumeId());
                 }
             }
-        } else {
+        }
+        else {
             contactInfoService.deleteByResumeId(resumeId);
         }
         log.info("resume edited {}", resumeDto.getName());

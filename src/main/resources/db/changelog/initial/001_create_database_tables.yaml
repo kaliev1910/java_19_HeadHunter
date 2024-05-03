@@ -128,7 +128,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: expected_salary
-                  type: DECIMAL
+                  type: INTEGER
               - column:
                   name: is_active
                   type: BOOLEAN
@@ -138,7 +138,7 @@ databaseChangeLog:
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
               - column:
-                  name: update_time
+                  name: updated_time
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
         - addForeignKeyConstraint:
@@ -180,7 +180,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: contact_value
-                  type: TEXT
+                  type: varchar(255)
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
@@ -222,7 +222,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: description
-                  type: TEXT
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
@@ -232,7 +232,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: salary
-                  type: DECIMAL
+                  type: INTEGER
               - column:
                   name: exp_from
                   type: INTEGER
@@ -248,7 +248,7 @@ databaseChangeLog:
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
               - column:
-                  name: update_time
+                  name: updated_time
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
         - addForeignKeyConstraint:
@@ -337,7 +337,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: responsibilities
-                  type: TEXT
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
@@ -424,7 +424,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: content
-                  type: TEXT
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:

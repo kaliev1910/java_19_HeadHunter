@@ -17,10 +17,14 @@ spring:
       enabled: true
   freemarker:
     expose-session-attributes: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
 logging:
   level:
-    root: info
+    root: debug
     org.springframework.security: debug
+
 #      org.springframework.security: debug
   file:
     name: logs/headHunter.log

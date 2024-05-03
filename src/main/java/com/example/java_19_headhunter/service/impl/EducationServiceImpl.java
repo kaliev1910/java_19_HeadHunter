@@ -1,32 +1,27 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.EducationDao;
 import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
 import com.example.java_19_headhunter.models.Education;
+import com.example.java_19_headhunter.repository.EducationRepository;
 import com.example.java_19_headhunter.service.interfaces.EducationService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Slf4j
 @Service
+@AllArgsConstructor
 public class EducationServiceImpl implements EducationService {
-    private static final Logger log = LoggerFactory.getLogger(EducationServiceImpl.class);
-    private final EducationDao educationDao;
+    private final EducationRepository educationRepository;
 
-    @Autowired
-    public EducationServiceImpl(EducationDao educationDao) {
-        this.educationDao = educationDao;
-    }
 
     @Override
-    public List<EducationDto> findByResumeId(int resumeId) {
-        List<Education> educations = educationDao.findByResumeId(resumeId);
+    public List<EducationDto> findListByResumeId(int resumeId) {
+        List<Education> educations = educationRepository.findEducationsByResumeId_Id(resumeId);
         if (educations.isEmpty()) {
             return Collections.emptyList(); // Возвращаем пустой список, если образование не найдено
         }
@@ -36,19 +31,20 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
-    public Education findEducationById(int educationId) {
-        if ( educationDao.findById(educationId) == null) {
+    public Optional<Education> findEducationById(int educationId) {
+        if ( educationRepository.findById(educationId).isEmpty()) {
             log.info("education with id {} not found", educationId);
-            return null;
+
+            return Optional.empty();
         }
-        return educationDao.findById(educationId);
+        return educationRepository.findById(educationId);
     }
 
     @Override
-    public void deleteByResumeId(int resumeId) {
-        List<Education> educations = educationDao.findByResumeId(resumeId);
+    public void deleteEducationsByResumeId(int resumeId) {
+        List<Education> educations = educationRepository.findEducationsByResumeId_Id(resumeId);
         if (!educations.isEmpty()) { // Проверяем, есть ли образование для удаления
-            educationDao.deleteByResumeId(resumeId);
+            educationRepository.deleteAll(educations);
         }
         // Если образование отсутствует, ничего не делаем
     }
@@ -56,19 +52,19 @@ public class EducationServiceImpl implements EducationService {
     @Override
     public void insert(EducationDto educationDto) {
         Education education = mapToEducation(educationDto);
-        educationDao.insert(education);
+        educationRepository.save(education);
     }
 
     @Override
     public void update(EducationDto educationDto) {
         Education education = mapToEducation(educationDto);
-        educationDao.update(education);
+        educationRepository.save(education);
     }
 
     private Education mapToEducation(EducationDto educationDto) {
         return Education.builder()
                 .id(educationDto.getId())
-                .resumeId(educationDto.getResumeId())
+                .resumeId(educationRepository.findByResumeId(educationDto.getResumeId()))
                 .institution(educationDto.getInstitution())
                 .program(educationDto.getProgram())
                 .degree(educationDto.getDegree())
@@ -80,7 +76,7 @@ public class EducationServiceImpl implements EducationService {
     private EducationDto mapToEducationDto(Education education) {
         return EducationDto.builder()
                 .id(education.getId())
-                .resumeId(education.getResumeId())
+                .resumeId(education.getResumeId().getId())
                 .institution(education.getInstitution())
                 .program(education.getProgram())
                 .degree(education.getDegree())

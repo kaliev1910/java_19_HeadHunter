@@ -5,6 +5,7 @@ import com.example.java_19_headhunter.models.Education;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface EducationService {
@@ -13,9 +14,9 @@ public interface EducationService {
 
     void update(EducationDto educationDto);
 
-    List<EducationDto> findByResumeId(int resumeId);
+    List<EducationDto> findListByResumeId(int resumeId);
 
-    Education findEducationById(int educationId);
+    Optional<Education> findEducationById(int educationId);
 
-    void deleteByResumeId(int resumeId);
+    void deleteEducationsByResumeId(int resumeId);
 }
