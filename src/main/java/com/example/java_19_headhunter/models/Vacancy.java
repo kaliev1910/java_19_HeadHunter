@@ -36,4 +36,5 @@ public class Vacancy {
     @Column(name = "updated_time")
     private Timestamp updatedTime;
 
+
 }

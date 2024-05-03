@@ -26,7 +26,7 @@ public interface VacancyDao {
 
 //    List<Vacancy> findVacanciesBySalaryRange(int salaryFrom, int salaryTo);
 
-    void updateVacancy(Vacancy vacancy);
+//    void updateVacancy(Vacancy vacancy);
 
 //    int createVacancy(Vacancy vacancy);
 

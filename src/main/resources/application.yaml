@@ -22,7 +22,7 @@ spring:
       ddl-auto: validate
 logging:
   level:
-    root: info
+    root: debug
     org.springframework.security: debug
 
 #      org.springframework.security: debug

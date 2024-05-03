@@ -13,6 +13,9 @@ import com.example.java_19_headhunter.repository.VacancyRepository;
 import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -44,21 +47,24 @@ public class VacancyServiceImpl implements VacancyService {
         }
     }
 
+    public List<Vacancy> getVacanciesWithPagingShort(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("updatedTime"));
+        return vacancyRepository.findAll(pageable).getContent();
+    }
+
     @Override
     public List<VacancyDto> getVacanciesWithPaging(Integer page, Integer pageSize) {
-        long count =  vacancyRepository.count();
-        long totalPages = count / pageSize;
+        long count = vacancyRepository.count();
+        int totalPages = (int) Math.ceil((double) count / pageSize);
 
         if (totalPages <= page) {
-            page = (int )totalPages;
+            page = totalPages - 1;
         } else if (page < 0) {
             page = 0;
         }
 
-        int offset = page * pageSize;
-
         List<VacancyDto> vacancyDtos = new ArrayList<>();
-        List<Vacancy> list = vacancyDao.getVacanciesWithPaging(pageSize, offset);
+        List<Vacancy> list = getVacanciesWithPagingShort(page, pageSize);
 
         list.forEach(e -> vacancyDtos.add(VacancyDto.builder()
                 .id(e.getId())
@@ -73,7 +79,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .createdDate(e.getCreatedDate())
                 .updateTime(e.getUpdatedTime())
                 .build()));
-//        }
+
         return vacancyDtos;
     }
 
@@ -203,7 +209,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     private Vacancy fromCreateDto(VacancyCreateDto vacancyDto, Authentication authentication) {
         return Vacancy.builder()
-                .authorEmail((User)authentication.getPrincipal())
+                .authorEmail((User) authentication.getPrincipal())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
                 .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).get())

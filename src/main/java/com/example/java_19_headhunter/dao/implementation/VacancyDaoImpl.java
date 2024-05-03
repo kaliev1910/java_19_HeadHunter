@@ -84,17 +84,17 @@ public class VacancyDaoImpl extends BasicDaoImpl implements VacancyDao {
 //        String sql = "SELECT * FROM vacancies WHERE salary BETWEEN ? AND ?";
 //        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), salaryFrom, salaryTo);
 //    }
-//
-    @Override
-    public void updateVacancy(Vacancy vacancy) {
-        String sql = """ 
-                UPDATE vacancies SET  name = ?, description = ?, category_id = ?,
-                                salary = ?, exp_from = ?, exp_to = ?, is_active = ?, update_time = ? WHERE id = ?;
-                """;
-        jdbcTemplate.update(sql, vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
-                vacancy.getSalary(), vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.isActive(),
-                vacancy.getUpdatedTime(), vacancy.getId());
-    }
+////
+//    @Override
+//    public void updateVacancy(Vacancy vacancy) {
+//        String sql = """
+//                UPDATE vacancies SET  name = ?, description = ?, category_id = ?,
+//                                salary = ?, exp_from = ?, exp_to = ?, is_active = ?, updated_time = ? WHERE id = ?;
+//                """;
+//        jdbcTemplate.update(sql, vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(),
+//                vacancy.getSalary(), vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.isActive(),
+//                vacancy.getUpdatedTime(), vacancy.getId());
+//    }
 //
 //    @Override
 //    public int createVacancy(Vacancy vacancy) {

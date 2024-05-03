@@ -3,6 +3,8 @@ package com.example.java_19_headhunter.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -23,4 +25,8 @@ public class User {
     private String accountType;
     private boolean enabled;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "applicantEmail")
+    private List<Resume> resumes;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "authorEmail")
+    private List<Vacancy> vacancies;
 }

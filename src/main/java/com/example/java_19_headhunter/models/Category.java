@@ -14,8 +14,10 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "parent_id")
-    private int parentId;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Category parentId;
+    @Column(name = "name", nullable = false)
     private String name;
 
 }

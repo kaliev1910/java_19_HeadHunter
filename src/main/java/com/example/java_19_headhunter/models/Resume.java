@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Table(name = "resumes")
 public class Resume {
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @JoinColumn(name = "applicant_email")
     @ManyToOne
@@ -33,6 +33,9 @@ public class Resume {
     @Column(name = "updated_time")
     private Timestamp updatedTime;
 
+    @OneToMany(fetch =  FetchType.LAZY, mappedBy = "resumeId")
+    private List<Education> educations;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "resumeId")
+    private List<Experience> experiences;
 }

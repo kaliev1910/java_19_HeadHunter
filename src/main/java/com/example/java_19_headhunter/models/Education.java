@@ -17,7 +17,7 @@ public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @JoinColumn(name = "resume_id")
+    @JoinColumn(name = "resume_id", nullable = false)
     @ManyToOne
     private Resume resumeId;
     private String institution;

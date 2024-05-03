@@ -1,6 +1,8 @@
 package com.example.java_19_headhunter.repository;
 
 import com.example.java_19_headhunter.models.Vacancy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,7 +17,7 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Integer> {
     @Query("select v from Vacancy v where v.isActive = true")
     List<Vacancy> findActiveVacancies();
 
-
+    Page<Vacancy> findAllByOrderByUpdatedTimeDesc(Pageable pageable);
 
 
     List<Vacancy> findActiveVacanciesByAuthorEmail_id(int userId);
