@@ -20,5 +20,5 @@ public interface ResponseService {
 
     List<UserResponse> getResponsesByResumeId(int resumeId);
 
-//    List<UserResponse> getApplicantResponses(String email);
+    List<UserResponse> getUserResponses(String email);
 }

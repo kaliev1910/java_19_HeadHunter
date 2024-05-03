@@ -2,6 +2,7 @@ package com.example.java_19_headhunter.controller;
 
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.enums.AccountType;
+import com.example.java_19_headhunter.models.UserResponse;
 import com.example.java_19_headhunter.service.impl.UserImageService;
 import com.example.java_19_headhunter.service.interfaces.*;
 import jakarta.validation.Valid;
@@ -75,13 +76,13 @@ public class MainController {
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
         if (user.getAccountType().equals(AccountType.APPLICANT.getValue())) {
-            List<UserResponseDto> responses = responseService.getApplicantResponses(user.getEmail());
+            List<UserResponse> responses = responseService.getUserResponses(user.getEmail());
             model.addAttribute("resumes", resumes);
             model.addAttribute("responses", responses);
         }
         if (user.getAccountType().equals(AccountType.EMPLOYER.getValue())) {
             String userAccType = AccountType.EMPLOYER.getValue();
-            List<UserResponseDto> responses = responseService.getEmployerResponses(user.getEmail());
+            List<UserResponse> responses = responseService.getUserResponses(user.getEmail());
             model.addAttribute("vacancies", vacancies);
             model.addAttribute("responses", responses);
         }

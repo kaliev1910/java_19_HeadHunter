@@ -90,14 +90,16 @@ public class ResponseServiceImpl implements ResponseService {
 
     }
 //
-//    @Override
-//    public List<UserResponse> getApplicantResponses(String email) {
-//        try {
-//            return userResponseRepository.getApplicantResponses(email);
-//        } catch (Exception e) {
-//
-//            log.info("Error getting applicant responses: {}", e.toString());
-//            return null;
-//        }
-//    }
+    @Override
+    public List<UserResponse> getUserResponses(String email) {
+        try {
+            return userResponseRepository.getApplicantResponses(email);
+        } catch (Exception e) {
+
+            log.info("Error getting applicant responses: {}", e.toString());
+            return null;
+        }
+    }
+
+
 }
