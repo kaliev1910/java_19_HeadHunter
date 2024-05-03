@@ -6,7 +6,7 @@ import com.example.java_19_headhunter.models.UserResponse;
 import java.util.List;
 
 public interface ResponseService {
-    boolean makeResponse(UserResponse response);
+    boolean makeResponse(int vacancyId, int resumeId);
 
 //    boolean confirmResume(int resumeId, int vacancyId, boolean confirmValue);
 

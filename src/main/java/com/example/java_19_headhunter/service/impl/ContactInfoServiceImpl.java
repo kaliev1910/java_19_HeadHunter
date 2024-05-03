@@ -1,6 +1,5 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.ContactInfoDao;
 import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
 import com.example.java_19_headhunter.models.ContactInfo;
 import com.example.java_19_headhunter.repository.ContactInfoRepository;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 
 public class ContactInfoServiceImpl implements ContactInfoService {
-    private final ContactInfoDao contactInfoDao;
     private final ContactInfoRepository contactInfoRepository;
 
 

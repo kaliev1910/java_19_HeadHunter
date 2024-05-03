@@ -1,10 +1,8 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.models.Resume;
-import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.repository.ResumeRepository;
 import com.example.java_19_headhunter.repository.UserRepository;
 import com.example.java_19_headhunter.service.interfaces.ResumeService;
@@ -20,7 +18,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,6 @@ import java.util.stream.Collectors;
 public class ResumeServiceImpl implements ResumeService {
 
     @NotNull
-    private final ResumeDao resumeDao;
     private final UserRepository userRepository;
     private final ResumeRepository resumeRepository;
 
@@ -91,7 +87,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public ResumeDto findById(int id) {
         try {
-            return toDto(resumeRepository.findResumeById(id));
+            return toDto(resumeRepository.findResumeById(id).get());
         } catch (Exception e) {
             log.error("Error finding Resume by id: {}", id, e);
             throw e;
@@ -122,7 +118,7 @@ public class ResumeServiceImpl implements ResumeService {
             Resume resume = fromCreateDto(resumeCreateDto, authentication);
             resume.setApplicantEmail(userRepository.findUserByEmail(authentication.getName()).get());
             resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
-            resumeDao.update(resume);
+            resumeRepository.save(resume);
         } catch (Exception e) {
             log.error("Error updating Resume:  name {} user {} ", resumeCreateDto.getName(), ((User) authentication.getPrincipal()).getUsername(), e);
             throw e;
@@ -144,7 +140,7 @@ public class ResumeServiceImpl implements ResumeService {
 
         return Resume.builder()
                 .applicantEmail(userRepository.findUserByEmail(user.getUsername()).get())
-                .categoryId(resumeRepository.findResumeById(resumeDto.getCategoryId()).getCategoryId())
+                .categoryId(resumeRepository.findResumeById(resumeDto.getCategoryId()).get().getCategoryId())
                 .isActive(true)
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
@@ -156,8 +152,8 @@ public class ResumeServiceImpl implements ResumeService {
     private Resume fromDto(ResumeDto resumeDto) {
         return Resume.builder()
 
-                .applicantEmail(resumeRepository.findResumeById(resumeDto.getId()).getApplicantEmail())
-                .categoryId(resumeRepository.findResumeById(resumeDto.getId()).getCategoryId())
+                .applicantEmail(resumeRepository.findResumeById(resumeDto.getId()).get().getApplicantEmail())
+                .categoryId(resumeRepository.findResumeById(resumeDto.getId()).get().getCategoryId())
                 .isActive(resumeDto.isActive())
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())

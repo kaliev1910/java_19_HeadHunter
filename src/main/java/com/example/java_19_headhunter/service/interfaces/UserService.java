@@ -13,7 +13,6 @@ public interface UserService {
     void updateUser(UserDto user);
 
     @SneakyThrows
-    boolean isEmployer(String email);
 
     int createUser(UserDto user);
 
@@ -21,13 +20,11 @@ public interface UserService {
 
     Optional<UserDto> findByEmail(String email);
 
-    Optional<UserDto> findByPhoneNumber(String phoneNumber);
 
     Optional<UserDto> findByName(String name);
 
     boolean userExists(String email);
 
-    boolean getUserType(User user);
 
     boolean getUserType(UserDto userdto);
 }

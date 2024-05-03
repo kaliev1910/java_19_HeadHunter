@@ -29,6 +29,5 @@ public interface VacancyService {
 
     int create(VacancyCreateDto vacancyDto, Authentication authentication);
 
-    void applyForVacancy(int resumeId, int vacancyId);
 
 }

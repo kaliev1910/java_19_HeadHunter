@@ -1,7 +1,5 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.UserDao;
-import com.example.java_19_headhunter.dao.interfaces.VacancyDao;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
@@ -31,8 +29,6 @@ import java.util.stream.Collectors;
 
 
 public class VacancyServiceImpl implements VacancyService {
-    private final VacancyDao vacancyDao;
-    private final UserDao userDao;
 
     private final VacancyRepository vacancyRepository;
     private final CategoryRepository categoryRepository;
@@ -46,7 +42,6 @@ public class VacancyServiceImpl implements VacancyService {
             throw e; // rethrow the exception
         }
     }
-
 
 
     @Override
@@ -164,15 +159,15 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
 
-    @Override
-    public void applyForVacancy(int resumeId, int vacancyId) {
-        try {
-            vacancyDao.applyForVacancy(resumeId, vacancyId);
-        } catch (Exception e) {
-            log.error("Error applying for vacancy {}, with resume {}", vacancyId, resumeId, e);
-            throw e; // rethrow the exception
-        }
-    }
+//    @Override
+//    public void applyForVacancy(int resumeId, int vacancyId) {
+//        try {
+//            vacancyDao.applyForVacancy(resumeId, vacancyId);
+//        } catch (Exception e) {
+//            log.error("Error applying for vacancy {}, with resume {}", vacancyId, resumeId, e);
+//            throw e; // rethrow the exception
+//        }
+//    }
 
     private VacancyDto toDto(Vacancy vacancy) {
         return VacancyDto.builder()

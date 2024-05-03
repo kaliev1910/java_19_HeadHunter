@@ -1,8 +1,9 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.ResponseDao;
 import com.example.java_19_headhunter.models.UserResponse;
+import com.example.java_19_headhunter.repository.ResumeRepository;
 import com.example.java_19_headhunter.repository.UserResponseRepository;
+import com.example.java_19_headhunter.repository.VacancyRepository;
 import com.example.java_19_headhunter.service.interfaces.ResponseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,15 +16,22 @@ import java.util.List;
 @Slf4j
 public class ResponseServiceImpl implements ResponseService {
 
-    private final ResponseDao responseDao;
     private final UserResponseRepository userResponseRepository;
+    private final ResumeRepository resumeRepository;
+    private final VacancyRepository vacancyRepository;
+
     @Override
-    public boolean makeResponse(UserResponse response) {
+    public boolean makeResponse(int resumeId, int vacancyId) {
+        UserResponse  response;
         try {
+            response =  UserResponse.builder()
+                    .resumeId(resumeRepository.findResumeById(resumeId).get())
+                    .vacancyId(vacancyRepository.findById(vacancyId).get())
+                    .build();
             userResponseRepository.save(response);
             return true;
         } catch (Exception e) {
-            log.info("Error making response for response: {}", response.toString());
+            log.info("Error making response ");
             return false;
         }
     }

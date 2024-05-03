@@ -1,10 +1,8 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.EducationDao;
 import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
 import com.example.java_19_headhunter.models.Education;
 import com.example.java_19_headhunter.repository.EducationRepository;
-import com.example.java_19_headhunter.repository.ResumeRepository;
 import com.example.java_19_headhunter.service.interfaces.EducationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EducationServiceImpl implements EducationService {
-    private final EducationDao educationDao;
     private final EducationRepository educationRepository;
-    private final ResumeRepository resumeRepository;
 
 
     @Override

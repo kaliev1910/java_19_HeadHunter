@@ -1,6 +1,5 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.UserDao;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 @Service
 
 public class UserServiceImpl implements UserService {
-    private final UserDao userDao;
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
 
@@ -36,7 +34,7 @@ public class UserServiceImpl implements UserService {
             User tempUser = userRepository.findUserByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
             user.setAccountType(tempUser.getAccountType());
             user.setEnabled(tempUser.isEnabled());
-            userDao.updateUser(user);
+            userRepository.save(user);
             log.info("User with email {} has been updated", userDto.getEmail());
         } catch (Exception e) {
             log.error("Error while trying to update user with email {} user {}", userDto.getEmail(), userDto, e);
@@ -45,14 +43,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    @SneakyThrows
-    public boolean isEmployer(String email) {
-        return userRepository.findUserByEmail(email).map(user -> {
-            Optional<UserDto> userDto = findByEmail(user.getEmail());
-            return userDto.get().getAccountType().equalsIgnoreCase("employer");
-        }).orElseThrow(() -> new UserNotFoundException("Cannot find user"));
-    }
+//    @Override
+//    @SneakyThrows
+//    public boolean isEmployer(String email) {
+//        return userRepository.findUserByEmail(email).map(user -> {
+//            Optional<UserDto> userDto = findByEmail(user.getEmail());
+//            return userDto.get().getAccountType().equalsIgnoreCase("employer");
+//        }).orElseThrow(() -> new UserNotFoundException("Cannot find user"));
+//    }
 
     @Override
     public int createUser(UserDto userDto) {
@@ -101,18 +99,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> findByPhoneNumber(String phoneNumber) {
-        try {
-            var user = userDao.findByPhoneNumber(phoneNumber);
-            log.info("Retrieved user by phone number: {}", phoneNumber);
-            return user.map(this::toDto);
-        } catch (Exception e) {
-            log.error("Error while trying to find user by phone number: {}", phoneNumber, e);
-            throw e;
-        }
-    }
-
-    @Override
     public Optional<UserDto> findByName(String name) {
         try {
             var user = userRepository.findUserByName(name);
@@ -135,18 +121,18 @@ public class UserServiceImpl implements UserService {
             throw e;
         }
     }
-
-    @Override
-    public boolean getUserType(User user) {
-        try {
-            boolean isApplicant = "applicant".equalsIgnoreCase(user.getAccountType());
-            log.info("Is user an applicant: {}", isApplicant);
-            return isApplicant;
-        } catch (Exception e) {
-            log.error("Error while trying to retrieve user type: {}", e);
-            throw e;
-        }
-    }
+//
+//    @Override
+//    public boolean getUserType(User user) {
+//        try {
+//            boolean isApplicant = "applicant".equalsIgnoreCase(user.getAccountType());
+//            log.info("Is user an applicant: {}", isApplicant);
+//            return isApplicant;
+//        } catch (Exception e) {
+//            log.error("Error while trying to retrieve user type: {}", e);
+//            throw e;
+//        }
+//    }
 
     @Override
     public boolean getUserType(UserDto userDto) {

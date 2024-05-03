@@ -2,7 +2,6 @@ package com.example.java_19_headhunter.repository;
 
 import com.example.java_19_headhunter.models.ContactInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -11,10 +10,9 @@ public interface ContactInfoRepository extends JpaRepository<ContactInfo, Intege
 //    ContactInfo findContactInfosByResumeId(int resumeId);
 
 
-
     List<ContactInfo> findContactInfosByResumeId_Id(int resumeId);
 
-
+    
 
     void deleteByResumeId_Id(int resumeId);
 

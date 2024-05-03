@@ -1,6 +1,5 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.dao.interfaces.ExperienceDao;
 import com.example.java_19_headhunter.dto.basicDtos.ExperienceDto;
 import com.example.java_19_headhunter.models.Experience;
 import com.example.java_19_headhunter.repository.ExperienceRepository;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ExperienceServiceImpl implements ExperienceService {
 
-    private final ExperienceDao experienceDao;
     private final ExperienceRepository experienceRepository;
 
     @Override
@@ -28,7 +26,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public void update(ExperienceDto experienceDto) {
         Experience experience = mapToExperience(experienceDto);
-        experienceDao.update(experience);
+        experienceRepository.save(experience);
     }
 
     @Override
