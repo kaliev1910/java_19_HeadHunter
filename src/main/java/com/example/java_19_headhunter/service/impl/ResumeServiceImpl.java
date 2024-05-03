@@ -4,6 +4,7 @@ import com.example.java_19_headhunter.dao.interfaces.ResumeDao;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.models.Resume;
+import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.repository.ResumeRepository;
 import com.example.java_19_headhunter.repository.UserRepository;
 import com.example.java_19_headhunter.service.interfaces.ResumeService;
@@ -11,6 +12,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -44,11 +48,11 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public List<ResumeDto> getResumesWithPaging(Integer page, Integer pageSize) {
-        int count = (int)resumeRepository.count();
-        int totalPages = count / pageSize;
+        long count = resumeRepository.count();
+        int totalPages = (int) Math.ceil((double) count / pageSize);
 
         if (totalPages <= page) {
-            page = totalPages;
+            page = totalPages - 1;
         } else if (page < 0) {
             page = 0;
         }
@@ -56,10 +60,11 @@ public class ResumeServiceImpl implements ResumeService {
         int offset = page * pageSize;
 
         List<ResumeDto> resumeDtos = new ArrayList<>();
-        List<Resume> list = resumeDao.getAll(pageSize, offset);
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("updatedTime"));
 
+        List<Resume> list = resumeRepository.findAll(pageable).getContent();
         list.forEach(e -> resumeDtos.add(toDto(e)));
-//        }
+
         return resumeDtos;
     }
 

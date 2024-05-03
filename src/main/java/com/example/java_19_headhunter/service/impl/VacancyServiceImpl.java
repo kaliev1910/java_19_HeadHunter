@@ -47,10 +47,7 @@ public class VacancyServiceImpl implements VacancyService {
         }
     }
 
-    public List<Vacancy> getVacanciesWithPagingShort(int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("updatedTime"));
-        return vacancyRepository.findAll(pageable).getContent();
-    }
+
 
     @Override
     public List<VacancyDto> getVacanciesWithPaging(Integer page, Integer pageSize) {
@@ -64,7 +61,9 @@ public class VacancyServiceImpl implements VacancyService {
         }
 
         List<VacancyDto> vacancyDtos = new ArrayList<>();
-        List<Vacancy> list = getVacanciesWithPagingShort(page, pageSize);
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("updatedTime"));
+        List<Vacancy> list = vacancyRepository.findAll(pageable).getContent();
+
 
         list.forEach(e -> vacancyDtos.add(VacancyDto.builder()
                 .id(e.getId())
