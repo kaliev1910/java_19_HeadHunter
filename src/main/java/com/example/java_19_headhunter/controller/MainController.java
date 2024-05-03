@@ -1,14 +1,9 @@
 package com.example.java_19_headhunter.controller;
 
-import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
-import com.example.java_19_headhunter.dto.basicDtos.UserDto;
-import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
-import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
-import com.example.java_19_headhunter.service.interfaces.ContactInfoService;
-import com.example.java_19_headhunter.service.interfaces.ResumeService;
-import com.example.java_19_headhunter.service.interfaces.UserService;
-import com.example.java_19_headhunter.service.interfaces.VacancyService;
+import com.example.java_19_headhunter.dto.basicDtos.*;
+import com.example.java_19_headhunter.enums.AccountType;
 import com.example.java_19_headhunter.service.impl.UserImageService;
+import com.example.java_19_headhunter.service.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +24,7 @@ public class MainController {
     private final VacancyService vacancyService;
     private final UserImageService userImageService;
     private final ContactInfoService contactInfoService;
+    private final ResponseService responseService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -43,6 +39,7 @@ public class MainController {
         }
         if (userService.findByEmail(userDto.getEmail()).isPresent()) {
             bindingResult.rejectValue("email", "error.user", "There is already a user registered with the provided email");
+            model.addAttribute("userDto", userDto);
             return "auth/register";
         }
 
@@ -54,15 +51,19 @@ public class MainController {
     public String showLoginForm() {
         return "/auth/login";
     }
+ @GetMapping("/error")
+    public String showAccessDeniedPage() {
+        return "/errors/accessDenied";
+    }
 
     @GetMapping("/")
     public String showMainPage() {
-        return "/main";
+        return "redirect:/vacancies?page=1";
     }
 
     @GetMapping("/chat")
-    public String showChatPage(Authentication authentication, Model model ) {
-        model.addAttribute("username", authentication.getName() );
+    public String showChatPage(Authentication authentication, Model model) {
+        model.addAttribute("username", authentication.getName());
         return "chat/chat";
     }
 
@@ -73,11 +74,19 @@ public class MainController {
         Long userId = (long) user.getId();
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
-
+        if (user.getAccountType().equals(AccountType.APPLICANT.getValue())) {
+            List<UserResponseDto> responses = responseService.getApplicantResponses(user.getEmail());
+            model.addAttribute("resumes", resumes);
+            model.addAttribute("responses", responses);
+        }
+        if (user.getAccountType().equals(AccountType.EMPLOYER.getValue())) {
+            String userAccType = AccountType.EMPLOYER.getValue();
+            List<UserResponseDto> responses = responseService.getEmployerResponses(user.getEmail());
+            model.addAttribute("vacancies", vacancies);
+            model.addAttribute("responses", responses);
+        }
         model.addAttribute("user", user);
 
-        model.addAttribute("resumes", resumes);
-        model.addAttribute("vacancies", vacancies);
 
         return "users/index"; // Это имя вашего шаблона
     }

@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -48,8 +50,8 @@ public class VacancyMvcController {
     @PostMapping("/vacancy/create")
     public String createVacancy(@Valid VacancyCreateDto vacancyDto, Authentication authentication, Model model) {
         UserDto employer = userService.findByEmail(authentication.getName()).get();
-        vacancyDto.setCreatedDate(LocalDate.now());
-        vacancyDto.setUpdateTime(LocalDate.now());
+        vacancyDto.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
+        vacancyDto.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         int vacancyId = vacancyService.create(vacancyDto, authentication);
         log.info(authentication.getAuthorities().toString());
         model.addAttribute("message", "Vacancy created successfully");
