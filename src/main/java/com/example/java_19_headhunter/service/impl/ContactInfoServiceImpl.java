@@ -23,7 +23,7 @@ public class ContactInfoServiceImpl implements ContactInfoService {
 
     @Override
     public List<ContactInfoDto> findListByResumeId(int resumeId) {
-        List<ContactInfo> contactInfos = contactInfoRepository.findCIListByResumeId(resumeId);
+        List<ContactInfo> contactInfos = contactInfoRepository.findContactInfosByResumeId_Id(resumeId);
         if (contactInfos.isEmpty()) {
             return Collections.emptyList(); // Возвращаем пустой список, если контакты не найдены
         }
@@ -34,7 +34,7 @@ public class ContactInfoServiceImpl implements ContactInfoService {
 
     @Override
     public void deleteByResumeId(int resumeId) {
-        List<ContactInfo> contactInfos = contactInfoRepository.findCIListByResumeId(resumeId);
+        List<ContactInfo> contactInfos = contactInfoRepository.findContactInfosByResumeId_Id(resumeId);
         if (!contactInfos.isEmpty()) { // Проверяем, есть ли контакты для удаления
             contactInfoRepository.deleteByResumeId_Id(resumeId);
         }

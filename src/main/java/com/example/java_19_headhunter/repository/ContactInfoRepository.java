@@ -10,11 +10,11 @@ public interface ContactInfoRepository extends JpaRepository<ContactInfo, Intege
 //    @Query("select c from ContactInfo c where ")
 //    ContactInfo findContactInfosByResumeId(int resumeId);
 
-    @Query("select c from  ContactInfo c where c.resumeId = :resumeId ")
-    List<ContactInfo> findCIListByResumeId(int resumeId);
 
-    @Query("select c from  ContactInfo  c where  c.typeId = :typeId")
-    ContactInfo findByTypeId(int typeId);
+
+    List<ContactInfo> findContactInfosByResumeId_Id(int resumeId);
+
+
 
     void deleteByResumeId_Id(int resumeId);
 
