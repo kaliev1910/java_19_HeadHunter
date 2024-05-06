@@ -11,6 +11,7 @@ import com.example.java_19_headhunter.repository.VacancyRepository;
 import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -45,36 +46,16 @@ public class VacancyServiceImpl implements VacancyService {
 
 
     @Override
-    public List<VacancyDto> getVacanciesWithPaging(Integer page, Integer pageSize) {
-        long count = vacancyRepository.count();
-        int totalPages = (int) Math.ceil((double) count / pageSize);
-
-        if (totalPages <= page) {
-            page = totalPages - 1;
-        } else if (page < 0) {
-            page = 0;
-        }
-
-        List<VacancyDto> vacancyDtos = new ArrayList<>();
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("updatedTime"));
-        List<Vacancy> list = vacancyRepository.findAll(pageable).getContent();
+    public Page<VacancyDto> getVacanciesWithPaging(Pageable pageable) {
+        return vacancyRepository.findAll(pageable)
+                .map(this::toDto);
+    }
 
 
-        list.forEach(e -> vacancyDtos.add(VacancyDto.builder()
-                .id(e.getId())
-                .authorEmail(e.getAuthorEmail().getEmail())
-                .name(e.getName())
-                .description(e.getDescription())
-                .categoryId(e.getCategoryId().getId())
-                .salary(e.getSalary())
-                .expFrom(e.getExpFrom())
-                .expTo(e.getExpTo())
-                .isActive(e.isActive())
-                .createdDate(e.getCreatedDate())
-                .updateTime(e.getUpdatedTime())
-                .build()));
 
-        return vacancyDtos;
+    @Override
+    public Page<VacancyDto> getVacanciesWithPagingByCategories(Pageable pageable, String categoryName) {
+        return vacancyRepository.findByCategoryId_Name(pageable, categoryName).map(this::toDto);
     }
 
 

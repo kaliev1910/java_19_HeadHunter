@@ -79,6 +79,7 @@ public class ResumeMvcController {
                     .build();
             resumes.add(resumeListDto);
         }
+        model.addAttribute("url", "/resumes");
         model.addAttribute("resumes", resumes);
         return "resumes/resumes";
     }

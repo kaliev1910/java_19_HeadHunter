@@ -1,5 +1,9 @@
 <#import "../layout.ftlh" as main>
+<#import "../pager.ftlh" as p>
 <@main.layout>
+
+
+
     <style>
         form {
             width: 50%;
@@ -91,11 +95,7 @@
         }
     </style>
     <h1 class="text-center mb-3">Вакансии</h1>
-    <div class="text-center">
-        <a href="/vacancies?page=1">1</a>
-        <a href="/vacancies?page=2">2</a>
-        <a href="/vacancies?page=3">3</a>
-    </div>
+
     <div class="dropdown mb-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -110,47 +110,11 @@
             <a class="dropdown-item" href="/vacancies/sort/6">Маркетинг</a>
         </div>
     </div>
-<#--    <section class="py-5">-->
-
-<#--        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-left">-->
-<#--            <#list vacancies as vacancy>-->
-<#--                <div class="col mb-5">-->
-
-<#--                    <div class="card h-100">-->
-<#--                        <!-- Product image&ndash;&gt;-->
-
-<#--                        <a href="/vacancy/${vacancy.id}">-->
-<#--                            <h5 class="card-header card-name">${vacancy.name}</h5>-->
-<#--                        </a>-->
-<#--                        <h6 class="card-header">${vacancy.categoryId}</h6>-->
-<#--                        <div class="card-body">-->
-<#--                            <h5 class="card-title">${vacancy.salary} KGS</h5>-->
-<#--                            <p class="card-title">${vacancy.description}</p>-->
-<#--                        </div>-->
-<#--                        <div class="card-footer">-->
-<#--                            <p class="card-text"><a href="/hh/guest/${vacancy.authorEmail}">${vacancy.authorEmail}</a>-->
-<#--                            </p>-->
-<#--                            <p class="card-text">${vacancy.createdDate}</p>-->
-<#--                            <a href="/vacancy/${vacancy.id}" class="btn btn-primary">Подробнее</a>-->
-<#--                        </div>-->
-<#--                        <!-- Product actions&ndash;&gt;-->
-<#--                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">-->
-<#--                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>-->
-<#--                            </div>-->
-<#--                        </div>-->
-<#--                    </div>-->
-
-<#--                </div>-->
-<#--            </#list>-->
-
-<#--        </div>-->
-
-<#--    </section>-->
-
+    <@p.pager url vacancies />
 
     <div class="container mt-5 mb-3">
         <div class="row">
-            <#list vacancies as vacancy>
+            <#list vacancies.content as vacancy>
                 <div class="col-md-4">
                     <div class="card p-4 mb-2">
                         <div class="d-flex justify-content-left">
@@ -181,5 +145,6 @@
             </#list>
         </div>
     </div>
+    <@p.pager url vacancies />
 
 </@main.layout>

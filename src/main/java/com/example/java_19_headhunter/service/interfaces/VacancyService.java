@@ -3,6 +3,8 @@ package com.example.java_19_headhunter.service.interfaces;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -11,7 +13,9 @@ import java.util.List;
 public interface VacancyService {
     List<VacancyDto> findAll();
 
-    List<VacancyDto> getVacanciesWithPaging(Integer page, Integer pageSize);
+    Page<VacancyDto> getVacanciesWithPaging(Pageable pageable);
+
+    Page<VacancyDto> getVacanciesWithPagingByCategories(Pageable pageable, String categoryName);
 
     VacancyDto findById(int id);
 

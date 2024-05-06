@@ -1,12 +1,26 @@
 <#import "../layout.ftlh" as main>
+<#import "../pager.ftlh" as p>
 <@main.layout>
 
     <h1 class="text-center mb-3">Резюме</h1>
-    <div class="text-center">
-        <a href="/resumes?page=1">1</a>
-        <a href="/resumes?page=2">2</a>
-        <a href="/resumes?page=3">3</a>
+
+
+    <div class="dropdown mb-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Фильтровать по категориям
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="/vacancies/sort/1">IT</a>
+            <a class="dropdown-item" href="/vacancies/sort/2">Юриспруденция</a>
+            <a class="dropdown-item" href="/vacancies/sort/3">Менеджмент</a>
+            <a class="dropdown-item" href="/vacancies/sort/4">Продажи</a>
+            <a class="dropdown-item" href="/vacancies/sort/5">Авто</a>
+            <a class="dropdown-item" href="/vacancies/sort/6">Маркетинг</a>
+        </div>
     </div>
+    <@p.pager url resumes />
+
     <div class="container mt-5 mb-3">
         <div class="row">
             <#list resumes as resume>

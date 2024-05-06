@@ -9,6 +9,10 @@ import com.example.java_19_headhunter.service.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,9 +38,20 @@ public class VacancyMvcController {
     private final CategoryService categoryService;
 
     @GetMapping("/vacancies")
-    public String getVacancies(@RequestParam(name = "page") Integer page, Model model) {
-        List<VacancyDto> vacancies = vacancyService.getVacanciesWithPaging(page, 6);
+    public String getVacancies(@RequestParam(required = false, defaultValue = "") String filter,
+                               @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable,
+                               Model model) {
+        Page<VacancyDto> vacancies;
+
+        if (filter != null && !filter.isEmpty()) {
+            vacancies =   vacancyService.getVacanciesWithPagingByCategories( pageable, filter);
+        } else {
+            vacancies = vacancyService.getVacanciesWithPaging( pageable);
+        }
+
         model.addAttribute("vacancies", vacancies);
+        model.addAttribute("url", "/vacancies");
+        model.addAttribute("filter", filter);
         return "vacancies/vacancies";
     }
 
@@ -58,14 +72,14 @@ public class VacancyMvcController {
         return "redirect:/vacancy/" + vacancyId;
     }
 
-@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/vacancy/{id}")
     public String showVacancyInfo(@PathVariable("id") int id, Model model) {
         VacancyDto vacancy = vacancyService.findById(id);
         List<ContactInfoDto> contacts = contactInfoService.findListByResumeId(id);
         model.addAttribute("vacancy", vacancy);
 
-        model.addAttribute("contacts", contacts );
+        model.addAttribute("contacts", contacts);
         return "vacancies/vacancy_info"; //
     }
 

@@ -23,7 +23,7 @@ public enum VacancySortStrategy {
             return resumes;
         }
     },
-    BY_UPDATE_TIME("update_time") {
+    BY_UPDATED_TIME("updated_time") {
         @Override
         public List<Vacancy> sortingVacancies(List<Vacancy> resumes) {
             resumes.sort(Comparator.comparing(Vacancy::getUpdatedTime));
