@@ -38,15 +38,15 @@ public class VacancyMvcController {
     private final CategoryService categoryService;
 
     @GetMapping("/vacancies")
-    public String getVacancies(@RequestParam(required = false, defaultValue = "") String filter,
-                               @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable,
+    public String getVacancies(@RequestParam(name = "filter", required = false, defaultValue = "") String filter,
+                               @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 5) Pageable pageable,
                                Model model) {
         Page<VacancyDto> vacancies;
 
         if (filter != null && !filter.isEmpty()) {
-            vacancies =   vacancyService.getVacanciesWithPagingByCategories( pageable, filter);
+            vacancies = vacancyService.getVacanciesWithPagingByCategories(pageable, Integer.parseInt(filter));
         } else {
-            vacancies = vacancyService.getVacanciesWithPaging( pageable);
+            vacancies = vacancyService.getVacanciesWithPaging(pageable);
         }
 
         model.addAttribute("vacancies", vacancies);

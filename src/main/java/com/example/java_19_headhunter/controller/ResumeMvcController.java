@@ -59,11 +59,11 @@ public class ResumeMvcController {
     }
 
     @GetMapping("resumes")
-    public String gteResumesForm(@RequestParam(name = "page") Integer page, Model model) {
-        List<ResumeDto> resumesDtos = resumeService.getResumesWithPaging(page, 6);
+    public String getResumesForm(@RequestParam(name = "page") Integer page, Model model) {
+        List<ResumeDto> resumeDtos = resumeService.getResumesWithPaging(page, 6);
         List<ResumeListDto> resumes = new ArrayList<>();
 
-        for (ResumeDto resumeDto : resumesDtos) {
+        for (ResumeDto resumeDto : resumeDtos) {
             ResumeListDto resumeListDto = ResumeListDto.builder()
                     .id(resumeDto.getId())
                     .applicantEmail(resumeDto.getApplicantEmail())

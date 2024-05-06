@@ -15,7 +15,7 @@ public interface VacancyService {
 
     Page<VacancyDto> getVacanciesWithPaging(Pageable pageable);
 
-    Page<VacancyDto> getVacanciesWithPagingByCategories(Pageable pageable, String categoryName);
+    Page<VacancyDto> getVacanciesWithPagingByCategories(Pageable pageable, Integer categoryId);
 
     VacancyDto findById(int id);
 

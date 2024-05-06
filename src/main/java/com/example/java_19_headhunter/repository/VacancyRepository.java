@@ -19,7 +19,7 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Integer> {
 
     Page<Vacancy> findAllByOrderByUpdatedTimeDesc(Pageable pageable);
 
-    Page<Vacancy> findByCategoryId_Name(Pageable pageable, String categoryName);
+    Page<Vacancy> findByCategoryId_Id(Pageable pageable, Integer categoryId);
 
     // Метод для поиска вакансий с применением фильтра
     List<Vacancy> findActiveVacanciesByAuthorEmail_id(int userId);
