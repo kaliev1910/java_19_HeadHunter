@@ -7,6 +7,11 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,15 +60,25 @@ public class ResumeMvcController {
             resumes.add(resumeListDto);
         }
         model.addAttribute("resumes", resumes);
+
         return "resumes/userResumes";
     }
 
-    @GetMapping("resumes")
-    public String getResumesForm(@RequestParam(name = "page") Integer page, Model model) {
-        List<ResumeDto> resumeDtos = resumeService.getResumesWithPaging(page, 6);
-        List<ResumeListDto> resumes = new ArrayList<>();
+    @GetMapping("/resumes")
+    public String getResumes(@RequestParam(name = "filter", required = false, defaultValue = "") String filter,
+                             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 5) Pageable pageable,
+                             Model model) {
+        Page<ResumeDto> resumes;
 
-        for (ResumeDto resumeDto : resumeDtos) {
+        if (!filter.isEmpty()) {
+            // Применить фильтр, если он задан
+            resumes = resumeService.getResumesWithPagingByCategories(pageable, Integer.parseInt(filter));
+        } else {
+            // Получить все резюме без фильтрации
+            resumes = resumeService.getResumesWithPaging(pageable);
+        }
+
+        Page<ResumeListDto> resumeList = resumes.map(resumeDto -> {
             ResumeListDto resumeListDto = ResumeListDto.builder()
                     .id(resumeDto.getId())
                     .applicantEmail(resumeDto.getApplicantEmail())
@@ -77,10 +92,11 @@ public class ResumeMvcController {
                     .experiences(experienceService.findListByResumeId(resumeDto.getId()))
                     .contacts(contactInfoService.findListByResumeId(resumeDto.getId()))
                     .build();
-            resumes.add(resumeListDto);
-        }
+            return resumeListDto;
+        });
+
         model.addAttribute("url", "/resumes");
-        model.addAttribute("resumes", resumes);
+        model.addAttribute("resumes", resumeList);
         return "resumes/resumes";
     }
 
@@ -146,7 +162,7 @@ public class ResumeMvcController {
         List<EducationDto> educations = educationService.findListByResumeId(resumeId);
         List<ExperienceDto> experiences = experienceService.findListByResumeId(resumeId);
         List<ContactInfoDto> contacts = contactInfoService.findListByResumeId(resumeId);
-        int eduIndex= 0;
+        int eduIndex = 0;
         model.addAttribute("eduIndex", eduIndex);
         model.addAttribute("contacts", contacts);
         model.addAttribute("educations", educations);
@@ -196,8 +212,7 @@ public class ResumeMvcController {
                 }
 
             }
-        }
-        else {
+        } else {
             experienceService.deleteEducationsByResumeId(resumeId);
         }
 
@@ -207,14 +222,12 @@ public class ResumeMvcController {
                 if (contactInfo.getResumeId() == resumeId) {
                     contactInfoService.insert(contactInfo);
                     log.info("added contacts for resume {}", contactInfo.getResumeId());
-                }
-                else {
+                } else {
                     contactInfoService.update(contactInfo);
                     log.info("contact id {} has updated", contactInfo.getResumeId());
                 }
             }
-        }
-        else {
+        } else {
             contactInfoService.deleteByResumeId(resumeId);
         }
         log.info("resume edited {}", resumeDto.getName());

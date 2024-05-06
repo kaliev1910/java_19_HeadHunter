@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,25 +44,14 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDto> getResumesWithPaging(Integer page, Integer pageSize) {
-        long count = resumeRepository.count();
-        int totalPages = (int) Math.ceil((double) count / pageSize);
+    public Page<ResumeDto> getResumesWithPaging(Pageable pageable) {
+        return resumeRepository.findAll(pageable)
+                .map(this::toDto);
+    }
 
-        if (totalPages <= page) {
-            page = totalPages - 1;
-        } else if (page < 0) {
-            page = 0;
-        }
-
-        int offset = page * pageSize;
-
-        List<ResumeDto> resumeDtos = new ArrayList<>();
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("updatedTime"));
-
-        List<Resume> list = resumeRepository.findAll(pageable).getContent();
-        list.forEach(e -> resumeDtos.add(toDto(e)));
-
-        return resumeDtos;
+    @Override
+    public Page<ResumeDto> getResumesWithPagingByCategories(Pageable pageable, Integer categoryId) {
+        return resumeRepository.findByCategoryId_Id(pageable, categoryId).map(this::toDto);
     }
 
     @Override
