@@ -48,7 +48,7 @@ public class VacancyMvcController {
         } else {
             vacancies = vacancyService.getVacanciesWithPaging(pageable);
         }
-
+        model.addAttribute("filter", filter);
         model.addAttribute("vacancies", vacancies);
         model.addAttribute("url", "/vacancies");
         model.addAttribute("filter", filter);

@@ -28,8 +28,13 @@ public class MainController {
     private final ResponseService responseService;
 
     @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        return "auth/register";
+    public String showRegistrationForm(BindingResult bindingResult,Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", model);
+            return "auth/register";
+        }
+
+        return "auth/login";
     }
 
     @PostMapping("/register")
