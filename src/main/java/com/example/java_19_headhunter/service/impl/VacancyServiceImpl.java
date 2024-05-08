@@ -54,8 +54,8 @@ public class VacancyServiceImpl implements VacancyService {
 
 
     @Override
-    public Page<VacancyDto> getVacanciesWithPagingByCategories(Pageable pageable, String categoryName) {
-        return vacancyRepository.findByCategoryId_Name(pageable, categoryName).map(this::toDto);
+    public Page<VacancyDto> getVacanciesWithPagingByCategories(Pageable pageable, Integer categoryId) {
+        return vacancyRepository.findByCategoryId_Id(pageable, categoryId).map(this::toDto);
     }
 
 

@@ -3,12 +3,16 @@ package com.example.java_19_headhunter.service.interfaces;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
 
 public interface ResumeService {
+    Page<ResumeDto> getResumesWithPagingByCategories(Pageable pageable, Integer categoryId);
+
     List<ResumeDto> getAll();
 
     List<ResumeDto> findByCategory(int category);
@@ -24,7 +28,7 @@ public interface ResumeService {
 
     void update(@Valid ResumeCreateDto resumeDto, Authentication authentication);
 
-    public List<ResumeDto> getResumesWithPaging(Integer page, Integer pageSize);
+    public Page<ResumeDto> getResumesWithPaging(Pageable pageable) ;
 
     void deleteById(int id);
 

@@ -226,9 +226,10 @@
                             </div>
                         </div>
                         <#if responses?has_content>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                            Отклики
-                        </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#exampleModal">
+                                Отклики
+                            </button>
                         </#if>
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -236,17 +237,21 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="row">
-                                        <#list responses as response>
-                                            <div class="card bg-light mb-3" style="max-width: 18rem;">
-                                                <div class="card-header"></div>
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Light card title</h5>
-                                                    <p class="card-text">Some quick example text to build on the card
-                                                        title
-                                                        and make up the bulk of the card's content.</p>
+                                        <#if responses?has_content>
+                                            <#list responses as response>
+                                                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                                                    <div class="card-header"></div>
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Light card title</h5>
+                                                        <p class="card-text">Some quick example text to build on the
+                                                            card
+                                                            title
+                                                            and make up the bulk of the card's content.</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </#list>
+                                            </#list>
+                                        </#if>
+
                                     </div>
                                 </div>
                             </div>

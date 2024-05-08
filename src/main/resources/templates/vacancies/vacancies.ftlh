@@ -102,12 +102,13 @@
             Фильтровать по категориям
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="/vacancies/sort/1">IT</a>
-            <a class="dropdown-item" href="/vacancies/sort/2">Юриспруденция</a>
-            <a class="dropdown-item" href="/vacancies/sort/3">Менеджмент</a>
-            <a class="dropdown-item" href="/vacancies/sort/4">Продажи</a>
-            <a class="dropdown-item" href="/vacancies/sort/5">Авто</a>
-            <a class="dropdown-item" href="/vacancies/sort/6">Маркетинг</a>
+            <a class="dropdown-item" href="${url}?filter=1">IT</a>
+            <a class="dropdown-item" href="${url}?filter=2">Programming</a>
+            <a class="dropdown-item" href="${url}?filter=3">Web Development</a>
+            <a class="dropdown-item" href="${url}?filter=4">Mobile Development</a>
+            <a class="dropdown-item" href="${url}?filter=5">Finance</a>
+            <a class="dropdown-item" href="${url}?filter=6">Accounting</a>
+            <a class="dropdown-item" href="${url}?filter=7">Investment Banking</a>
         </div>
     </div>
     <@p.pager url vacancies />
