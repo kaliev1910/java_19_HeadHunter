@@ -34,6 +34,7 @@ public class ResumeMvcController {
     private final ExperienceService experienceService;
     private final UserService userService;
     private final ContactInfoService contactInfoService;
+    private final CategoryService categoryService;
 
 
     @GetMapping("/myResumes")
@@ -69,6 +70,7 @@ public class ResumeMvcController {
                              @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 5) Pageable pageable,
                              Model model) {
         Page<ResumeDto> resumes;
+
 
         if (!filter.isEmpty()) {
             // Применить фильтр, если он задан
@@ -163,8 +165,8 @@ public class ResumeMvcController {
         List<ExperienceDto> experiences = experienceService.findListByResumeId(resumeId);
         List<ContactInfoDto> contacts = contactInfoService.findListByResumeId(resumeId);
         int eduIndex = 0;
-        model.addAttribute("eduIndex", eduIndex);
         model.addAttribute("contacts", contacts);
+        model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("educations", educations);
         model.addAttribute("experiences", experiences);
         model.addAttribute("resume", resumeService.findById(resumeId));
