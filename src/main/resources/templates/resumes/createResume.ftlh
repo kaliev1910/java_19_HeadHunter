@@ -65,7 +65,7 @@
 
         function addEducation() {
             var educationSection = document.getElementById("education");
-            var educationFields = '<div id="education' + educationIndex + '" class="form-group">'
+            var educationFields = '<div id="education' + educationIndex + '" class="form-group" name="education[' + educationIndex + ']">'
                 .concat('<label for="institution">Учебное заведение:</label>')
                 .concat('<input type="text" class="form-control" name="education[' + educationIndex + '].institution" required><br>')
                 .concat('<label for="program">Программа/Специализация:</label>')
