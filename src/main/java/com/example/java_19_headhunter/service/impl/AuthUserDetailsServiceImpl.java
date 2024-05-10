@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.service.impl;
 
-import com.example.java_19_headhunter.models.Authority;
+import com.example.java_19_headhunter.enums.AccountType;
 import com.example.java_19_headhunter.models.Role;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.repository.UserRepository;
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static com.example.java_19_headhunter.enums.AccountType.APPLICANT;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +47,7 @@ public class AuthUserDetailsServiceImpl implements UserDetailsService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
-        return getGrantedAuthorities(getPrivileges(roles));
+        return getGrantedAuthorities(AccountType.getAccountTypes());
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
@@ -56,19 +58,19 @@ public class AuthUserDetailsServiceImpl implements UserDetailsService {
         return authorities;
     }
 
-    private List<String> getPrivileges(Collection<Role> roles) {
-        List<String> privileges = new ArrayList<>();
-        List<Authority> collection = new ArrayList<>();
-
-        for (Role role : roles) {
-            privileges.add(role.getRole());
-            collection.addAll(role.getAuthorities());
-        }
-        for (Authority item : collection) {
-            privileges.add(item.getAuthority());
-        }
-        return privileges;
-    }
+//    private List<String> getPrivileges(Collection<Role> roles) {
+//        List<String> privileges = new ArrayList<>();
+//        List<Authority> collection = new ArrayList<>();
+//
+//        for (Role role : roles) {
+//            privileges.add(role.getRole());
+//            collection.addAll(role.getAuthorities());
+//        }
+//        for (Authority item : collection) {
+//            privileges.add(item.getAuthority());
+//        }
+//        return privileges;
+//    }
 
 
 }

@@ -3,8 +3,8 @@ package com.example.java_19_headhunter.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,7 +31,11 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "authorEmail")
     private List<Vacancy> vacancies;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
-    private Collection<Role> roles;
+
+    @ManyToMany
+    @JoinTable(name = "USER_ROLES",
+            joinColumns = @JoinColumn(name = "USER_EMAIL"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+    private Set<Role> roles;
 
 }
