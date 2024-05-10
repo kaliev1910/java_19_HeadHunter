@@ -9,6 +9,12 @@
                     </div>
                     <div class="card-body">
                         <form action="/login" method="post" id="login-form" name="login-form">
+                            <#if _csrf??>
+                                <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                       value="${(_csrf.token)!'csrf-token'}"/>
+                            </#if>
+
+
                             <div class="form-group">
                                 <label for="username" class="font-weight-bold">Username:</label>
                                 <input type="email" class="form-control" id="username" name="username"

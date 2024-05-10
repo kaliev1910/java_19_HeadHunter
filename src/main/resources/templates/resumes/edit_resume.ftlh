@@ -8,6 +8,10 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/resume/update" method="post" id="resumeForm">
+                        <#if _csrf??>
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                   value="${(_csrf.token)!'csrf-token'}"/>
+                        </#if>
 
                         <label for="applicantEmail"></label><input type="text" class="form-control" id="applicantEmail"
                                                                    name="applicantEmail"

@@ -3,6 +3,11 @@
     <div class="container">
         <h2 class="text-center mb-4">Registration Form</h2>
         <form action="/register" id="registrationForm"  method="post" style="max-width: 400px; margin: auto; display: flex; flex-wrap: wrap;">
+            <#if _csrf??>
+                <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                       value="${(_csrf.token)!'csrf-token'}"/>
+            </#if>
+
             <div class="form-group" style="flex-basis: 100%;">
                 <label for="name" style="width: 100%;">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required style="width: 100%;">

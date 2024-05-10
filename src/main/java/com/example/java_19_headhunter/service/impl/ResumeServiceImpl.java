@@ -2,6 +2,7 @@ package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
+import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.Resume;
 import com.example.java_19_headhunter.repository.ResumeRepository;
 import com.example.java_19_headhunter.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -93,7 +95,7 @@ public class ResumeServiceImpl implements ResumeService {
             Resume resume = fromDto(mapToResumeDto(resumeDto));
             resume.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
             resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
-            resume.setApplicantEmail(userRepository.findUserByEmail(user.getUsername()).get());
+            resume.setApplicantEmail(userRepository.findUserByEmail(user.getUsername()).orElseThrow());
             resumeId = resumeRepository.save(resume);
         } catch (Exception e) {
             log.error("Error inserting Resume: {}", resumeDto, e);

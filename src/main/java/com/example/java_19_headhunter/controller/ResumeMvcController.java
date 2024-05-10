@@ -15,10 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +106,7 @@ public class ResumeMvcController {
     }
 
     @PostMapping("/resume/create")
-    public String createResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication, Model model) {
+    public String createResume(@RequestBody @ModelAttribute("resumeForm") ResumeCreateDto resumeDto, Authentication authentication, Model model) {
 
         int resumeId = resumeService.create(resumeDto, authentication);
 
