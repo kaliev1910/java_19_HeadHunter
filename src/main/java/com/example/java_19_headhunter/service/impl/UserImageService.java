@@ -5,6 +5,9 @@ import com.example.java_19_headhunter.models.UserImage;
 import com.example.java_19_headhunter.repository.UserImageRepository;
 import com.example.java_19_headhunter.service.interfaces.FileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserImageService {
     private static final String SUB_DIR = "images";
     private final FileService fileService;
@@ -20,6 +24,8 @@ public class UserImageService {
     private final UserImageRepository userImageRepository;
 
     public void uploadImage(UserImageDto userImageDto) {
+        try
+        {
         userImageRepository.deleteByUserId_Id(userImageDto.getUserId());
         String fileName = fileService.saveUploadedFile(userImageDto.getFile(), SUB_DIR);
         UserImage ui = UserImage.builder()
@@ -27,6 +33,11 @@ public class UserImageService {
                 .fileName(fileName)
                 .build();
         userImageRepository.save(ui);
+        log.info("Image uploaded successfully");}
+        catch (Exception e){
+            log.error(e.getMessage(), "Image upload failed");
+            throw new NoSuchElementException(e.getMessage());
+        }
     }
 
 

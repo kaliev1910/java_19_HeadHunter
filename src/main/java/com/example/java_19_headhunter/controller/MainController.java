@@ -122,7 +122,7 @@ public class MainController {
     @PostMapping("/upload")
     public String uploadImage(UserImageDto userImageDto) {
         userImageService.uploadImage(userImageDto);
-        return "redirect:profile";
+        return "redirect:/profile";
     }
 
 
