@@ -57,7 +57,13 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String login(
+            @RequestParam(defaultValue = "false", required = false) Boolean error,
+            Model model
+    ) {
+        if (error.equals(Boolean.TRUE)) {
+            model.addAttribute("error", "Invalid Username or Password");
+        }
         return "/auth/login";
     }
 
