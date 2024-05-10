@@ -38,7 +38,10 @@ public class SecurityConfig {
                                 }
                             }
                             ;
-                        })
+                        }
+
+                        )
+                        .failureUrl("/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
