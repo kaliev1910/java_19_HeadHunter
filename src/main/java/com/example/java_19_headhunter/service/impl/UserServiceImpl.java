@@ -1,8 +1,10 @@
 package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
+import com.example.java_19_headhunter.enums.AccountType;
 import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
+import com.example.java_19_headhunter.repository.RoleRepository;
 import com.example.java_19_headhunter.repository.UserRepository;
 import com.example.java_19_headhunter.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @SneakyThrows
     @Override
@@ -39,7 +42,6 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             log.error("Error while trying to update user with email {} user {}", userDto.getEmail(), userDto, e);
             throw e;
-
         }
     }
 
@@ -58,10 +60,20 @@ public class UserServiceImpl implements UserService {
         try {
             user = fromDto(userDto);
             user.setPassword(encoder.encode(userDto.getPassword()));
+            user.setEnabled(true);
             userRepository.save(user);
+
             Optional<User> newUser = userRepository.findUserByEmail(user.getEmail());
 
+
             if (newUser.isPresent()) {
+                if (user.getAccountType().equalsIgnoreCase(AccountType.APPLICANT.getValue())){
+                    roleRepository.addUserRole(1, user.getEmail());
+                }
+                if (user.getAccountType().equalsIgnoreCase(AccountType.EMPLOYER.getValue())){
+                    roleRepository.addUserRole(2, user.getEmail());
+                }
+
                 log.info("User with email {} has been created", userDto.getEmail());
                 return user.getId();
             } else {
