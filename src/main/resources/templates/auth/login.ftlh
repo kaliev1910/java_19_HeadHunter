@@ -13,7 +13,9 @@
                                 <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                                        value="${(_csrf.token)!'csrf-token'}"/>
                             </#if>
-
+                            <#if error??>
+                                <b class="error">${error}</b>
+                            </#if>
 
                             <div class="form-group">
                                 <label for="username" class="font-weight-bold">Username:</label>

@@ -31,13 +31,14 @@ public class MainController {
     private final ResponseService responseService;
 
     @GetMapping("/register")
-    public String showRegistrationForm(BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("user", model);
-            return "auth/register";
+    public String showRegistrationForm(@RequestParam(defaultValue = "false", required = false) Boolean success,
+                                       Model model) {
+        if (success.equals(Boolean.TRUE)) {
+            return "redirect:/login";
         }
 
-        return "auth/login";
+
+        return "auth/register";
     }
 
     @PostMapping("/register")
@@ -53,11 +54,14 @@ public class MainController {
         }
 
         userService.createUser(userDto);
-        return "redirect:/register?success";
+        return "redirect:/register?success=true";
     }
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String login(@RequestParam(defaultValue = "false", required = false) Boolean error, Model model) {
+        if (error.equals(Boolean.TRUE)) {
+            model.addAttribute("error", "Invalid Username or Password");
+        }
         return "/auth/login";
     }
 

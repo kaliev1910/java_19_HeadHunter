@@ -4,6 +4,7 @@ package com.example.java_19_headhunter.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,18 +39,24 @@ public class SecurityConfig {
                                 }
                             }
                             ;
-                        })
+                        }
+
+                        )
+                        .failureUrl("/login?error=true")
                         .permitAll())
+
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll())
                 .authorizeHttpRequests(authz -> authz
+//                                .requestMatchers("/register").permitAll()
                                 .requestMatchers("/profile").authenticated()
                                 .requestMatchers("/resumes").authenticated()
                                 .requestMatchers("/resumes").hasAnyAuthority("EMPLOYER")
                                 .requestMatchers("/chat").authenticated()
 
-//                        .requestMatchers(HttpMethod.GET, "/resume/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/register").permitAll()
                                 .requestMatchers("/resume/*/edit").hasAnyAuthority("APPLICANT")
                                 .requestMatchers("/vacancy/*/edit").hasAnyAuthority("EMPLOYER")
 //                        .requestMatchers(HttpMethod.GET, "/").permitAll()
