@@ -1,48 +1,21 @@
 package com.example.java_19_headhunter.config;
 
 
-import com.example.java_19_headhunter.enums.AccountType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private static final String USER_QUERY = "select email,password,enabled from users where email=?";
-    private static final String ROLES_QUERY = """
-            select u.email, r.role
-            from user_roles ur inner join users u on u.email = ur.user_email
-            inner join roles r on r.id = ur.role_id where u.email=?
-            """;
-    private final PasswordEncoder encoder;
-    private final DataSource dataSource;
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(USER_QUERY)
-                .authoritiesByUsernameQuery(ROLES_QUERY)
-                .passwordEncoder(new BCryptPasswordEncoder())
-
-        ;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,22 +27,33 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/profile")
+                        .successHandler((request, response, authentication) -> {
+                            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                                if (authority.getAuthority().equals("APPLICANT")) {
+                                    response.sendRedirect("/resumes");
+                                    return;
+                                } else if (authority.getAuthority().equals("EMPLOYER")) {
+                                    response.sendRedirect("/vacancies");
+                                    return;
+                                }
+                            }
+                            ;
+                        })
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/profile").authenticated()
-                        .requestMatchers("/resumes").authenticated()
-                        .requestMatchers( "/resumes").hasAnyAuthority("EMPLOYER")
-                        .requestMatchers( "/chat").authenticated()
+                                .requestMatchers("/profile").authenticated()
+                                .requestMatchers("/resumes").authenticated()
+                                .requestMatchers("/resumes").hasAnyAuthority("EMPLOYER")
+                                .requestMatchers("/chat").authenticated()
 
 //                        .requestMatchers(HttpMethod.GET, "/resume/**").authenticated()
-                        .requestMatchers( "/resume/*/edit").hasAnyAuthority("APPLICANT")
-                        .requestMatchers("/vacancy/*/edit").hasAnyAuthority("EMPLOYER")
+                                .requestMatchers("/resume/*/edit").hasAnyAuthority("APPLICANT")
+                                .requestMatchers("/vacancy/*/edit").hasAnyAuthority("EMPLOYER")
 //                        .requestMatchers(HttpMethod.GET, "/").permitAll()
-                        .anyRequest().permitAll()
+                                .anyRequest().permitAll()
                 )
                 .exceptionHandling(handle -> handle
                         .accessDeniedPage("/error")

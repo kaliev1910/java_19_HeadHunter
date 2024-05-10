@@ -1,6 +1,9 @@
 package com.example.java_19_headhunter.controller;
 
-import com.example.java_19_headhunter.dto.basicDtos.*;
+import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserDto;
+import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
+import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.enums.AccountType;
 import com.example.java_19_headhunter.models.UserResponse;
 import com.example.java_19_headhunter.service.impl.UserImageService;
@@ -28,7 +31,7 @@ public class MainController {
     private final ResponseService responseService;
 
     @GetMapping("/register")
-    public String showRegistrationForm(BindingResult bindingResult,Model model) {
+    public String showRegistrationForm(BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", model);
             return "auth/register";
@@ -57,7 +60,8 @@ public class MainController {
     public String showLoginForm() {
         return "/auth/login";
     }
- @GetMapping("/error")
+
+    @GetMapping("/error")
     public String showAccessDeniedPage() {
         return "/errors/accessDenied";
     }
