@@ -95,11 +95,89 @@
                                     <button class="btn btn-success" data-toggle="modal" data-target="#modal-success">
                                         Change photo
                                     </button>
+                                    <div id="modal-success" class="modal modal-message modal-success fade"
+                                         style="display: none;"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <i class="glyphicon glyphicon-check"></i>
+                                                </div>
+                                                <div class="modal-title">Change photo</div>
+                                                <div class="modal-body">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <form id="imageForm" action="/upload" method="post"
+                                                                      enctype="multipart/form-data" class="custom-form">
+                                                                    <label for="file">Выберите изображение для загрузки
+                                                                        (PNG, JPG, JPEG):</label><br>
+                                                                    <input type="file" id="file" name="file"
+                                                                           accept=".jpeg" class="form-control-file"><br>
+                                                                    <input type="hidden" id="userId" name="userId"
+                                                                           value="${user.id}">
+                                                                    <input type="submit" value="Загрузить"
+                                                                           class="btn btn-primary">
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-success" data-dismiss="modal">
+                                                        OK
+                                                    </button>
+                                                </div>
+                                            </div> <!-- / .modal-content -->
+                                        </div> <!-- / .modal-dialog -->
+                                    </div>
                                 </div>
                                 <!-- Button to create resume -->
                                 <a href="/resumes/create">
                                     <button type="button" class="btn btn-primary">Создать резюме</button>
                                 </a>
+                                <div id="modal-success" class="modal modal-message modal-success fade"
+                                     style="display: none;"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <i class="glyphicon glyphicon-check"></i>
+                                            </div>
+                                            <div class="modal-title">Change photo</div>
+                                            <div class="modal-body">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <form id="imageForm" action="/upload" method="post"
+                                                                  enctype="multipart/form-data" class="custom-form">
+                                                                <#if _csrf??>
+                                                                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                                                           value="${(_csrf.token)!'csrf-token'}"/>
+                                                                </#if>
+
+                                                                <label for="file">Выберите изображение для загрузки
+                                                                    (PNG, JPG, JPEG):</label><br>
+                                                                <input type="file" id="file" name="file"
+                                                                       accept=".jpeg" class="form-control-file"><br>
+                                                                <input type="hidden" id="userId" name="userId"
+                                                                       value="${user.id}">
+                                                                <button type="submit"
+                                                                        class="btn btn-primary">Загрузить
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" data-dismiss="modal">
+                                                    OK
+                                                </button>
+                                            </div>
+                                        </div> <!-- / .modal-content -->
+                                    </div> <!-- / .modal-dialog -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -202,6 +280,48 @@
                                     <button class="btn btn-success" data-toggle="modal" data-target="#modal-success">
                                         Change photo
                                     </button>
+                                </div>
+                                <div id="modal-success" class="modal modal-message modal-success fade"
+                                     style="display: none;"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <i class="glyphicon glyphicon-check"></i>
+                                            </div>
+                                            <div class="modal-title">Change photo</div>
+                                            <div class="modal-body">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <form id="imageForm" action="/upload" method="post"
+                                                                  enctype="multipart/form-data" class="custom-form">
+                                                                <#if _csrf??>
+                                                                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                                                           value="${(_csrf.token)!'csrf-token'}"/>
+                                                                </#if>
+
+                                                                <label for="file">Выберите изображение для загрузки
+                                                                    (PNG, JPG, JPEG):</label><br>
+                                                                <input type="file" id="file" name="file"
+                                                                       accept=".jpeg" class="form-control-file"><br>
+                                                                <input type="hidden" id="userId" name="userId"
+                                                                       value="${user.id}">
+                                                                <button type="submit"
+                                                                        class="btn btn-primary">Загрузить
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" data-dismiss="modal">
+                                                    OK
+                                                </button>
+                                            </div>
+                                        </div> <!-- / .modal-content -->
+                                    </div> <!-- / .modal-dialog -->
                                 </div>
                                 <!-- Button to create resume -->
                                 <a href="/vacancy/create">

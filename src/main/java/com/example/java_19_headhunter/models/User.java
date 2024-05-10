@@ -2,6 +2,7 @@ package com.example.java_19_headhunter.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 import java.util.Set;
