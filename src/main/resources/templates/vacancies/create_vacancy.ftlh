@@ -5,6 +5,11 @@
     <div class="row justify-content-around">
         <div class="card col-8 m-1 mb-5">
             <form action="/vacancy/create" method="post">
+                <#if _csrf??>
+                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                           value="${(_csrf.token)!'csrf-token'}"/>
+                </#if>
+
                 <div class="form-group">
                     <label for="name">Job Title:</label>
                     <input type="text" id="name" name="name" class="form-control" required>

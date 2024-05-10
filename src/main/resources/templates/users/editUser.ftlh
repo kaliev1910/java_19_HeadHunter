@@ -108,6 +108,11 @@
             <div class="card profile border-0 ">
                 <div class="card-body">
                     <form action="/${user.email}/edit" method="post">
+                        <#if _csrf??>
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                   value="${(_csrf.token)!'csrf-token'}"/>
+                        </#if>
+
                         <fieldset>
                             <div class="form-group">
                                 <label for="name">Имя</label>

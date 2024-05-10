@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <form action="/resume/create" method="post" id="resumeForm">
+                    <form action="/resume/create" method="post" id="resumeForm" name="resumeForm">
                         <div class="form-group">
                             <label for="name">Название резюме:</label>
                             <input type="text" class="form-control" id="name" name="name" required>
@@ -65,9 +65,10 @@
 
         function addEducation() {
             var educationSection = document.getElementById("education");
-            var educationFields = '<div id="education' + educationIndex + '" class="form-group">'
+            var educationFields = '<div id="education' + educationIndex + '" class="form-group" name="education[' + educationIndex + ']">'
                 .concat('<label for="institution">Учебное заведение:</label>')
                 .concat('<input type="text" class="form-control" name="education[' + educationIndex + '].institution" required><br>')
+                .concat('<input type="text" class="form-control"  value="" name="education[' + educationIndex + '].resumeId"  hidden="hidden" required><br>')
                 .concat('<label for="program">Программа/Специализация:</label>')
                 .concat('<input type="text" class="form-control" name="education[' + educationIndex + '].program" required><br>')
                 .concat('<label for="degree">Степень:</label>')

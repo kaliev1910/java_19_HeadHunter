@@ -8,6 +8,10 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/resume/update" method="post" id="resumeForm">
+                        <#if _csrf??>
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                   value="${(_csrf.token)!'csrf-token'}"/>
+                        </#if>
 
                         <label for="applicantEmail"></label><input type="text" class="form-control" id="applicantEmail"
                                                                    name="applicantEmail"
@@ -23,12 +27,10 @@
                         <div class="form-group">
                             <label for="categoryId">Категория резюме:</label>
                             <select class="form-control" id="categoryId" name="categoryId" required>
-                                <option value="">--Выберите категорию--</option>
-                                <option value="1" <#if resume.categoryId == 1>selected</#if>>IT</option>
-                                <option value="2" <#if resume.categoryId == 2>selected</#if>>Web Development</option>
-                                <option value="3" <#if resume.categoryId == 3>selected</#if>>Finance</option>
-                                <option value="4" <#if resume.categoryId == 4>selected</#if>>Accounting</option>
-                                <option value="5" <#if resume.categoryId == 5>selected</#if>>Investment Banking</option>
+                                <option value="${resume.categoryId}">${categories.get(resume.categoryId).name}</option>
+                                <#list categories as category>
+                                    <option value="${category.id}">${category.name}</option>
+                                </#list>
                             </select>
                         </div>
 
@@ -38,146 +40,200 @@
                                    value="${resume.expectedSalary}" required>
                         </div>
 
-                        <div class="form-group" id="education">
+
+                        <div class="form-group" id="educations">
                             <label>Образование:</label>
-                            <#list educations as education>
-                                <div id="education" class="form-group">
-                                    <label for="institution">Учебное заведение:</label>
-                                    <input type="text" class="form-control"
-                                           name="education.institution"
-                                           value="${education.institution}" required><br>
-                                    <input type="text" class="form-control"
-                                           name="education.program" required
-                                           value="${education.program}"><br>
-                                    <label for="degree">Степень:</label>')
-                                    <input type="text" class="form-control"
-                                           name="education.degree"
-                                           value="${education.degree}" required><br>
-                                    <label for="startDate">Дата начала:</label>')
-                                    <input type="date" class="form-control"
-                                           name="education.startDate"
-                                           value="${education.startDate}" required><br>
-                                    <label for="endDate">Дата окончания:</label>')
-                                    <input type="date" class="form-control"
-                                           name="education.endDate"
-                                           value="${education.endDate}" required><br>
-                                    <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="removeEducation(this.dataset.educationIndex)">Удалить образование
-                                    </button>
-                                </div>
-                            </#list>
+                            <div id="educationContainer">
+                                <#if educations?has_content>
+                                    <#list educations as education>
+                                        <button type="button" class="btn btn-secondary btn-sm"
+                                                onclick="showEducation('${education.resumeId}', '${education.degree}', '${education.program}',
+                                                        '${education.institution}', '${education.startDate}', '${education.endDate}')">
+                                            Показать все образования
+                                        </button>
+
+                                    </#list>
+                                </#if>
+
+                            </div>
                             <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить
                                 образование
                             </button>
                         </div>
 
-                        <div class="form-group" id="experience">
+                        <div class="form-group" id="experiences">
                             <label>Experience:</label>
-                            <#list experiences as experience>
+                            <div id="experienceContainer">
+                                <#if experiences?has_content>
+                                    <#list experiences as experience>
+                                        <script>
+                                            window.onload = function () {
+                                                showExperience('${experience.companyName}', '${experience.position}', '${experience.responsibilities}', '${experience.startDate}', '${experience.endDate}');
+                                            }
+                                        </script>
+                                    </#list>
+                                </#if>
 
-                                <div id="experience" class="form-group">
-                                    <label for="company">Компания: </label>
-                                    <input type="text" class="form-control"
-                                           name="experience{{{experienceIndex}}}.companyName"
-                                           value="${experience.companyName}" required><br>
-                                    <input type="text" class="form-control"
-                                           name="experience.position" required
-                                           value="${experience.position}"><br>
-                                    <label for="degree">Обязанности:</label>')
-                                    <input type="text" class="form-control"
-                                           name="experience.responsibilities"
-                                           value="${experience.responsibilities}" required><br>
-                                    <label for="startDate">Дата начала:</label>')
-                                    <input type="date" class="form-control"
-                                           name="experience.startDate"
-                                           value="${experience.startDate}" required><br>
-                                    <label for="endDate">Дата окончания:</label>')
-                                    <input type="date" class="form-control"
-                                           name="experience.endDate"
-                                           value="${experience.endDate}" required><br>
-                                    <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="removeEducation(this.dataset.educationIndex)">Удалить образование
-                                    </button>
-                                </div>
-                            </#list>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить
-                                образование
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addExperience()">Добавить
+                                опыт работы
                             </button>
                         </div>
+
+                        <div class="form-group" id="contacts">
+                            <label>Контакты:</label>
+                            <div id="contactContainer">
+                                <#if contacts?has_content>
+                                    <#list contacts as contact>
+                                        <script>window.onload = function () {
+                                                showContact('${contact.contactValue}', '${contact.typeId}');
+                                            }
+                                        </script>
+                                    </#list>
+                                </#if>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addContact()">Добавить
+                                контакт
+                            </button>
+                        </div>
+
+
+                        <#--                        <div class="form-group" id="education">-->
+                        <#--                            <label>Образование:</label>-->
+                        <#--                            <#list educations as education>-->
+                        <#--                                <div id="education" class="form-group">-->
+                        <#--                                    <label for="institution">Учебное заведение:</label>-->
+                        <#--                                    <input type="text" class="form-control"-->
+                        <#--                                           name="education.institution"-->
+                        <#--                                           value="${education.institution}" required><br>-->
+                        <#--                                    <input type="text" class="form-control"-->
+                        <#--                                           name="education.program" required-->
+                        <#--                                           value="${education.program}"><br>-->
+                        <#--                                    <label for="degree">Степень:</label>')-->
+                        <#--                                    <input type="text" class="form-control"-->
+                        <#--                                           name="education.degree"-->
+                        <#--                                           value="${education.degree}" required><br>-->
+                        <#--                                    <label for="startDate">Дата начала:</label>')-->
+                        <#--                                    <input type="date" class="form-control"-->
+                        <#--                                           name="education.startDate"-->
+                        <#--                                           value="${education.startDate}" required><br>-->
+                        <#--                                    <label for="endDate">Дата окончания:</label>')-->
+                        <#--                                    <input type="date" class="form-control"-->
+                        <#--                                           name="education.endDate"-->
+                        <#--                                           value="${education.endDate}" required><br>-->
+                        <#--                                    <button type="button" class="btn btn-danger btn-sm"-->
+                        <#--                                            onclick="removeEducation(this.dataset.educationIndex)">Удалить образование-->
+                        <#--                                    </button>-->
+                        <#--                                </div>-->
+                        <#--                            </#list>-->
+                        <#--                            <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить-->
+                        <#--                                образование-->
+                        <#--                            </button>-->
+                        <#--                        </div>-->
+
+                        <#--                        <div class="form-group" id="experience">-->
+                        <#--                            <label>Experience:</label>-->
+                        <#--                            <#list experiences as experience>-->
+
+                        <#--                                <div id="experience" class="form-group">-->
+                        <#--                                    <label for="company">Компания: </label>-->
+                        <#--                                    <input type="text" class="form-control"-->
+                        <#--                                           name="experience{{{experienceIndex}}}.companyName"-->
+                        <#--                                           value="${experience.companyName}" required><br>-->
+                        <#--                                    <input type="text" class="form-control"-->
+                        <#--                                           name="experience.position" required-->
+                        <#--                                           value="${experience.position}"><br>-->
+                        <#--                                    <label for="degree">Обязанности:</label>')-->
+                        <#--                                    <input type="text" class="form-control"-->
+                        <#--                                           name="experience.responsibilities"-->
+                        <#--                                           value="${experience.responsibilities}" required><br>-->
+                        <#--                                    <label for="startDate">Дата начала:</label>')-->
+                        <#--                                    <input type="date" class="form-control"-->
+                        <#--                                           name="experience.startDate"-->
+                        <#--                                           value="${experience.startDate}" required><br>-->
+                        <#--                                    <label for="endDate">Дата окончания:</label>')-->
+                        <#--                                    <input type="date" class="form-control"-->
+                        <#--                                           name="experience.endDate"-->
+                        <#--                                           value="${experience.endDate}" required><br>-->
+                        <#--                                    <button type="button" class="btn btn-danger btn-sm"-->
+                        <#--                                            onclick="removeEducation(this.dataset.educationIndex)">Удалить образование-->
+                        <#--                                    </button>-->
+                        <#--                                </div>-->
+                        <#--                            </#list>-->
+                        <#--                            <button type="button" class="btn btn-secondary btn-sm" onclick="addEducation()">Добавить-->
+                        <#--                                образование-->
+                        <#--                            </button>-->
+                        <#--                        </div>-->
                         <button type="submit" class="btn btn-primary btn-block">Обновить резюме</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
+    <script src="/static/js/resumeEdit.js"></script>
     <script>
         window.addEventListener('load', () => {
+            let educationIndex = 0;
+            let experienceIndex = 0;
+            let contactIndex = 0;
 
-                let educationIndex = 0;
-                let experienceIndex = 0;
-                let contactIndex = 0;
-            }
-        )
+        });
 
         function addEducation() {
-            let educationSection = document.getElementById("education");
-
-            const a = ``;
+            let educationSection = document.getElementById("educationContainer");
 
             let educationFields = '<div id="education' + educationIndex + '" class="form-group">'
-                .concat('<label for="institution">Учебное заведение:</label>')
-                .concat('<input type="text" class="form-control" name="education[' + educationIndex + '].institution" required><br>')
-                .concat('<label for="program">Программа/Специализация:</label>')
-                .concat('<input type="text" class="form-control" name="education[' + educationIndex + '].program" required><br>')
-                .concat('<label for="degree">Степень:</label>')
-                .concat('<input type="text" class="form-control" name="education[' + educationIndex + '].degree" required><br>')
-                .concat('<label for="startDate">Дата начала:</label>')
-                .concat('<input type="date" class="form-control" name="education[' + educationIndex + '].startDate" required><br>')
-                .concat('<label for="endDate">Дата окончания:</label>')
-                .concat('<input type="date" class="form-control" name="education[' + educationIndex + '].endDate" required><br>')
-                .concat('<button type="button" class="btn btn-danger btn-sm" onclick="removeEducation(' + educationIndex + ')">Удалить образование</button>')
-                .concat('</div>');
+                + '<label for="institution">Учебное заведение:</label>'
+                + '<input type="text" class="form-control" name="education[' + educationIndex + '].institution" required><br>'
+                + '<label for="program">Программа/Специализация:</label>'
+                + '<input type="text" class="form-control" name="education[' + educationIndex + '].program" required><br>'
+                + '<label for="degree">Степень:</label>'
+                + '<input type="text" class="form-control" name="education[' + educationIndex + '].degree" required><br>'
+                + '<label for="startDate">Дата начала:</label>'
+                + '<input type="date" class="form-control" name="education[' + educationIndex + '].startDate" required><br>'
+                + '<label for="endDate">Дата окончания:</label>'
+                + '<input type="date" class="form-control" name="education[' + educationIndex + '].endDate" required><br>'
+                + '<button type="button" class="btn btn-danger btn-sm" onclick="removeEducation(' + educationIndex + ')">Удалить образование</button>'
+                + '</div>';
             educationSection.insertAdjacentHTML('beforeend', educationFields);
             educationIndex++;
         }
 
         function addExperience() {
-            let experienceSection = document.getElementById("experience");
+            let experienceSection = document.getElementById("experienceContainer");
             let experienceFields = '<div id="experience' + experienceIndex + '" class="form-group">'
-                .concat('<label for="companyName">Название компании:</label>')
-                .concat('<input type="text" class="form-control" name="experience[' + experienceIndex + '].companyName" required><br>')
-                .concat('<label for="position">Должность:</label>')
-                .concat('<input type="text" class="form-control" name="experience[' + experienceIndex + '].position" required><br>')
-                .concat('<label for="responsibilities">Обязанности:</label>')
-                .concat('<input type="text" class="form-control" name="experience[' + experienceIndex + '].responsibilities" required><br>')
-                .concat('<label for="years">Продолжительность работы (в годах):</label>')
-                .concat('<input type="number" class="form-control" name="experience[' + experienceIndex + '].years" required><br>')
-                .concat('<button type="button" class="btn btn-danger btn-sm" onclick="removeExperience(' + experienceIndex + ')">Удалить опыт</button>')
-                .concat('</div>');
+                + '<label for="companyName">Название компании:</label>'
+                + '<input type="text" class="form-control" name="experience[' + experienceIndex + '].companyName" required><br>'
+                + '<label for="position">Должность:</label>'
+                + '<input type="text" class="form-control" name="experience[' + experienceIndex + '].position" required><br>'
+                + '<label for="responsibilities">Обязанности:</label>'
+                + '<input type="text" class="form-control" name="experience[' + experienceIndex + '].responsibilities" required><br>'
+                + '<label for="years">Продолжительность работы (в годах):</label>'
+                + '<input type="number" class="form-control" name="experience[' + experienceIndex + '].years" required><br>'
+                + '<button type="button" class="btn btn-danger btn-sm" onclick="removeExperience(' + experienceIndex + ')">Удалить опыт</button>'
+                + '</div>';
             experienceSection.insertAdjacentHTML('beforeend', experienceFields);
             experienceIndex++;
         }
 
         function addContact() {
-            let contactSection = document.getElementById("contact");
+            let contactSection = document.getElementById("contactContainer");
             let contactFields = '<div id="contact' + contactIndex + '" class="form-group">'
-                .concat('<label for="contactValue">Контактная информация:</label>')
-                .concat('<input type="text" class="form-control" name="contactInfo[' + contactIndex + '].contactValue" required><br>')
-                .concat('<label for="typeId">Тип контакта:</label>')
-                .concat('<select class="form-control" name="contactInfo[' + contactIndex + '].typeId">')
-                .concat('<option value="">--Выберите тип контакта--</option>')
-                .concat('<option value="1">Телефон</option>')
-                .concat('<option value="2">Email</option>')
-                .concat('<option value="3">LinkedIn</option>')
-                .concat('<option value="4">Telegram</option>')
-                .concat('</select><br>')
-                .concat('<button type="button" class="btn btn-danger btn-sm" onclick="removeContact(' + contactIndex + ')">Удалить контакт</button>')
-                .concat('</div>');
+                + '<label for="contactValue">Контактная информация:</label>'
+                + '<input type="text" class="form-control" name="contactInfo[' + contactIndex + '].contactValue" required><br>'
+                + '<label for="typeId">Тип контакта:</label>'
+                + '<select class="form-control" name="contactInfo[' + contactIndex + '].typeId">'
+                + '<option value="">--Выберите тип контакта--</option>'
+                + '<option value="1">Телефон</option>'
+                + '<option value="2">Email</option>'
+                + '<option value="3">LinkedIn</option>'
+                + '<option value="4">Telegram</option>'
+                + '</select><br>'
+                + '<button type="button" class="btn btn-danger btn-sm" onclick="removeContact(' + contactIndex + ')">Удалить контакт</button>'
+                + '</div>';
             contactSection.insertAdjacentHTML('beforeend', contactFields);
             contactIndex++;
         }
-
 
         function removeEducation(index) {
             let educationToRemove = document.getElementById("education" + index);
@@ -194,5 +250,4 @@
             contactToRemove.remove();
         }
     </script>
-
 </@main.layout>
