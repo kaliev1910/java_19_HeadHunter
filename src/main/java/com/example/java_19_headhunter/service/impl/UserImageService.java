@@ -3,11 +3,10 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dto.basicDtos.UserImageDto;
 import com.example.java_19_headhunter.models.UserImage;
 import com.example.java_19_headhunter.repository.UserImageRepository;
+import com.example.java_19_headhunter.repository.UserRepository;
 import com.example.java_19_headhunter.service.interfaces.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,21 +21,31 @@ public class UserImageService {
     private final FileService fileService;
 
     private final UserImageRepository userImageRepository;
+    private final UserRepository userRepository;
 
     public void uploadImage(UserImageDto userImageDto) {
-        try
-        {
-        userImageRepository.deleteByUserId_Id(userImageDto.getUserId());
-        String fileName = fileService.saveUploadedFile(userImageDto.getFile(), SUB_DIR);
-        UserImage ui = UserImage.builder()
-                .userId(userImageRepository.findByUserId_Id(userImageDto.getUserId()).get().getUserId())
-                .fileName(fileName)
-                .build();
-        userImageRepository.save(ui);
-        log.info("Image uploaded successfully");}
-        catch (Exception e){
+        try {
+
+           UserImage found=  userImageRepository.findByUserId_Id(userImageDto.getUserId()).get();
+
+            userImageRepository.delete(found);
+            String fileName = fileService.saveUploadedFile(userImageDto.getFile(), SUB_DIR);
+            UserImage ui = UserImage.builder()
+                    .userId(
+                            userRepository.getUserById
+                                    (
+                                            (int)     userImageDto.getUserId()
+                                    )
+                    )
+                    .fileName(fileName)
+                    .build();
+            log.error(String.valueOf(ui.getUserId()), ui.getImageId());
+           UserImage savedImage
+                   =  userImageRepository.save(ui);
+            log.info("Image uploaded successfully");
+        } catch (Exception e) {
             log.error(e.getMessage(), "Image upload failed");
-            throw new NoSuchElementException(e.getMessage());
+
         }
     }
 
