@@ -39,8 +39,8 @@ public class GlobalExceptionHandler {
         model.addAttribute("reason", HttpStatus.NOT_FOUND.getReasonPhrase());
         model.addAttribute("details", request);
         return "errors/error";
-
     }
+
     @ExceptionHandler(AccessDeniedException.class)
     public String  accessDeniedHandler(Model model, HttpServletRequest request){
         model.addAttribute("status", HttpStatus.FORBIDDEN.value());

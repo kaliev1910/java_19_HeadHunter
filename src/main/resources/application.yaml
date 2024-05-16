@@ -20,15 +20,36 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+      #==================================================== Mail configuration
+  mail:
+    host: smtp.gmail.com
+    username: kalievuluk30@gmail.com
+    password: glgxhblrnpnaespf
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+
+
+
+  #==================================================== Mail configuration#
 logging:
   level:
     root: debug
     org.springframework.security: debug
 
-#      org.springframework.security: debug
   file:
     name: logs/headHunter.log
   logback:
     rollingpolicy:
       max-file-size: 5MB
       max-history: 5
+
+
+

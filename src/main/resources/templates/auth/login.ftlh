@@ -35,6 +35,9 @@
                     <div class="card-footer text-center">
                         <p>Don't have an account? <a href="/register">Register</a></p>
                     </div>
+                    <div class="card-footer text-center">
+                        <p>Forgot password?<a href="/forgot_password">Reset</a></p>
+                    </div>
                 </div>
             </div>
         </div>
