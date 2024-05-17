@@ -67,6 +67,10 @@
 
                                     </select>
                                 </div>
+                                <#if _csrf??>
+                                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                           value="${(_csrf.token)!'csrf-token'}"/>
+                                </#if>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -126,6 +130,7 @@
             fetch(`/api/vacancies/apply/${vacancy.id}`, {
                 method: 'POST',
                 headers: {
+                    "X-CSRF-Token":  '${(_csrf.token)}',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(resumeId)
