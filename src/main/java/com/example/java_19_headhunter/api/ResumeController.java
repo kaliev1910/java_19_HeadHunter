@@ -33,11 +33,6 @@ public class ResumeController {
         return new ResponseEntity<>("Resume created successfully", HttpStatus.CREATED);
     }
 
-    @PutMapping("/resume")
-    public ResponseEntity<String> updateResume(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
-        resumeService.update(resumeDto, authentication);
-        return new ResponseEntity<>("Resume updated successfully", HttpStatus.OK);
-    }
 
     @DeleteMapping("/resume")
     public ResponseEntity<String> deleteResume(@RequestBody int id) {

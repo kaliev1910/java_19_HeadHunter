@@ -20,15 +20,45 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+      #==================================================== Mail configuration
+  mail:
+    host: smtp.gmail.com
+    username: kalievuluk30@gmail.com
+    password: glgxhblrnpnaespf
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+       #==================================================== Mail configuration#
+  spring:
+    thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
+      mode: HTML
+      encoding: UTF-8
+      cache: false
+      servlet:
+        content-type: text/html
+        enabled: true
+      template-resolver-order: 1
+      view-names: '*'
+      check-template-location: true
 logging:
   level:
     root: debug
     org.springframework.security: debug
 
-#      org.springframework.security: debug
   file:
     name: logs/headHunter.log
   logback:
     rollingpolicy:
       max-file-size: 5MB
       max-history: 5
+
+
+

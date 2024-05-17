@@ -2,7 +2,9 @@ package com.example.java_19_headhunter.service.impl;
 
 import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
 import com.example.java_19_headhunter.models.Education;
+import com.example.java_19_headhunter.models.Resume;
 import com.example.java_19_headhunter.repository.EducationRepository;
+import com.example.java_19_headhunter.repository.ResumeRepository;
 import com.example.java_19_headhunter.service.interfaces.EducationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class EducationServiceImpl implements EducationService {
     private final EducationRepository educationRepository;
+    private final ResumeRepository resumeRepository;
 
 
     @Override
@@ -59,12 +62,13 @@ public class EducationServiceImpl implements EducationService {
     public void update(EducationDto educationDto) {
         Education education = mapToEducation(educationDto);
         educationRepository.save(education);
-    }
+    }private Education mapToEducation(EducationDto educationDto) {
+        Resume resume = resumeRepository.findById(educationDto.getResumeId())
+                .orElseThrow(() -> new RuntimeException("Resume not found with ID: " + educationDto.getResumeId()));
 
-    private Education mapToEducation(EducationDto educationDto) {
         return Education.builder()
                 .id(educationDto.getId())
-                .resumeId(educationRepository.findByResumeId(educationDto.getResumeId()))
+                .resumeId(resume)
                 .institution(educationDto.getInstitution())
                 .program(educationDto.getProgram())
                 .degree(educationDto.getDegree())
@@ -84,4 +88,6 @@ public class EducationServiceImpl implements EducationService {
                 .endDate(education.getEndDate())
                 .build();
     }
+
+
 }

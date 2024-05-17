@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Resume</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">Edit Resume</h1>
+    <form th:action="@{'/resumes/' + ${resume.resume.id} + '/edit'}" th:object="${resume}" method="post">
+        <!-- Personal Information -->
+        <div class="mb-4">
+            <div class="form-group mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" th:field="*{resume.name}" class="form-control" required>
+                <div th:if="${#fields.hasErrors('resume.name')}" th:errors="*{resume.name}"
+                     class="alert alert-danger mt-2"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="expectedSalary" class="form-label">Expected Salary</label>
+                <input type="number" id="expectedSalary" th:field="*{resume.expectedSalary}" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="categoryId" class="form-label">Category</label>
+                <select id="categoryId" th:field="*{resume.categoryId}" class="form-select">
+                    <option th:each="category : ${categories}" th:value="${category.id}"
+                            th:text="${category.name}"></option>
+                </select>
+            </div>
+            <input type="hidden" th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
+        </div>
+
+        <!-- Education -->
+        <h2 class="mb-3">Education</h2>
+        <div id="education-section">
+            <div th:each="education, iterStat : ${resume.education}" class="border rounded p-3 mb-4 education-item">
+                <div class="form-group mb-3">
+                    <label for="education[__${iterStat.index}__].institution" class="form-label">Institution</label>
+                    <input type="text" id="education[__${iterStat.index}__].institution" th:field="*{education[__${iterStat.index}__].institution}"
+                           class="form-control" required>
+                    <div th:if="${#fields.hasErrors('education[__${iterStat.index}__].institution')}"
+                         th:errors="*{education[__${iterStat.index}__].institution}"
+                         class="alert alert-danger mt-2"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="education[__${iterStat.index}__].program" class="form-label">Program</label>
+                    <input type="text" id="education[__${iterStat.index}__].program" th:field="*{education[__${iterStat.index}__].program}"
+                           class="form-control" required>
+                    <div th:if="${#fields.hasErrors('education[__${iterStat.index}__].program')}"
+                         th:errors="*{education[__${iterStat.index}__].program}" class="alert alert-danger mt-2"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="education[__${iterStat.index}__].degree" class="form-label">Degree</label>
+                    <input type="text" id="education[__${iterStat.index}__].degree" th:field="*{education[__${iterStat.index}__].degree}"
+                           class="form-control" required>
+                    <div th:if="${#fields.hasErrors('education[__${iterStat.index}__].degree')}"
+                         th:errors="*{education[__${iterStat.index}__].degree}" class="alert alert-danger mt-2"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="education[__${iterStat.index}__].startDate" class="form-label">Start Date</label>
+                    <input type="date" id="education[__${iterStat.index}__].startDate" th:field="*{education[__${iterStat.index}__].startDate}"
+                           class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="education[__${iterStat.index}__].endDate" class="form-label">End Date</label>
+                    <input type="date" id="education[__${iterStat.index}__].endDate" th:field="*{education[__${iterStat.index}__].endDate}"
+                           class="form-control">
+                </div>
+                <button type="button" class="btn btn-danger remove-education">Remove</button>
+            </div>
+        </div>
+        <button type="button" id="add-education" class="btn btn-secondary mb-4">Add Education</button>
+
+        <!-- Experience -->
+        <h2 class="mb-3">Experience</h2>
+        <div id="experience-section">
+            <div th:each="experience, iterStat : ${resume.experience}" class="border rounded p-3 mb-4 experience-item">
+                <div class="form-group mb-3">
+                    <label for="experience[__${iterStat.index}__].companyName" class="form-label">Company Name</label>
+                    <input type="text" id="experience[__${iterStat.index}__].companyName" th:field="*{experience[__${iterStat.index}__].companyName}"
+                           class="form-control" required>
+                    <div th:if="${#fields.hasErrors('experience[__${iterStat.index}__].companyName')}"
+                         th:errors="*{experience[__${iterStat.index}__].companyName}"
+                         class="alert alert-danger mt-2"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="experience[__${iterStat.index}__].position" class="form-label">Position</label>
+                    <input type="text" id="experience[__${iterStat.index}__].position" th:field="*{experience[__${iterStat.index}__].position}"
+                           class="form-control" required>
+                    <div th:if="${#fields.hasErrors('experience[__${iterStat.index}__].position')}"
+                         th:errors="*{experience[__${iterStat.index}__].position}" class="alert alert-danger mt-2"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="experience[__${iterStat.index}__].responsibilities" class="form-label">Responsibilities</label>
+                    <textarea id="experience[__${iterStat.index}__].responsibilities" th:field="*{experience[__${iterStat.index}__].responsibilities}"
+                              class="form-control" required></textarea>
+                    <div th:if="${#fields.hasErrors('experience[__${iterStat.index}__].responsibilities')}"
+                         th:errors="*{experience[__${iterStat.index}__].responsibilities}"
+                         class="alert alert-danger mt-2"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="experience[__${iterStat.index}__].startDate" class="form-label">Start Date</label>
+                    <input type="date" id="experience[__${iterStat.index}__].startDate" th:field="*{experience[__${iterStat.index}__].startDate}"
+                           class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="experience[__${iterStat.index}__].endDate" class="form-label">End Date</label>
+                    <input type="date" id="experience[__${iterStat.index}__].endDate" th:field="*{experience[__${iterStat.index}__].endDate}"
+                           class="form-control">
+                </div>
+                <button type="button" class="btn btn-danger remove-experience">Remove</button>
+            </div>
+        </div>
+        <button type="button" id="add-experience" class="btn btn-secondary mb-4">Add Experience</button>
+
+        <!-- Submit Button -->
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <a th:href="@{/myResumes}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function attachRemoveButtonEvent(buttonClass) {
+            document.querySelectorAll(buttonClass).forEach(function (button) {
+                button.addEventListener('click', function () {
+                    this.closest('.border').remove();
+                });
+            });
+        }
+
+        document.getElementById('add-education').addEventListener('click', function () {
+            let educationSection = document.getElementById('education-section');
+            let newEducation = educationSection.firstElementChild.cloneNode(true);
+            newEducation.querySelectorAll('input').forEach(input => input.value = '');
+            educationSection.appendChild(newEducation);
+            attachRemoveButtonEvent('.remove-education');
+        });
+
+        document.getElementById('add-experience').addEventListener('click', function () {
+            let experienceSection = document.getElementById('experience-section');
+            let newExperience = experienceSection.firstElementChild.cloneNode(true);
+            newExperience.querySelectorAll('input, textarea').forEach(input => input.value = '');
+            experienceSection.appendChild(newExperience);
+            attachRemoveButtonEvent('.remove-experience');
+        });
+
+        attachRemoveButtonEvent('.remove-education');
+        attachRemoveButtonEvent('.remove-experience');
+    });
+</script>
+</body>
+</html>

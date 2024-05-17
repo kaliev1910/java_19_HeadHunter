@@ -30,40 +30,7 @@ public class MainController {
     private final ContactInfoService contactInfoService;
     private final ResponseService responseService;
 
-    @GetMapping("/register")
-    public String showRegistrationForm(@RequestParam(defaultValue = "false", required = false) Boolean success,
-                                       Model model) {
-        if (success.equals(Boolean.TRUE)) {
-            return "redirect:/login";
-        }
 
-
-        return "auth/register";
-    }
-
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.SEE_OTHER)
-    public String registerUser(@Valid @ModelAttribute("userDto") UserDto userDto, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "auth/register";
-        }
-        if (userService.findByEmail(userDto.getEmail()).isPresent()) {
-            bindingResult.rejectValue("email", "error.user", "There is already a user registered with the provided email");
-            model.addAttribute("userDto", userDto);
-            return "auth/register";
-        }
-
-        userService.createUser(userDto);
-        return "redirect:/register?success=true";
-    }
-
-    @GetMapping("/login")
-    public String login(@RequestParam(defaultValue = "false", required = false) Boolean error, Model model) {
-        if (error.equals(Boolean.TRUE)) {
-            model.addAttribute("error", "Invalid Username or Password");
-        }
-        return "/auth/login";
-    }
 
     @GetMapping("/error")
     public String showAccessDeniedPage() {

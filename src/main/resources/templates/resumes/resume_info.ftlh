@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-header bg-primary text-white">
                 <h5 class="card-title">Должность: ${resume.name}</h5>
-                <h6 class="card-title">Категория работы: ${resume.categoryId}</h6>
+                <h6 class="card-title">Категория работы: ${categories.get(resume.categoryId).name}</h6>
             </div>
             <div class="card-body">
                 <p class="card-text">Ожидаемая зарплата: ${resume.expectedSalary} KGZ</p>

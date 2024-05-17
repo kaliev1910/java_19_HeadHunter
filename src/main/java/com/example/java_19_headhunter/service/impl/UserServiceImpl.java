@@ -6,15 +6,22 @@ import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.repository.RoleRepository;
 import com.example.java_19_headhunter.repository.UserRepository;
+import com.example.java_19_headhunter.service.interfaces.MailService;
 import com.example.java_19_headhunter.service.interfaces.UserService;
+import com.example.java_19_headhunter.service.util.Utility;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -24,6 +31,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
+    private final MailService emailService;
     private final RoleRepository roleRepository;
 
     @SneakyThrows
@@ -67,10 +75,10 @@ public class UserServiceImpl implements UserService {
 
 
             if (newUser.isPresent()) {
-                if (user.getAccountType().equalsIgnoreCase(AccountType.APPLICANT.getValue())){
+                if (user.getAccountType().equalsIgnoreCase(AccountType.APPLICANT.getValue())) {
                     roleRepository.addUserRole(1, user.getEmail());
                 }
-                if (user.getAccountType().equalsIgnoreCase(AccountType.EMPLOYER.getValue())){
+                if (user.getAccountType().equalsIgnoreCase(AccountType.EMPLOYER.getValue())) {
                     roleRepository.addUserRole(2, user.getEmail());
                 }
 
@@ -171,4 +179,39 @@ public class UserServiceImpl implements UserService {
                 email(userDto.getEmail()).password(userDto.getPassword())
                 .age(userDto.getAge()).avatar(userDto.getAvatar()).accountType(userDto.getAccountType()).enabled(userDto.isEnabled()).build();
     }
+
+    @Override
+    public void updateResetPasswordToken(String token, String email) {
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found by Email"));
+        user.setResetPasswordToken(token);
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public UserDto getByResetPasswordToken(String token) {
+        return toDto(userRepository.findUserByResetPasswordToken(token).orElseThrow(() -> new UsernameNotFoundException("User not found by Reset Password Token")));
+    }
+
+    @Override
+    public void updatePassword(UserDto userDto, String password) {
+       User  user = fromDto(userDto);
+        user.setPassword(encoder.encode(password));
+        user.setResetPasswordToken(null);
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public void makeResetPasswordLink(HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+        String email = request.getParameter("email");
+        String token = UUID.randomUUID().toString();
+        updateResetPasswordToken(token, email);
+
+        String resetPasswordLnk = Utility.getSiteUrl(request)+"/reset_password?token="+token;
+
+
+        emailService.sendEmail(email, resetPasswordLnk);
+
+    }
+
+
 }

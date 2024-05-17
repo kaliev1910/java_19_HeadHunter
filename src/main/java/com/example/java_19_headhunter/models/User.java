@@ -2,7 +2,6 @@ package com.example.java_19_headhunter.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 import java.util.Set;
@@ -26,6 +25,9 @@ public class User {
     @Column(name = "account_type")
     private String accountType;
     private boolean enabled;
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "applicantEmail")
     private List<Resume> resumes;

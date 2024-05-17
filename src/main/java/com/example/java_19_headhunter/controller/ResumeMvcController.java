@@ -1,5 +1,6 @@
 package com.example.java_19_headhunter.controller;
 
+import com.example.java_19_headhunter.dto.updateDto.ResumeUpdateDto;
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.interfaces.*;
@@ -8,13 +9,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class ResumeMvcController {
     private final UserService userService;
     private final ContactInfoService contactInfoService;
     private final CategoryService categoryService;
+
+
 
 
     @GetMapping("/myResumes")
@@ -153,87 +156,83 @@ public class ResumeMvcController {
         model.addAttribute("educations", educations);
         model.addAttribute("experiences", experiences);
         model.addAttribute("resume", resumeService.findById(resumeId));
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "resumes/resume_info";
     }
-
     @GetMapping("/resumes/{resumeId}/edit")
     public String editResume(@PathVariable int resumeId, Model model) {
-        List<EducationDto> educations = educationService.findListByResumeId(resumeId);
-        List<ExperienceDto> experiences = experienceService.findListByResumeId(resumeId);
-        List<ContactInfoDto> contacts = contactInfoService.findListByResumeId(resumeId);
-        int eduIndex = 0;
-        model.addAttribute("contacts", contacts);
+        ResumeUpdateDto resumeUpdateDto = new ResumeUpdateDto();
+        resumeUpdateDto.setResume(resumeService.findById(resumeId));
+        resumeUpdateDto.setEducation(educationService.findListByResumeId(resumeId));
+        resumeUpdateDto.setExperience(experienceService.findListByResumeId(resumeId));
+        resumeUpdateDto.setContactInfo(contactInfoService.findListByResumeId(resumeId));
+
+        model.addAttribute("resume", resumeUpdateDto);
         model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("educations", educations);
-        model.addAttribute("experiences", experiences);
-        model.addAttribute("resume", resumeService.findById(resumeId));
         return "resumes/edit_resume";
     }
 
-    @PostMapping("/resume/{resumeId}/edit")
-    public String editResume(@PathVariable int resumeId, @Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication, Model model) {
+    @PostMapping("/resumes/{resumeId}/edit")
+    public String editResume(@PathVariable int resumeId, @Valid @ModelAttribute("resume") ResumeUpdateDto resumeDto, BindingResult result, Authentication authentication, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "resumes/edit_resume";
+        }
 
         resumeService.update(resumeDto, authentication);
 
-        List<EducationDto> educationDto = resumeDto.getEducation();
-        List<ExperienceDto> experienceDto = resumeDto.getExperience();
-        List<ContactInfoDto> contactInfoDto = resumeDto.getContactInfo();
+        updateEducationInfo(resumeId, resumeDto.getEducation());
+        updateExperienceInfo(resumeId, resumeDto.getExperience());
+        updateContactInfo(resumeId, resumeDto.getContactInfo());
 
-        // функционал сделан так: если пользователь просто изменил образование используется Update.
-        // если добавил
-        if (educationDto != null) {
-            for (EducationDto education : educationDto) {
-                education.setResumeId(resumeId);
-                if (education.getResumeId() == resumeId) {
-                    educationService.insert(education);
-                    log.info("added education for resume {}", education.getResumeId());
-                } else {
-                    educationService.update(education);
-                    log.info("education id {} has updated for resume id {}", education.getId(), resumeId);
-                }
-
-            }
-            log.info("education = {}", educationDto);
-        } else {
-            educationService.deleteEducationsByResumeId(resumeId);
-            // если с шаблона приходит пустой список, то удаляет все образования связанные с резюме
-        }
-
-        if (experienceDto != null) {
-            for (ExperienceDto experience : experienceDto) {
-                experience.setResumeId(resumeId);
-                if (experience.getResumeId() == resumeId) {
-                    experienceService.insert(experience);
-                    log.info("added experience for resume {}", experience.getResumeId());
-                } else {
-                    experienceService.update(experience);
-                    log.info("experience id {} has updated", experience.getId());
-                }
-
-            }
-        } else {
-            experienceService.deleteEducationsByResumeId(resumeId);
-        }
-
-        if (contactInfoDto != null) {
-            for (ContactInfoDto contactInfo : contactInfoDto) {
-                contactInfo.setResumeId(resumeId);
-                if (contactInfo.getResumeId() == resumeId) {
-                    contactInfoService.insert(contactInfo);
-                    log.info("added contacts for resume {}", contactInfo.getResumeId());
-                } else {
-                    contactInfoService.update(contactInfo);
-                    log.info("contact id {} has updated", contactInfo.getResumeId());
-                }
-            }
-        } else {
-            contactInfoService.deleteByResumeId(resumeId);
-        }
-        log.info("resume edited {}", resumeDto.getName());
-
-        model.addAttribute("message", "Resume edited successfully");
         return "redirect:/myResumes";
     }
 
+    private void updateEducationInfo(int resumeId, List<EducationDto> educationDto) {
+        if (educationDto == null) {
+            educationService.deleteEducationsByResumeId(resumeId);
+            return;
+        }
 
+        for (EducationDto education : educationDto) {
+            education.setResumeId(resumeId);
+            if (education.getId() == 0) {
+                educationService.insert(education);
+            } else {
+                educationService.update(education);
+            }
+        }
+    }
+
+    private void updateExperienceInfo(int resumeId, List<ExperienceDto> experienceDto) {
+        if (experienceDto == null) {
+            experienceService.deleteEducationsByResumeId(resumeId);
+            return;
+        }
+
+        for (ExperienceDto experience : experienceDto) {
+            experience.setResumeId(resumeId);
+            if (experience.getId() == 0) {
+                experienceService.insert(experience);
+            } else {
+                experienceService.update(experience);
+            }
+        }
+    }
+
+    private void updateContactInfo(int resumeId, List<ContactInfoDto> contactInfoDto) {
+        if (contactInfoDto == null) {
+            contactInfoService.deleteByResumeId(resumeId);
+            return;
+        }
+
+        for (ContactInfoDto contactInfo : contactInfoDto) {
+            contactInfo.setResumeId(resumeId);
+            if (contactInfo.getId() == 0) {
+                contactInfoService.insert(contactInfo);
+            } else {
+                contactInfoService.update(contactInfo);
+            }
+        }
+    }
 }
