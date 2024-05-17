@@ -110,6 +110,11 @@
                                                             <div class="col-md-12">
                                                                 <form id="imageForm" action="/upload" method="post"
                                                                       enctype="multipart/form-data" class="custom-form">
+                                                                    <#if _csrf??>
+                                                                        <input type="hidden"
+                                                                               name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                                                               value="${(_csrf.token)!'csrf-token'}"/>
+                                                                    </#if>
                                                                     <label for="file">Выберите изображение для загрузки
                                                                         (PNG, JPG, JPEG):</label><br>
                                                                     <input type="file" id="file" name="file"
@@ -118,6 +123,7 @@
                                                                            value="${user.id}">
                                                                     <input type="submit" value="Загрузить"
                                                                            class="btn btn-primary">
+
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -152,7 +158,8 @@
                                                             <form id="imageForm" action="/upload" method="post"
                                                                   enctype="multipart/form-data" class="custom-form">
                                                                 <#if _csrf??>
-                                                                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                                                    <input type="hidden"
+                                                                           name="${(_csrf.parameterName)!'csrf-param-name'}"
                                                                            value="${(_csrf.token)!'csrf-token'}"/>
                                                                 </#if>
 
@@ -297,7 +304,8 @@
                                                             <form id="imageForm" action="/upload" method="post"
                                                                   enctype="multipart/form-data" class="custom-form">
                                                                 <#if _csrf??>
-                                                                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                                                    <input type="hidden"
+                                                                           name="${(_csrf.parameterName)!'csrf-param-name'}"
                                                                            value="${(_csrf.token)!'csrf-token'}"/>
                                                                 </#if>
 

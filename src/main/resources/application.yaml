@@ -34,11 +34,7 @@ spring:
           starttls:
             enable: true
 
-
-
-
-
-  #==================================================== Mail configuration#
+       #==================================================== Mail configuration#
 logging:
   level:
     root: debug
