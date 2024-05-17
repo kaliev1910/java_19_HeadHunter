@@ -3,12 +3,15 @@ package com.example.java_19_headhunter.controller;
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.exeptions.UserNotFoundException;
 import com.example.java_19_headhunter.models.User;
+import com.example.java_19_headhunter.service.impl.UserServiceImpl;
 import com.example.java_19_headhunter.service.interfaces.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @GetMapping("/register")
     public String showRegistrationForm(@RequestParam(defaultValue = "false", required = false) Boolean success,
@@ -46,8 +50,17 @@ public class AuthController {
         }
 
         userService.createUser(userDto);
+        try {
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
+            );
+        } catch (Exception e) {
+            model.addAttribute("error", "Error during registration");
+             return  "redirect:/register?success=false";
+        }
         return "redirect:/register?success=true";
     }
+
 
     @GetMapping("/login")
     public String login(@RequestParam(defaultValue = "false", required = false) Boolean error, Model model) {

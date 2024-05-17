@@ -1,5 +1,9 @@
 package com.example.java_19_headhunter.service.impl;
 
+import com.example.java_19_headhunter.dto.ResumeUpdateDto;
+import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
+import com.example.java_19_headhunter.dto.basicDtos.EducationDto;
+import com.example.java_19_headhunter.dto.basicDtos.ExperienceDto;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.exeptions.UserNotFoundException;
@@ -85,6 +89,7 @@ public class ResumeServiceImpl implements ResumeService {
             throw e;
         }
     }
+
 
 
     @Override
