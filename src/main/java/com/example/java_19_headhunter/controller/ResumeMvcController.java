@@ -174,7 +174,7 @@ public class ResumeMvcController {
     }
 
     @PostMapping("/resumes/{resumeId}/edit")
-    public String editResume(@PathVariable int resumeId, @Valid @ModelAttribute("resume") ResumeCreateDto resumeDto, BindingResult result, Authentication authentication, Model model) {
+    public String editResume(@PathVariable int resumeId, @Valid @ModelAttribute("resume") ResumeUpdateDto resumeDto, BindingResult result, Authentication authentication, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoryService.getAllCategories());
             return "resumes/edit_resume";

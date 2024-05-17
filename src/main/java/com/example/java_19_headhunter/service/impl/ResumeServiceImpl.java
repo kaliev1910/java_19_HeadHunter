@@ -110,14 +110,14 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public void update(@Valid ResumeCreateDto resumeCreateDto, Authentication authentication) {
+    public void update(@Valid ResumeUpdateDto resumeUpdateDto, Authentication authentication) {
         try {
-            Resume resume = fromCreateDto(resumeCreateDto, authentication);
+            Resume resume = fromUpdateDto(resumeUpdateDto, authentication);
             resume.setApplicantEmail(userRepository.findUserByEmail(authentication.getName()).get());
             resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
             resumeRepository.save(resume);
         } catch (Exception e) {
-            log.error("Error updating Resume:  name {} user {} ", resumeCreateDto.getName(), ((User) authentication.getPrincipal()).getUsername(), e);
+            log.error("Error updating Resume:  name {} user {} ", resumeUpdateDto.getName(), ((User) authentication.getPrincipal()).getUsername(), e);
             throw e;
         }
     }
@@ -133,6 +133,19 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     private Resume fromCreateDto(ResumeCreateDto resumeDto, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        return Resume.builder()
+                .applicantEmail(userRepository.findUserByEmail(user.getUsername()).get())
+                .categoryId(resumeRepository.findResumeById(resumeDto.getCategoryId()).get().getCategoryId())
+                .isActive(true)
+                .name(resumeDto.getName())
+                .expectedSalary(resumeDto.getExpectedSalary())
+                .createdDate(Timestamp.valueOf(LocalDateTime.now()))
+                .updatedTime(Timestamp.valueOf(LocalDateTime.now()))
+                .build();
+    }
+    private Resume fromUpdateDto(ResumeUpdateDto resumeDto, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
         return Resume.builder()

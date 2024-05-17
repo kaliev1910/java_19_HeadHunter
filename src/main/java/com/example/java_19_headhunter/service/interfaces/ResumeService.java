@@ -1,5 +1,6 @@
 package com.example.java_19_headhunter.service.interfaces;
 
+import com.example.java_19_headhunter.dto.ResumeUpdateDto;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ public interface ResumeService {
 
     int create(ResumeCreateDto resumeDto, Authentication authentication);
 
-    void update(@Valid ResumeCreateDto resumeDto, Authentication authentication);
+    void update(@Valid ResumeUpdateDto resumeDto, Authentication authentication);
 
     public Page<ResumeDto> getResumesWithPaging(Pageable pageable) ;
 
