@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.controller;
 
-import com.example.java_19_headhunter.dto.ResumeUpdateDto;
+import com.example.java_19_headhunter.dto.updateDto.ResumeUpdateDto;
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.service.interfaces.*;
@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

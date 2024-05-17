@@ -1,6 +1,6 @@
 package com.example.java_19_headhunter.service.interfaces;
 
-import com.example.java_19_headhunter.dto.ResumeUpdateDto;
+import com.example.java_19_headhunter.dto.updateDto.ResumeUpdateDto;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import jakarta.validation.Valid;
