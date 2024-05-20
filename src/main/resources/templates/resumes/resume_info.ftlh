@@ -1,16 +1,18 @@
-<#import "../layout.ftlh" as main><#import "spring.ftl" as spring>
+<#import "../layout.ftlh" as main>
+<#import "/spring.ftl" as spring>
+
 <@main.layout>
 
     <div class="border p-3">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="card-title">Должность: ${resume.name}</h5>
-                <h6 class="card-title">Категория работы: ${categories.get(resume.categoryId).name}</h6>
+                <h5 class="card-title"><@spring.message 'resume.position'></@spring.message>: ${resume.name}</h5>
+                <h6 class="card-title"><@spring.message 'resume.category'></@spring.message>: ${categories.get(resume.categoryId).name}</h6>
             </div>
             <div class="card-body">
-                <p class="card-text">Ожидаемая зарплата: ${resume.expectedSalary} KGZ</p>
+                <p class="card-text"><@spring.message 'resume.expectedSalary'></@spring.message>: ${resume.expectedSalary} KGZ</p>
                 <#if contacts?has_content>
-                    <h6 class="card-title">Контактные детали: </h6>
+                    <h6 class="card-title"><@spring.message 'view.contactDetails'></@spring.message>: </h6>
                     <div class="row justify-content-start">
                         <#list contacts as contact>
                             <#if contact.id?has_content>
@@ -21,50 +23,50 @@
                         </#list>
                     </div>
                 <#else >
-                    <h6 class="card-title">Контактные детали отсутствуют </h6>
+                    <h6 class="card-title"><@spring.message 'vacancy.details.noContactDetails'></@spring.message> </h6>
                 </#if>
                 <#if educations?has_content>
-                    <p class="font-weight-bold mt-3">Образование: </p>
+                    <p class="font-weight-bold mt-3"><@spring.message 'resume.education'></@spring.message>: </p>
                     <div class="row justify-content-start">
                         <#list educations as education>
                             <div class="col-md-4 mb-3">
                                 <div class="card border">
                                     <div class="card-header bg-info text-white">
-                                        Учебное заведение: ${education.institution}
+                                        <@spring.message 'resume.institution'></@spring.message>: ${education.institution}
                                     </div>
                                     <div class="card-body">
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">Специальность: ${education.program}</li>
+                                            <li class="list-group-item"><@spring.message 'resume.program'></@spring.message>: ${education.program}</li>
                                         </ul>
                                     </div>
                                     <div class="card-footer">
-                                        Годы обучения: ${education.startDate} - ${education.endDate}
+                                        <@spring.message 'resume.years'></@spring.message>: ${education.startDate} - ${education.endDate}
                                     </div>
                                 </div>
                             </div>
                         </#list>
                     </div>
                 <#else >
-                    <p class="font-weight-bold mt-3">Образование отсутствует </p>
+                    <p class="font-weight-bold mt-3"><@spring.message 'view.noEducation'></@spring.message> </p>
                 </#if>
                 <#if experiences?has_content >
-                    <p class="font-weight-bold mt-3">Опыт работы:</p>
+                    <p class="font-weight-bold mt-3"><@spring.message 'resume.experience'></@spring.message>:</p>
                     <div class="row justify-content-start">
                         <#list experiences as experience>
                             <div class="col-md-4 mb-3">
                                 <div class="card border">
                                     <div class="card-header bg-success text-white">
-                                        Организация: ${experience.companyName}
+                                        <@spring.message 'resume.companyName'></@spring.message>: ${experience.companyName}
                                     </div>
                                     <div class="card-body">
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">Должность: ${experience.position}</li>
+                                            <li class="list-group-item"><@spring.message 'resume.position'></@spring.message>: ${experience.position}</li>
                                         </ul>
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">Обязанности: ${experience.responsibilities}</li>
+                                            <li class="list-group-item"><@spring.message 'resume.responsibilities'></@spring.message>: ${experience.responsibilities}</li>
                                         </ul>
                                         <ul class="list-group list-group-flush">
-                                            <li  class="list-group-item"> Годы работы: ${experience.startDate} по ${experience.endDate}</li>
+                                            <li  class="list-group-item"> <@spring.message 'resume.years'></@spring.message>: ${experience.startDate} <@spring.message 'resume.to'></@spring.message> ${experience.endDate}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -72,11 +74,11 @@
                         </#list>
                     </div>
                 <#else >
-                    <p class="font-weight-bold mt-3">Опыт работы отсутствует</p>
+                    <p class="font-weight-bold mt-3"><@spring.message 'view.noExperience'></@spring.message></p>
                 </#if>
             </div>
         </div>
-        <a href="#" class="btn btn-primary mt-3" onclick="goBack()">Вернуться на предыдущую страницу</a>
+        <a href="#" class="btn btn-primary mt-3" onclick="goBack()"><@spring.message 'view.goBackButton'></@spring.message></a>
     </div>
     <script>
         function goBack() {

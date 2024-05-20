@@ -1,11 +1,12 @@
-<#import "../layout.ftlh" as main><#import "spring.ftl" as spring>
+<#import "/spring.ftl" as spring>
+<#import "../layout.ftlh" as main>
 <@main.layout>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8 col-sm-10">
                 <div class="card shadow-lg rounded-lg mt-5">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="text-center font-weight-bold my-3">Login</h3>
+                        <h3 class="text-center font-weight-bold my-3"><@spring.message 'login.title'></@spring.message></h3>
                     </div>
                     <div class="card-body">
                         <form action="/login" method="post" id="login-form" name="login-form">
@@ -18,25 +19,25 @@
                             </#if>
 
                             <div class="form-group">
-                                <label for="username" class="font-weight-bold">Username:</label>
+                                <label for="username" class="font-weight-bold"><@spring.message 'login.username'></@spring.message>:</label>
                                 <input type="email" class="form-control" id="username" name="username"
                                        placeholder="Enter your email" required>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="font-weight-bold">Password:</label>
+                                <label for="password" class="font-weight-bold"><@spring.message 'login.password'></@spring.message>:</label>
                                 <input type="password" class="form-control" id="password" name="password"
                                        placeholder="Enter your password" required>
                             </div>
                             <div class="form-group text-center">
-                                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                                <button type="submit" class="btn btn-primary btn-block"><@spring.message 'login.button'></@spring.message></button>
                             </div>
                         </form>
                     </div>
                     <div class="card-footer text-center">
-                        <p>Don't have an account? <a href="/register">Register</a></p>
+                        <p><@spring.message 'login.dont'></@spring.message> <a href="/register"><@spring.message 'login.register'></@spring.message></a></p>
                     </div>
                     <div class="card-footer text-center">
-                        <p>Forgot password?<a href="/forgot_password">Reset</a></p>
+                        <p><@spring.message 'login.forgotPassword'></@spring.message><a href="/forgot_password"><@spring.message 'resetPassword.title'></@spring.message></a></p>
                     </div>
                 </div>
             </div>

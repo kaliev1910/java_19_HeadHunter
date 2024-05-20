@@ -1,7 +1,9 @@
-<#import "../layout.ftlh" as main><#import "spring.ftl" as spring>
+<#import "../layout.ftlh" as main>
+<#import "/spring.ftl" as spring>
+
 <@main.layout>
     <div class="text-center">
-        <h2>Reset Your Password</h2>
+        <h2><@spring.message 'resetPassword.title'></@spring.message></h2>
         <#if error??>
             <b class="text-danger">${error}</b>
         </#if>
@@ -17,9 +19,9 @@
                     </#if>
                     <input type="hidden" name="token" value="${token!}">
                     <input type="password" name="password" class="form-control"
-                           placeholder="Enter your new password" required autofocus/>
+                           placeholder="<@spring.message 'resetPassword.placeholder.password'></@spring.message>" required autofocus/>
                     <p class="text-center">
-                        <button type="submit" class="btn btn-primary mt-3">Change Password</button>
+                        <button type="submit" class="btn btn-primary mt-3"><@spring.message 'resetPassword.changePassword'></@spring.message></button>
                     </p>
                 </form>
             </div>

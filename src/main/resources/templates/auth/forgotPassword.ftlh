@@ -1,8 +1,8 @@
 <#import "../layout.ftlh" as main>
-<#import "spring.ftl" as spring>
+<#import "/spring.ftl" as spring>
 <@main.layout>
 
-    <h2><@spring.message 'layout.login'></@spring.message></h2>
+    <h2><@spring.message 'forgotPassword.title'></@spring.message></h2>
 
     <#if error??>
 
@@ -36,7 +36,7 @@
 
                         <div>
 
-                            <p>We will be sending a reset password link to your email.</p>
+                            <p><@spring.message 'forgotPassword.resetLink'></@spring.message></p>
 
                         </div>
 

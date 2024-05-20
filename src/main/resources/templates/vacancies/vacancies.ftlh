@@ -1,10 +1,7 @@
 <#import "../layout.ftlh" as main>
-<#import "spring.ftl" as spring>
+<#import "/spring.ftl" as spring>
 <#import "../pager.ftlh" as p>
 <@main.layout>
-
-
-
     <style>
         form {
             width: 50%;
@@ -95,21 +92,21 @@
             color: #a5aec0
         }
     </style>
-    <h1 class="text-center mb-3">Вакансии</h1>
+    <h1 class="text-center mb-3"><@spring.message 'vacancies.title'></@spring.message></h1>
 
     <div class="dropdown mb-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-            Фильтровать по категориям
+            <@spring.message 'filter.label'></@spring.message>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="${url}?filter=1">IT</a>
-            <a class="dropdown-item" href="${url}?filter=2">Programming</a>
-            <a class="dropdown-item" href="${url}?filter=3">Web Development</a>
-            <a class="dropdown-item" href="${url}?filter=4">Mobile Development</a>
-            <a class="dropdown-item" href="${url}?filter=5">Finance</a>
-            <a class="dropdown-item" href="${url}?filter=6">Accounting</a>
-            <a class="dropdown-item" href="${url}?filter=7">Investment Banking</a>
+            <a class="dropdown-item" href="${url}?filter=1"><@spring.message 'vacancy.page.filter.IT'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=2"><@spring.message 'vacancy.page.filter.Programming'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=3"><@spring.message 'vacancy.page.filter.WebDevelopment'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=4"><@spring.message 'vacancy.page.filter.MobileDevelopment'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=5"><@spring.message 'vacancy.page.filter.Finance'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=6"><@spring.message 'vacancy.page.filter.Accounting'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=7"><@spring.message 'vacancy.page.filter.InvestmentBanking'></@spring.message></a>
         </div>
     </div>
     <@p.pager url vacancies />
@@ -123,10 +120,10 @@
                             <div class="d-flex flex-row align-items-center">
                                 <div class="ms-2 c-details">
                                     <h6 class="mb-0">${vacancy.authorEmail}</h6>
-                                    <span>Last Update ${vacancy.updateTime}</span>
+                                    <span><@spring.message 'vacancy.page.lastUpdate'> ${vacancy.updateTime}</@spring.message></span>
                                 </div>
                             </div>
-                            <div class="badge"><span>Design</span></div>
+                            <div class="badge"><span><@spring.message 'vacancy.page.design'></@spring.message></span></div>
                         </div>
                         <div class="mt-5">
                             <a   href="/vacancy/${vacancy.id}">
@@ -148,5 +145,4 @@
         </div>
     </div>
     <@p.pager url vacancies />
-
 </@main.layout>

@@ -1,5 +1,5 @@
 <#import "../layout.ftlh" as main>
-<#import "spring.ftl" as spring>
+<#import "/spring.ftl" as spring>
 
 <@main.layout>
     <style>
@@ -103,7 +103,7 @@
             </div>
         </div>
     </div>
-    <h1 class="center mb-2">Редактировать профиль</h1>
+    <h1 class="center mb-2"><@spring.message 'editprofile.page.title'></@spring.message></h1>
     <div class="container row d-flex justify-content-center">
         <div class="col-sm-6">
             <div class="card profile border-0 ">
@@ -116,30 +116,30 @@
 
                         <fieldset>
                             <div class="form-group">
-                                <label for="name">Имя</label>
+                                <label for="name"><@spring.message 'editprofile.page.name'></@spring.message></label>
                                 <input type="text" id="name" name="name" class="form-control" value="${user.name}"
                                        required autofocus>
                             </div>
                             <div class="form-group">
-                                <label for="surname">Фамилия</label>
+                                <label for="surname"><@spring.message 'editprofile.page.surname'></@spring.message></label>
                                 <input type="text" id="surname" name="surname" class="form-control"
                                        value="${user.surname}" required>
                             </div>
                             <div class="form-group">
-                                <label for="age">Возраст</label>
+                                <label for="age"><@spring.message 'editprofile.page.age'></@spring.message></label>
                                 <input type="number" id="age" name="age" class="form-control" value="${user.age}"
                                        required>
                             </div>
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label for="email"><@spring.message 'editprofile.page.email'></@spring.message></label>
                                 <input type="email" id="email" name="email" class="form-control" value="${user.email}"
                                        disabled>
                             </div>
                             <div class="form-group">
-                                <label for="password">Новый пароль</label>
+                                <label for="password"><@spring.message 'editprofile.page.password'></@spring.message></label>
                                 <input type="password" id="password" name="password" class="form-control">
                             </div>
-                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <button type="submit" class="btn btn-primary"><@spring.message 'editprofile.page.save'></@spring.message></button>
                         </fieldset>
                     </form>
                 </div>

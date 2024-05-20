@@ -1,11 +1,13 @@
-<#import "../layout.ftlh" as main><#import "spring.ftl" as spring>
+<#import "../layout.ftlh" as main>
+<#import "/spring.ftl" as spring>
+
 <@main.layout>
     <link type="text/css" rel="stylesheet" href="/static/css/chatStyle.css">
 
     <section class="msger">
         <header class="msger-header">
             <div class="msger-header-title">
-                <i class="fas fa-comment-alt"></i> SimpleChat
+                <i class="fas fa-comment-alt"></i> <@spring.message 'chat.title'></@spring.message>
             </div>
             <div class="msger-header-options">
                 <span><i class="fas fa-cog"></i></span>
@@ -21,12 +23,12 @@
 
                 <div class="msg-bubble">
                     <div class="msg-info">
-                        <div class="msg-info-name">BOT</div>
+                        <div class="msg-info-name"><@spring.message 'chat.botName'></@spring.message></div>
                         <div class="msg-info-time">12:45</div>
                     </div>
 
                     <div class="msg-text">
-                        Hi, welcome to SimpleChat! Go ahead and send me a message. 😄
+                        <@spring.message 'chat.botMessage'></@spring.message>
                     </div>
                 </div>
             </div>
@@ -44,15 +46,15 @@
                     </div>
 
                     <div class="msg-text">
-                        You can change your name in JS section!
+                        <@spring.message 'chat.yourMessage'></@spring.message>
                     </div>
                 </div>
             </div>
         </main>
 
         <form class="msger-inputarea">
-            <input type="text" class="msger-input" placeholder="Enter your message...">
-            <button type="submit" class="msger-send-btn">Send</button>
+            <input type="text" class="msger-input" placeholder="<@spring.message 'chat.placeholder'></@spring.message>">
+            <button type="submit" class="msger-send-btn"><@spring.message 'chat.send'></@spring.message></button>
         </form>
     </section>
     <script src="/static/js/chat.js"></script>

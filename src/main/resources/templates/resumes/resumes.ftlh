@@ -1,22 +1,22 @@
 <#import "../layout.ftlh" as main>
 <#import "../pager.ftlh" as p>
-<#import "spring.ftl" as spring>
+<#import "/spring.ftl" as spring>
 <@main.layout>
 
-    <h1 class="text-center mb-3">Резюме</h1>
+    <h1 class="text-center mb-3"><@spring.message 'resume.title'></@spring.message></h1>
     <div class="dropdown mb-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-            Фильтровать по категориям
+            <@spring.message 'resume.filterByCategory'></@spring.message>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="${url}?filter=1">IT</a>
-            <a class="dropdown-item" href="${url}?filter=2">Programming</a>
-            <a class="dropdown-item" href="${url}?filter=3">Web Development</a>
-            <a class="dropdown-item" href="${url}?filter=4">Mobile Development</a>
-            <a class="dropdown-item" href="${url}?filter=5">Finance</a>
-            <a class="dropdown-item" href="${url}?filter=6">Accounting</a>
-            <a class="dropdown-item" href="${url}?filter=7">Investment Banking</a>
+            <a class="dropdown-item" href="${url}?filter=1"><@spring.message 'filter.option.IT'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=2"><@spring.message 'filter.option.Programming'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=3"><@spring.message 'filter.option.WebDevelopment'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=4"><@spring.message 'filter.option.MobileDevelopment'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=5"><@spring.message 'filter.option.Finance'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=6"><@spring.message 'filter.option.Accounting'></@spring.message></a>
+            <a class="dropdown-item" href="${url}?filter=7"><@spring.message 'filter.option.InvestmentBanking'></@spring.message></a>
         </div>
     </div>
     <@p.pager url resumes />
@@ -33,10 +33,10 @@
 
                                         <h6 class="mb-0">${resume.applicantEmail}</h6>
 
-                                        <span>Last Update ${resume.updatedTime}</span>
+                                        <span><@spring.message 'page.lastUpdate'></@spring.message> ${resume.updatedTime}</span>
                                     </div>
                                 </div>
-                                <div class="badge"><span>Design</span></div>
+                                <div class="badge"><span><@spring.message 'myresumes.page.design'></@spring.message></span></div>
                             </div>
                             <div class="mt-5">
                                 <a href="/resume/${resume.id}">
@@ -49,8 +49,8 @@
                                              aria-valuenow="50"
                                              aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <div class="mt-3"><span class="text1">32 Applied <span
-                                                    class="text2">of 50 capacity</span></span></div>
+                                    <div class="mt-3"><span class="text1"><@spring.message 'page.applied'></@spring.message> <span
+                                                    class="text2"><@spring.message 'page.capacity'></@spring.message></span></span></div>
                                 </div>
                             </div>
                         </div>
@@ -59,6 +59,5 @@
             </#list>
         </div>
     </div>
-
 
 </@main.layout>
