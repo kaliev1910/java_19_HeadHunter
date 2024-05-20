@@ -1,4 +1,5 @@
 <#import "../layout.ftlh" as main>
+<#import "spring.ftl" as spring>
 <@main.layout>
 
     <h1 class="text-center mb-3">Мои Резюме</h1>

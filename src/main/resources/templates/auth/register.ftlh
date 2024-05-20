@@ -1,4 +1,4 @@
-<#import "../layout.ftlh" as main>
+<#import "../layout.ftlh" as main><#import "spring.ftl" as spring>
 <@main.layout>
     <div class="container">
         <h2 class="text-center mb-4">Registration Form</h2>

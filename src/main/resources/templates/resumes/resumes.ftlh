@@ -1,5 +1,6 @@
 <#import "../layout.ftlh" as main>
 <#import "../pager.ftlh" as p>
+<#import "spring.ftl" as spring>
 <@main.layout>
 
     <h1 class="text-center mb-3">Резюме</h1>

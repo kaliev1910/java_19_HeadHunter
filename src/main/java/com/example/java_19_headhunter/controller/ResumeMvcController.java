@@ -161,8 +161,16 @@ public class ResumeMvcController {
     }
     @GetMapping("/resumes/{resumeId}/edit")
     public String editResume(@PathVariable int resumeId, Model model) {
+        ResumeDto resumeDto = resumeService.findById(resumeId);
+
+
         ResumeUpdateDto resumeUpdateDto = new ResumeUpdateDto();
-        resumeUpdateDto.setResume(resumeService.findById(resumeId));
+
+        resumeUpdateDto.setId(resumeId);
+        resumeUpdateDto.setName(resumeDto.getName());
+        resumeUpdateDto.setExpectedSalary(resumeDto.getExpectedSalary());
+        resumeUpdateDto.setCategoryId(resumeDto.getCategoryId());
+
         resumeUpdateDto.setEducation(educationService.findListByResumeId(resumeId));
         resumeUpdateDto.setExperience(experienceService.findListByResumeId(resumeId));
         resumeUpdateDto.setContactInfo(contactInfoService.findListByResumeId(resumeId));
@@ -181,8 +189,13 @@ public class ResumeMvcController {
 
         resumeService.update(resumeDto, authentication);
 
+        // Обновление информации об образовании
         updateEducationInfo(resumeId, resumeDto.getEducation());
+
+        // Обновление информации об опыте работы
         updateExperienceInfo(resumeId, resumeDto.getExperience());
+
+        // Обновление контактной информации
         updateContactInfo(resumeId, resumeDto.getContactInfo());
 
         return "redirect:/myResumes";

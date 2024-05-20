@@ -8,7 +8,7 @@
 <body>
 <div class="container mt-5">
     <h1 class="mb-4">Edit Resume</h1>
-    <form th:action="@{'/resumes/' + ${resume.resume.id} + '/edit'}" th:object="${resume}" method="post">
+    <form th:action="@{'/resumes/' + ${resume.id} + '/edit'}" th:object="${resume}" method="post">
         <!-- Personal Information -->
         <div class="mb-4">
             <div class="form-group mb-3">

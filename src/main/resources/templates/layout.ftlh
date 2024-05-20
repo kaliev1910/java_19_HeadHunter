@@ -1,3 +1,4 @@
+<#import "spring.ftl" as spring>
 <#macro layout>
     <!DOCTYPE html>
     <html lang="en">
@@ -73,7 +74,7 @@
                         <li class="breadcrumb-item "><a href="/profile">Hi, ${name}</a></li>
                         <li id="logout" class="breadcrumb-item "><a href="/logout">logout</a></li>
                     <#else>
-                        <li class="breadcrumb-item "><a href="/login">SignIn</a></li>
+                        <li class="breadcrumb-item "><a href="/login"><@spring.message 'layout.login'></@spring.message></a></li>
                         <li class="breadcrumb-item "><a href="/register">SignUp</a></li>
                     </#if>
                 </ol>

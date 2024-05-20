@@ -1,3 +1,4 @@
+<#import "spring.ftl" as spring>
 <#macro pager url page>
     <#if page.getTotalPages() gt 7>
         <#assign

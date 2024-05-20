@@ -1,8 +1,8 @@
 <#import "../layout.ftlh" as main>
-
+<#import "spring.ftl" as spring>
 <@main.layout>
 
-    <h2>Forgot Password</h2>
+    <h2><@spring.message 'layout.login'></@spring.message></h2>
 
     <#if error??>
 

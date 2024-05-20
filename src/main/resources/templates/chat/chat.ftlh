@@ -1,4 +1,4 @@
-<#import "../layout.ftlh" as main>
+<#import "../layout.ftlh" as main><#import "spring.ftl" as spring>
 <@main.layout>
     <link type="text/css" rel="stylesheet" href="/static/css/chatStyle.css">
 

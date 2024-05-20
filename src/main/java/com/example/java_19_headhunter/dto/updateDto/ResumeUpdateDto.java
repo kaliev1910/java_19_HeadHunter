@@ -21,8 +21,10 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class ResumeUpdateDto {
-
-    private ResumeDto resume;
+    private int id;
+    private String name;
+    private int expectedSalary;
+    private int categoryId;
     private List<EducationDto> education;
     private List<ExperienceDto> experience;
     private List<ContactInfoDto> contactInfo;

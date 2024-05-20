@@ -1,4 +1,4 @@
-<#import "../layout.ftlh" as main>
+<#import "../layout.ftlh" as main><#import "spring.ftl" as spring>
 <@main.layout>
     <div class="text-center">
         <h2>Reset Your Password</h2>

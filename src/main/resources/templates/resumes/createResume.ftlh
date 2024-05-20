@@ -1,4 +1,4 @@
-<#import "../layout.ftlh" as main>
+<#import "../layout.ftlh" as main><#import "spring.ftl" as spring>
 <@main.layout>
     <h1 class="text-center mt-5 mb-4">Создание резюме</h1>
 
