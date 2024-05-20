@@ -92,7 +92,7 @@
             color: #a5aec0
         }
     </style>
-    <h1 class="text-center mb-3"><@spring.message 'vacancies.title'></@spring.message></h1>
+    <h1 class="text-center mb-3"><@spring.message 'vacancy.page.title'></@spring.message></h1>
 
     <div class="dropdown mb-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
