@@ -13,5 +13,5 @@ public interface ExperienceService {
 
     List<ExperienceDto> findListByResumeId(int resumeId);
 
-    void deleteEducationsByResumeId(int resumeId);
+    void deleteExperiencesByResumeId(int resumeId);
 }

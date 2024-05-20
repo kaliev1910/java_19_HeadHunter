@@ -10,9 +10,7 @@ public interface ExperienceRepository extends JpaRepository<Experience, Integer>
     @Query("select e from Experience e where e.resumeId.id = :resumeId")
     List<Experience> findListByResumeId(int resumeId);
 
-    @Query("delete from Experience  e where e.resumeId.id = :resumeId ")
-    void deleteEducationsByResumeId(int resumeId);
-
+    void deleteAllByResumeId_Id(int resumeId);
 
 
 }

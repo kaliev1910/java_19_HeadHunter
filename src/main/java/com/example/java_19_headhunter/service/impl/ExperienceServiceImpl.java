@@ -45,8 +45,8 @@ public class ExperienceServiceImpl implements ExperienceService {
     }
 
     @Override
-    public void deleteEducationsByResumeId(int resumeId) {
-        experienceRepository.deleteEducationsByResumeId(resumeId);
+    public void deleteExperiencesByResumeId(int resumeId) {
+        experienceRepository.deleteAllByResumeId_Id(resumeId);
     }
 
     private Experience mapToExperience(ExperienceDto experienceDto) {

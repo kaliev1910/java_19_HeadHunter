@@ -219,41 +219,36 @@ public class ResumeMvcController {
 
     private void updateExperienceInfo(int resumeId, List<ExperienceDto> experienceDto) {
         try {
-            if (experienceDto == null) {
-                experienceService.deleteEducationsByResumeId(resumeId);
-                return;
-            }
+            // Удаляем существующие записи опыта работы
+            experienceService.deleteExperiencesByResumeId(resumeId);
 
-            for (ExperienceDto experience : experienceDto) {
-                experience.setResumeId(resumeId);
-                if (experience.getId() == 0) {
+            if (experienceDto != null) {
+                // Создаем новые записи опыта работы
+                for (ExperienceDto experience : experienceDto) {
+                    experience.setResumeId(resumeId);
                     experienceService.insert(experience);
-                } else {
-                    experienceService.update(experience);
                 }
             }
         } catch (Exception e) {
-            log.error("error updating Experience controller");
+            log.error("Error updating Experience controller", e);
         }
     }
 
     private void updateContactInfo(int resumeId, List<ContactInfoDto> contactInfoDto) {
         try {
-            if (contactInfoDto == null) {
-                contactInfoService.deleteByResumeId(resumeId);
-                return;
-            }
+            // Удаляем существующие контактные данные
+            contactInfoService.deleteByResumeId(resumeId);
 
-            for (ContactInfoDto contactInfo : contactInfoDto) {
-                contactInfo.setResumeId(resumeId);
-                if (contactInfo.getId() == 0) {
+            if (contactInfoDto != null) {
+                // Создаем новые контактные данные
+                for (ContactInfoDto contactInfo : contactInfoDto) {
+                    contactInfo.setResumeId(resumeId);
                     contactInfoService.insert(contactInfo);
-                } else {
-                    contactInfoService.update(contactInfo);
                 }
             }
         } catch (Exception e) {
-            log.error("error updating contacts controller");
+            log.error("Error updating contacts controller", e);
         }
     }
+
 }

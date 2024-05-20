@@ -53,7 +53,7 @@ spring:
     check-template-location: true
 logging:
   level:
-    root: info
+    root: debug
     org.springframework.security: debug
 
   file:
