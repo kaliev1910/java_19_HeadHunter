@@ -4,6 +4,7 @@ import com.example.java_19_headhunter.dto.updateDto.ResumeUpdateDto;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.models.Resume;
+import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.repository.ResumeRepository;
 import com.example.java_19_headhunter.repository.UserRepository;
 import com.example.java_19_headhunter.service.interfaces.ResumeService;
@@ -14,12 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -92,7 +93,7 @@ public class ResumeServiceImpl implements ResumeService {
             Resume resume = fromDto(mapToResumeDto(resumeDto));
             resume.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
             resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
-            resume.setApplicantEmail(userRepository.findUserByEmail(user.getUsername()).orElseThrow());
+            resume.setApplicantEmail(userRepository.findUserByEmail(user.getEmail()).orElseThrow());
             resumeId = resumeRepository.save(resume);
         } catch (Exception e) {
             log.error("Error inserting Resume: {}", resumeDto, e);
@@ -104,15 +105,31 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public void update(@Valid ResumeUpdateDto resumeUpdateDto, Authentication authentication) {
         try {
-            Resume resume = fromUpdateDto(resumeUpdateDto, authentication);
-            resume.setApplicantEmail(userRepository.findUserByEmail(authentication.getName()).get());
+            Optional<User> userOptional = userRepository.findUserByEmail(authentication.getName());
+            if (!userOptional.isPresent()) {
+                throw new RuntimeException("User not found: " + authentication.getName());
+            }
+            User user = userOptional.get();
+
+            Optional<Resume> resumeOptional = resumeRepository.findResumeById(resumeUpdateDto.getId());
+            if (resumeOptional.isEmpty()) {
+                throw new RuntimeException("Resume not found for user: " + user.getEmail());
+            }
+            Resume resume = resumeOptional.get();
+
+            // Update resume fields from DTO
+            resume.setName(resumeUpdateDto.getName());
+            // Update other fields similarly
+
             resume.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));
+
             resumeRepository.save(resume);
         } catch (Exception e) {
-            log.error("Error updating Resume:  name {} user {} ", resumeUpdateDto.getName(), ((User) authentication.getPrincipal()).getUsername(), e);
+            log.error("Error updating Resume: name {} user {} ", resumeUpdateDto.getName(), ((User) authentication.getPrincipal()).getEmail(), e);
             throw e;
         }
     }
+
 
     @Override
     public void deleteById(int id) {
@@ -128,7 +145,7 @@ public class ResumeServiceImpl implements ResumeService {
         User user = (User) authentication.getPrincipal();
 
         return Resume.builder()
-                .applicantEmail(userRepository.findUserByEmail(user.getUsername()).get())
+                .applicantEmail(userRepository.findUserByEmail(user.getEmail()).get())
                 .categoryId(resumeRepository.findResumeById(resumeDto.getCategoryId()).get().getCategoryId())
                 .isActive(true)
                 .name(resumeDto.getName())
@@ -142,7 +159,7 @@ public class ResumeServiceImpl implements ResumeService {
         User user = (User) authentication.getPrincipal();
 
         return Resume.builder()
-                .applicantEmail(userRepository.findUserByEmail(user.getUsername()).get())
+                .applicantEmail(userRepository.findUserByEmail(user.getEmail()).get())
                 .categoryId(resumeRepository.findResumeById(resumeDto.getId()).get().getCategoryId())
                 .isActive(true)
                 .name(resumeDto.getName())

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,7 +18,6 @@ public class ExperienceDto {
     private int id;
     private int resumeId;
 
-    @NotBlank(message = "Company name is mandatory")
 
     @NotBlank(message = "Company name is mandatory")
     @Size(max = 100, message = "Company name should not be greater than 100 characters")

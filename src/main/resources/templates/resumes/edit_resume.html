@@ -17,11 +17,9 @@
                 <div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"
                      class="alert alert-danger mt-2"></div>
             </div>
-            <div class="form-group mb-3 " hidden="hidden">
+            <div class="form-group mb-3" hidden="hidden">
                 <label for="applicantEmail" class="form-label">applicantEmail</label>
-                <input type="text" id="applicantEmail" th:field="*{applicantEmail}" class="form-control" required>
-                <div th:if="${#fields.hasErrors('applicantEmail')}" th:errors="*{applicantEmail}"
-                     class="alert alert-danger mt-2"></div>
+                <input type="text" id="applicantEmail" th:field="*{applicantEmail}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="name" class="form-label">Name</label>
@@ -159,16 +157,20 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="experience[__${iterStat.index}__].startDate" class="form-label">Start Date</label>
-                    <input type="date" id="experience[__${iterStat.index}__].startDate"
+                    <input type="text" id="experience[__${iterStat.index}__].startDate"
                            th:field="*{experience[__${iterStat.index}__].startDate}"
-                           class="form-control">
+                           class="form-control" placeholder="yyyy-MM-dd">
+
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="experience[__${iterStat.index}__].endDate" class="form-label">End Date</label>
-                    <input type="date" id="experience[__${iterStat.index}__].endDate"
+                    <input type="text" id="experience[__${iterStat.index}__].endDate"
                            th:field="*{experience[__${iterStat.index}__].endDate}"
-                           class="form-control">
+                           class="form-control" placeholder="yyyy-MM-dd">
+
                 </div>
+
                 <button type="button" class="btn btn-danger remove-experience">Remove</button>
             </div>
         </div>
@@ -187,7 +189,7 @@
                     <div th:if="${#fields.hasErrors('contactInfo[__${iterStat.index}__].id')}"
                          th:errors="*{contactInfo[__${iterStat.index}__].id}" class="alert alert-danger mt-2"></div>
                 </div>
-                <div class="form-group mb-3">
+                <div class="form-group mb-3" hidden="hidden">
                     <label for="contactInfo[__${iterStat.index}__].typeId" class="form-label">resumeId</label>
                     <input type="number" id="contactInfo[__${iterStat.index}__].resumeId"
                            th:field="*{contactInfo[__${iterStat.index}__].resumeId}"

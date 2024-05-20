@@ -178,12 +178,12 @@ public class ResumeMvcController {
     }
 
     @PostMapping("/resumes/{resumeId}/edit")
-    public String editResume(@PathVariable int resumeId, ResumeUpdateDto resumeDto, Authentication authentication, Model model) {
+    public String editResume(@PathVariable int resumeId, @ModelAttribute("resume") ResumeUpdateDto resumeDto, Authentication authentication, Model model) {
 
         resumeDto.setId(resumeId);
         resumeService.update(resumeDto, authentication);
 
-        // Обновление информации об образовании
+
         updateEducationInfo(resumeId, resumeDto.getEducation());
 
         // Обновление информации об опыте работы
