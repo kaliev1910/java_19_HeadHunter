@@ -7,8 +7,8 @@ spring:
     username: root
     password: qwerty
     driver-class-name: org.h2.Driver
-  messages:
-    basename: messages
+
+
 
 
   liquibase:
@@ -38,19 +38,19 @@ spring:
             enable: true
 
        #==================================================== Mail configuration#
-  spring:
-    thymeleaf:
-      prefix: classpath:/templates/
-      suffix: .html
-      mode: HTML
-      encoding: UTF-8
-      cache: false
-      servlet:
-        content-type: text/html
-        enabled: true
-      template-resolver-order: 1
-      view-names: '*'
-      check-template-location: true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+    servlet:
+      content-type: text/html
+      enabled: true
+    template-resolver-order: 1
+    view-names: '*'
+    check-template-location: true
 logging:
   level:
     root: debug
@@ -59,7 +59,7 @@ logging:
   file:
     name: logs/headHunter.log
   logback:
-    rollingpolicy:
+    rolling policy:
       max-file-size: 5MB
       max-history: 5
 

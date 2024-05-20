@@ -59,10 +59,14 @@
     <div class="col">
         <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
             <ol class="breadcrumb mb-0 container">
-                <li class="breadcrumb-item "><a href="/"><@spring.message 'layout.title'></@spring.message></a></li>
-                <li class="breadcrumb-item "><a href="/vacancies?page=1"><@spring.message 'layout.mainPage'></@spring.message></a></li>
-                <li class="breadcrumb-item "><a href="/resumes?page=1"><@spring.message 'layout.allResumes'></@spring.message></a></li>
-                <li class="breadcrumb-item "><a href="/chat"><@spring.message 'layout.chat'></@spring.message></a></li>
+                <li class="breadcrumb-item "><a href="/"><@spring.message 'layout.mainPage'></@spring.message></a></li>
+                <li class="breadcrumb-item "><a
+                            href="/vacancies?page=1"><@spring.message 'layout.allVacancies'></@spring.message></a></li>
+                <li class="breadcrumb-item "><a
+                            href="/resumes?page=1"><@spring.message 'layout.allResumes'></@spring.message></a></li>
+                <li class="breadcrumb-item "><a href="/chat"><@spring.message 'layout.chat'/></a></li>
+
+
                 <#assign
                 known = SPRING_SECURITY_CONTEXT??
                 >
@@ -71,14 +75,33 @@
                     user = SPRING_SECURITY_CONTEXT.authentication.principal
                     name = user.getUsername()
                     >
-                    <li class="breadcrumb-item "><a href="/profile"><@spring.message 'layout.hi'>, ${name}</@spring.message></a></li>
-                    <li id="logout" class="breadcrumb-item "><a href="/logout"><@spring.message 'layout.logout'></@spring.message></a></li>
+                    <li class="breadcrumb-item "><a
+                                href="/profile"><@spring.message 'layout.hi'>, ${name}</@spring.message></a></li>
+                    <li id="logout" class="breadcrumb-item "><a
+                                href="/logout"><@spring.message 'layout.logout'></@spring.message></a></li>
                 <#else>
-                    <li class="breadcrumb-item "><a href="/login"><@spring.message 'layout.login'></@spring.message></a></li>
-                    <li class="breadcrumb-item "><a href="/register"><@spring.message 'layout.signup'></@spring.message></a></li>
+                    <li class="breadcrumb-item "><a href="/login"><@spring.message 'layout.login'></@spring.message></a>
+                    </li>
+                    <li class="breadcrumb-item "><a
+                                href="/register"><@spring.message 'layout.signup'></@spring.message></a></li>
                 </#if>
+
+
             </ol>
         </nav>
+    </div>
+    <div class="right-buttons">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" id="lk" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <i class="flag-united-kingdom flag m-0"></i>
+                <@spring.message 'navbar.navi.lang'/>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="?lang=en">English</a></li>
+                <li><a class="dropdown-item" href="?lang=ru">Русский</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 
@@ -107,7 +130,6 @@
         crossorigin="anonymous"></script>
 
 </body>
-
 
 
 </#macro>
