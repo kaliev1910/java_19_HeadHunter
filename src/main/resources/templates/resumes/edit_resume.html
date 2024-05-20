@@ -51,7 +51,7 @@
                     <label for="education[__${iterStat.index}__].program" class="form-label">id</label>
                     <input type="text" id="education[__${iterStat.index}__].id"
                            th:field="*{education[__${iterStat.index}__].id}"
-                           class="form-control" >
+                           class="form-control">
                     <div th:if="${#fields.hasErrors('education[__${iterStat.index}__].id')}"
                          th:errors="*{education[__${iterStat.index}__].id}" class="alert alert-danger mt-2"></div>
                 </div>
@@ -59,7 +59,7 @@
                     <label for="education[__${iterStat.index}__].program" class="form-label">ResumeId</label>
                     <input type="text" id="education[__${iterStat.index}__].resumeId"
                            th:field="*{education[__${iterStat.index}__].resumeId}"
-                           class="form-control" >
+                           class="form-control">
                     <div th:if="${#fields.hasErrors('education[__${iterStat.index}__].resumeId')}"
                          th:errors="*{education[__${iterStat.index}__].resumeId}" class="alert alert-danger mt-2"></div>
                 </div>
@@ -113,7 +113,7 @@
                     <label for="experience[__${iterStat.index}__].position" class="form-label">id</label>
                     <input type="text" id="experience[__${iterStat.index}__].id"
                            th:field="*{experience[__${iterStat.index}__].id}"
-                           class="form-control" >
+                           class="form-control">
                     <div th:if="${#fields.hasErrors('experience[__${iterStat.index}__].id')}"
                          th:errors="*{experience[__${iterStat.index}__].id}"
                          class="alert alert-danger mt-2"></div>
@@ -122,7 +122,7 @@
                     <label for="experience[__${iterStat.index}__].position" class="form-label">ResumeId</label>
                     <input type="text" id="experience[__${iterStat.index}__].resumeId"
                            th:field="*{experience[__${iterStat.index}__].resumeId}"
-                           class="form-control" >
+                           class="form-control">
                     <div th:if="${#fields.hasErrors('experience[__${iterStat.index}__].resumeId')}"
                          th:errors="*{experience[__${iterStat.index}__].resumeId}"
                          class="alert alert-danger mt-2"></div>
@@ -185,7 +185,7 @@
                     <label for="contactInfo[__${iterStat.index}__].typeId" class="form-label">id</label>
                     <input type="number" id="contactInfo[__${iterStat.index}__].id"
                            th:field="*{contactInfo[__${iterStat.index}__].id}"
-                           class="form-control" >
+                           class="form-control">
                     <div th:if="${#fields.hasErrors('contactInfo[__${iterStat.index}__].id')}"
                          th:errors="*{contactInfo[__${iterStat.index}__].id}" class="alert alert-danger mt-2"></div>
                 </div>
@@ -193,9 +193,10 @@
                     <label for="contactInfo[__${iterStat.index}__].typeId" class="form-label">resumeId</label>
                     <input type="number" id="contactInfo[__${iterStat.index}__].resumeId"
                            th:field="*{contactInfo[__${iterStat.index}__].resumeId}"
-                           class="form-control" >
+                           class="form-control">
                     <div th:if="${#fields.hasErrors('contactInfo[__${iterStat.index}__].resumeId')}"
-                         th:errors="*{contactInfo[__${iterStat.index}__].resumeId}" class="alert alert-danger mt-2"></div>
+                         th:errors="*{contactInfo[__${iterStat.index}__].resumeId}"
+                         class="alert alert-danger mt-2"></div>
                 </div>
                 <div class="form-group mb-3">
                     <label for="contactInfo[__${iterStat.index}__].typeId" class="form-label">Type</label>
@@ -211,7 +212,8 @@
                            th:field="*{contactInfo[__${iterStat.index}__].contactValue}"
                            class="form-control" required>
                     <div th:if="${#fields.hasErrors('contactInfo[__${iterStat.index}__].contactValue')}"
-                         th:errors="*{contactInfo[__${iterStat.index}__].contactValue}" class="alert alert-danger mt-2"></div>
+                         th:errors="*{contactInfo[__${iterStat.index}__].contactValue}"
+                         class="alert alert-danger mt-2"></div>
                 </div>
                 <button type="button" class="btn btn-danger remove-contact-info">Remove</button>
             </div>
@@ -228,67 +230,114 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        function attachRemoveButtonEvent(buttonClass) {
-            document.querySelectorAll(buttonClass).forEach(function (button) {
-                button.addEventListener('click', function () {
-                    this.closest('.border').remove();
-                });
-            });
-        }
-
-        function updateIndices(sectionClass, inputName) {
-            document.querySelectorAll(sectionClass).forEach(function (item, index) {
-                item.querySelectorAll('input, textarea').forEach(function (input) {
-                    let name = input.getAttribute('name');
-                    if (name) {
-                        let newName = name.replace(/\[\d+\]/, '[' + index + ']');
-                        input.setAttribute('name', newName);
-                        input.id = newName;
-                    }
-                });
-                item.querySelectorAll('label').forEach(function (label) {
-                    let htmlFor = label.getAttribute('for');
-                    if (htmlFor) {
-                        let newFor = htmlFor.replace(/\[\d+\]/, '[' + index + ']');
-                        label.setAttribute('for', newFor);
-                    }
-                });
-            });
-        }
-
-        document.getElementById('add-education').addEventListener('click', function () {
-            let educationSection = document.getElementById('education-section');
-            let newEducation = educationSection.firstElementChild.cloneNode(true);
-            newEducation.querySelectorAll('input').forEach(input => input.value = '');
-            educationSection.appendChild(newEducation);
-            updateIndices('.education-item', 'education');
-            attachRemoveButtonEvent('.remove-education');
+    document.addEventListener("DOMContentLoaded", function () {
+        // Добавление образования
+        const addEducationBtn = document.getElementById("add-education");
+        addEducationBtn.addEventListener("click", function () {
+            const educationSection = document.getElementById("education-section");
+            const educationItem = document.createElement("div");
+            educationItem.classList.add("border", "rounded", "p-3", "mb-4", "education-item");
+            educationItem.innerHTML = `
+            <div class="form-group mb-3">
+                <label for="newEducationInstitution" class="form-label">Institution</label>
+                <input type="text" id="newEducationInstitution" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="newEducationProgram" class="form-label">Program</label>
+                <input type="text" id="newEducationProgram" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="newEducationDegree" class="form-label">Degree</label>
+                <input type="text" id="newEducationDegree" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="newEducationStartDate" class="form-label">Start Date</label>
+                <input type="date" id="newEducationStartDate" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="newEducationEndDate" class="form-label">End Date</label>
+                <input type="date" id="newEducationEndDate" class="form-control">
+            </div>
+            <button type="button" class="btn btn-danger remove-education">Remove</button>
+        `;
+            educationSection.appendChild(educationItem);
         });
 
-        document.getElementById('add-experience').addEventListener('click', function () {
-            let experienceSection = document.getElementById('experience-section');
-            let newExperience = experienceSection.firstElementChild.cloneNode(true);
-            newExperience.querySelectorAll('input, textarea').forEach(input => input.value = '');
-            experienceSection.appendChild(newExperience);
-            updateIndices('.experience-item', 'experience');
-            attachRemoveButtonEvent('.remove-experience');
+        // Удаление образования
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-education")) {
+                event.target.parentElement.remove();
+            }
         });
 
-        document.getElementById('add-contact-info').addEventListener('click', function () {
-            let contactInfoSection = document.getElementById('contact-info-section');
-            let newContactInfo = contactInfoSection.firstElementChild.cloneNode(true);
-            newContactInfo.querySelectorAll('input').forEach(input => input.value = '');
-            contactInfoSection.appendChild(newContactInfo);
-            updateIndices('.contact-info-item', 'contactInfo');
-            attachRemoveButtonEvent('.remove-contact-info');
+        // Добавление опыта
+        const addExperienceBtn = document.getElementById("add-experience");
+        addExperienceBtn.addEventListener("click", function () {
+            const experienceSection = document.getElementById("experience-section");
+            const experienceItem = document.createElement("div");
+            experienceItem.classList.add("border", "rounded", "p-3", "mb-4", "experience-item");
+            experienceItem.innerHTML = `
+            <div class="form-group mb-3">
+                <label for="newExperienceCompanyName" class="form-label">Company Name</label>
+                <input type="text" id="newExperienceCompanyName" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="newExperiencePosition" class="form-label">Position</label>
+                <input type="text" id="newExperiencePosition" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="newExperienceResponsibilities" class="form-label">Responsibilities</label>
+                <textarea id="newExperienceResponsibilities" class="form-control" required></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="newExperienceStartDate" class="form-label">Start Date</label>
+                <input type="date" id="newExperienceStartDate" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="newExperienceEndDate" class="form-label">End Date</label>
+                <input type="date" id="newExperienceEndDate" class="form-control">
+            </div>
+            <button type="button" class="btn btn-danger remove-experience">Remove</button>
+        `;
+            experienceSection.appendChild(experienceItem);
         });
 
-        attachRemoveButtonEvent('.remove-education');
-        attachRemoveButtonEvent('.remove-experience');
-        attachRemoveButtonEvent('.remove-contact-info');
+        // Удаление опыта
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-experience")) {
+                event.target.parentElement.remove();
+            }
+        });
     });
-</script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Добавление контактов
+        const addContactBtn = document.getElementById("add-contact-info");
+        addContactBtn.addEventListener("click", function () {
+            const contactSection = document.getElementById("contact-info-section");
+            const contactItem = document.createElement("div");
+            contactItem.classList.add("border", "rounded", "p-3", "mb-4", "contact-info-item");
+            contactItem.innerHTML = `
+            <div class="form-group mb-3">
+                <label for="newContactType" class="form-label">Type</label>
+                <input type="number" id="newContactType" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="newContactValue" class="form-label">Value</label>
+                <input type="text" id="newContactValue" class="form-control" required>
+            </div>
+            <button type="button" class="btn btn-danger remove-contact-info">Remove</button>
+        `;
+            contactSection.appendChild(contactItem);
+        });
 
+        // Удаление контактов
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-contact-info")) {
+                event.target.parentElement.remove();
+            }
+        });
+    });
+
+</script>
 </body>
 </html>
