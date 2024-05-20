@@ -21,12 +21,12 @@
                             <div class="form-group">
                                 <label for="username" class="font-weight-bold"><@spring.message 'login.username'></@spring.message>:</label>
                                 <input type="email" class="form-control" id="username" name="username"
-                                       placeholder="Enter your email" required>
+                                       placeholder="<@spring.message 'login.placeholder.username'/>" required>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="font-weight-bold"><@spring.message 'login.password'></@spring.message>:</label>
                                 <input type="password" class="form-control" id="password" name="password"
-                                       placeholder="Enter your password" required>
+                                       placeholder="<@spring.message 'login.placeholder.password'/>" required>
                             </div>
                             <div class="form-group text-center">
                                 <button type="submit" class="btn btn-primary btn-block"><@spring.message 'login.button'></@spring.message></button>

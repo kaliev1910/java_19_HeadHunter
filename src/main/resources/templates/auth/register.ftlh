@@ -2,7 +2,7 @@
 <#import "/spring.ftl" as spring>
 <@main.layout>
     <div class="container">
-        <h2 class="text-center mb-4"><@spring.message 'resume.creation'></@spring.message></h2>
+        <h2 class="text-center mb-4"><@spring.message 'registration.title'></@spring.message></h2>
         <form action="/register" id="registrationForm"  method="post" style="max-width: 400px; margin: auto; display: flex; flex-wrap: wrap;">
             <#if _csrf??>
                 <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
