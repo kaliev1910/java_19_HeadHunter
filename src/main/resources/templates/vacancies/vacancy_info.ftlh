@@ -3,14 +3,14 @@
 <@main.layout>
     <div class="card">
         <div class="card-header bg-primary text-white">
-            <h5 class="card-title"><@spring.message 'editprofile.page.name'> ${vacancy.name}</@spring.message></h5>
-            <h6 class="card-title"><@spring.message 'vacancy.details.category'> ${vacancy.categoryId}</@spring.message></h6>
+            <h5 class="card-title"><@spring.message 'editprofile.page.name'/> ${vacancy.name}</h5>
+            <h6 class="card-title"><@spring.message 'vacancy.details.category'/> ${vacancy.categoryId}</h6>
         </div>
         <div class="card-body">
-            <p class="card-text"><@spring.message 'vacancy.details.salary'> ${vacancy.salary} KGZ</@spring.message></p>
-            <p class="card-text"><@spring.message 'vacancy.details.description'> ${vacancy.description}</@spring.message></p>
+            <p class="card-text"><@spring.message 'vacancy.details.salary'/> ${vacancy.salary} KGZ</p>
+            <p class="card-text"><@spring.message 'vacancy.details.description'/> ${vacancy.description}</p>
             <#if contacts?has_content>
-                <h6 class="card-title"><@spring.message 'vacancy.details.contactDetails'>: </@spring.message></h6>
+                <h6 class="card-title"><@spring.message 'vacancy.details.contactDetails'/>: </h6>
                 <div class="row justify-content-start">
                     <#list contacts as contact>
                         <#if contact.id?has_content>

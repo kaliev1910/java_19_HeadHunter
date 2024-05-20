@@ -1,11 +1,10 @@
 package com.example.java_19_headhunter.controller;
 
-import com.example.java_19_headhunter.dto.updateDto.ResumeUpdateDto;
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
+import com.example.java_19_headhunter.dto.updateDto.ResumeUpdateDto;
 import com.example.java_19_headhunter.service.interfaces.*;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,8 +31,6 @@ public class ResumeMvcController {
     private final UserService userService;
     private final ContactInfoService contactInfoService;
     private final CategoryService categoryService;
-
-
 
 
     @GetMapping("/myResumes")
@@ -159,6 +155,7 @@ public class ResumeMvcController {
         model.addAttribute("categories", categoryService.getAllCategories());
         return "resumes/resume_info";
     }
+
     @GetMapping("/resumes/{resumeId}/edit")
     public String editResume(@PathVariable int resumeId, Model model) {
         ResumeDto resumeDto = resumeService.findById(resumeId);
@@ -181,12 +178,9 @@ public class ResumeMvcController {
     }
 
     @PostMapping("/resumes/{resumeId}/edit")
-    public String editResume(@PathVariable int resumeId, @Valid @ModelAttribute("resume") ResumeUpdateDto resumeDto, BindingResult result, Authentication authentication, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("categories", categoryService.getAllCategories());
-            return "resumes/edit_resume";
-        }
+    public String editResume(@PathVariable int resumeId, ResumeUpdateDto resumeDto, Authentication authentication, Model model) {
 
+        resumeDto.setId(resumeId);
         resumeService.update(resumeDto, authentication);
 
         // Обновление информации об образовании
@@ -202,50 +196,64 @@ public class ResumeMvcController {
     }
 
     private void updateEducationInfo(int resumeId, List<EducationDto> educationDto) {
-        if (educationDto == null) {
-            educationService.deleteEducationsByResumeId(resumeId);
-            return;
-        }
+        try {
 
-        for (EducationDto education : educationDto) {
-            education.setResumeId(resumeId);
-            if (education.getId() == 0) {
-                educationService.insert(education);
-            } else {
-                educationService.update(education);
+
+            if (educationDto == null) {
+                educationService.deleteEducationsByResumeId(resumeId);
+                return;
             }
+
+            for (EducationDto education : educationDto) {
+                education.setResumeId(resumeId);
+                if (education.getId() == 0) {
+                    educationService.insert(education);
+                } else {
+                    educationService.update(education);
+                }
+            }
+        } catch (Exception e) {
+            log.error("error updating education controller");
         }
     }
 
     private void updateExperienceInfo(int resumeId, List<ExperienceDto> experienceDto) {
-        if (experienceDto == null) {
-            experienceService.deleteEducationsByResumeId(resumeId);
-            return;
-        }
-
-        for (ExperienceDto experience : experienceDto) {
-            experience.setResumeId(resumeId);
-            if (experience.getId() == 0) {
-                experienceService.insert(experience);
-            } else {
-                experienceService.update(experience);
+        try {
+            if (experienceDto == null) {
+                experienceService.deleteEducationsByResumeId(resumeId);
+                return;
             }
+
+            for (ExperienceDto experience : experienceDto) {
+                experience.setResumeId(resumeId);
+                if (experience.getId() == 0) {
+                    experienceService.insert(experience);
+                } else {
+                    experienceService.update(experience);
+                }
+            }
+        } catch (Exception e) {
+            log.error("error updating Experience controller");
         }
     }
 
     private void updateContactInfo(int resumeId, List<ContactInfoDto> contactInfoDto) {
-        if (contactInfoDto == null) {
-            contactInfoService.deleteByResumeId(resumeId);
-            return;
-        }
-
-        for (ContactInfoDto contactInfo : contactInfoDto) {
-            contactInfo.setResumeId(resumeId);
-            if (contactInfo.getId() == 0) {
-                contactInfoService.insert(contactInfo);
-            } else {
-                contactInfoService.update(contactInfo);
+        try {
+            if (contactInfoDto == null) {
+                contactInfoService.deleteByResumeId(resumeId);
+                return;
             }
+
+            for (ContactInfoDto contactInfo : contactInfoDto) {
+                contactInfo.setResumeId(resumeId);
+                if (contactInfo.getId() == 0) {
+                    contactInfoService.insert(contactInfo);
+                } else {
+                    contactInfoService.update(contactInfo);
+                }
+            }
+        } catch (Exception e) {
+            log.error("error updating contacts controller");
         }
     }
 }

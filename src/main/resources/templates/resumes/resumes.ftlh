@@ -3,11 +3,11 @@
 <#import "/spring.ftl" as spring>
 <@main.layout>
 
-    <h1 class="text-center mb-3"><@spring.message 'resume.title'></@spring.message></h1>
+    <h1 class="text-center mb-3"><@spring.message 'page.title'></@spring.message></h1>
     <div class="dropdown mb-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-            <@spring.message 'resume.filterByCategory'></@spring.message>
+            <@spring.message 'filter.label'></@spring.message>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="${url}?filter=1"><@spring.message 'filter.option.IT'></@spring.message></a>

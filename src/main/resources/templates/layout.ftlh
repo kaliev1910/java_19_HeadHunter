@@ -76,7 +76,7 @@
                     name = user.getUsername()
                     >
                     <li class="breadcrumb-item "><a
-                                href="/profile"><@spring.message 'layout.hi'>, ${name}</@spring.message></a></li>
+                                href="/profile"><@spring.message 'layout.hi'/>, ${name}</a></li>
                     <li id="logout" class="breadcrumb-item "><a
                                 href="/logout"><@spring.message 'layout.logout'></@spring.message></a></li>
                 <#else>
