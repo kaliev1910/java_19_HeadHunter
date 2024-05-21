@@ -12,15 +12,12 @@ import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +49,6 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
 
-
     @Override
     public Page<VacancyDto> getVacanciesWithPagingByCategories(Pageable pageable, Integer categoryId) {
         return vacancyRepository.findByCategoryId_Id(pageable, categoryId).map(this::toDto);
@@ -61,7 +57,11 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public VacancyDto findById(int id) {
-        return toDto(vacancyRepository.findById(id).orElseThrow(() -> new VacancyNotFoundException("Vacancy Not Found")));
+
+        VacancyDto vacancyDto = toDto(vacancyRepository.findById(id).orElseThrow(() -> new VacancyNotFoundException("Vacancy Not Found")));
+        int salary = vacancyDto.getSalary();
+        vacancyDto.setSalary(salary);
+        return vacancyDto;
     }
 
     @Override
@@ -169,10 +169,10 @@ public class VacancyServiceImpl implements VacancyService {
     private Vacancy fromDto(VacancyDto vacancyDto) {
         return Vacancy.builder()
                 .id(vacancyDto.getId())
-                .authorEmail(vacancyRepository.findVacancyByAuthorEmail_Email(vacancyDto.getAuthorEmail()).get().getAuthorEmail())
+                .authorEmail(vacancyRepository.findVacancyByAuthorEmail_Email(vacancyDto.getAuthorEmail()).orElseThrow().getAuthorEmail())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
-                .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).get())
+                .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).orElseThrow())
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
                 .expTo(vacancyDto.getExpTo())
@@ -187,7 +187,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .authorEmail((User) authentication.getPrincipal())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
-                .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).get())
+                .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).orElseThrow())
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
                 .createdDate(Timestamp.valueOf(LocalDateTime.now()))
@@ -197,10 +197,10 @@ public class VacancyServiceImpl implements VacancyService {
 
     private Vacancy fromUpdateDto(VacancyUpdateDto vacancyDto, Authentication authentication) {
         return Vacancy.builder()
-                .authorEmail(vacancyRepository.findVacancyByAuthorEmail_Email(authentication.getName()).get().getAuthorEmail())
+                .authorEmail(vacancyRepository.findVacancyByAuthorEmail_Email(authentication.getName()).orElseThrow().getAuthorEmail())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
-                .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).get())
+                .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).orElseThrow())
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
                 .createdDate(Timestamp.valueOf(LocalDateTime.now()))

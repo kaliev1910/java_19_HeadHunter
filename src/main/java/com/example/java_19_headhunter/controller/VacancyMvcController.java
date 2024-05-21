@@ -1,11 +1,13 @@
 package com.example.java_19_headhunter.controller;
 
 import com.example.java_19_headhunter.dto.basicDtos.ContactInfoDto;
-import com.example.java_19_headhunter.dto.basicDtos.UserDto;
 import com.example.java_19_headhunter.dto.basicDtos.VacancyDto;
 import com.example.java_19_headhunter.dto.createDto.VacancyCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.VacancyUpdateDto;
-import com.example.java_19_headhunter.service.interfaces.*;
+import com.example.java_19_headhunter.service.interfaces.CategoryService;
+import com.example.java_19_headhunter.service.interfaces.ContactInfoService;
+import com.example.java_19_headhunter.service.interfaces.UserService;
+import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +36,6 @@ import java.util.List;
 public class VacancyMvcController {
     private final UserService userService;
     private final VacancyService vacancyService;
-    private final ResumeService resumeService;
     private final ContactInfoService contactInfoService;
     private final CategoryService categoryService;
 
@@ -63,7 +65,7 @@ public class VacancyMvcController {
 
     @PostMapping("/vacancy/create")
     public String createVacancy(@Valid VacancyCreateDto vacancyDto, Authentication authentication, Model model) {
-        UserDto employer = userService.findByEmail(authentication.getName()).get();
+        userService.findByEmail(authentication.getName()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         vacancyDto.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
         vacancyDto.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         int vacancyId = vacancyService.create(vacancyDto, authentication);
@@ -87,19 +89,19 @@ public class VacancyMvcController {
     public String showEditForm(@PathVariable("id") int id, Model model) {
         VacancyDto vacancyDto = vacancyService.findById(id);
 
+
         model.addAttribute("categories", categoryService.getAllCategories());
-
         model.addAttribute("vacancy", vacancyDto);
-
+        model.addAttribute("vacancyId",  id);
         return "vacancies/edit_vacancy";
     }
 
     @PostMapping("/vacancy/{id}/edit")
-    public String updateVacancy(@PathVariable("id") int id, VacancyUpdateDto vacancyDto, Authentication authentication, BindingResult result) {
+    public String updateVacancy(@PathVariable("id") String id, @Valid VacancyUpdateDto vacancyDto, BindingResult result, Authentication authentication) {
         if (result.hasErrors()) {
             return "vacancies/edit_vacancy";
         }
-        vacancyService.update(vacancyDto, authentication);
+        vacancyService.update(vacancyDto,  authentication);
         return "redirect:/vacancy/{id}";
     }
 

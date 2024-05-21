@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class ResumeMvcController {
     @GetMapping("/myResumes")
     public String getMyResumesForm(Model model, Authentication authentication) {
 
-        UserDto user = userService.findByEmail(authentication.getName()).get();
+        UserDto user = userService.findByEmail(authentication.getName()).orElseThrow( () -> new UsernameNotFoundException("user not found"));
         List<ResumeDto> resumesDtos = resumeService.findByUserEmail(user.getEmail());
         List<ResumeListDto> resumes = new ArrayList<>();
 
@@ -77,7 +78,7 @@ public class ResumeMvcController {
         }
 
         Page<ResumeListDto> resumeList = resumes.map(resumeDto -> {
-            ResumeListDto resumeListDto = ResumeListDto.builder()
+            return ResumeListDto.builder()
                     .id(resumeDto.getId())
                     .applicantEmail(resumeDto.getApplicantEmail())
                     .name(resumeDto.getName())
@@ -90,7 +91,6 @@ public class ResumeMvcController {
                     .experiences(experienceService.findListByResumeId(resumeDto.getId()))
                     .contacts(contactInfoService.findListByResumeId(resumeDto.getId()))
                     .build();
-            return resumeListDto;
         });
 
         model.addAttribute("url", "/resumes");

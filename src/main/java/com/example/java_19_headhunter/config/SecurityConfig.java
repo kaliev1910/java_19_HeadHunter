@@ -45,8 +45,7 @@ public class SecurityConfig {
                                     return;
                                 }
                             }
-                            ;
-                        }
+                                }
 
                         )
                         .failureUrl("/login?error=true")

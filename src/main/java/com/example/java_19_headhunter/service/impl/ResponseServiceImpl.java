@@ -25,8 +25,8 @@ public class ResponseServiceImpl implements ResponseService {
         UserResponse  response;
         try {
             response =  UserResponse.builder()
-                    .resumeId(resumeRepository.findResumeById(resumeId).get())
-                    .vacancyId(vacancyRepository.findById(vacancyId).get())
+                    .resumeId(resumeRepository.findResumeById(resumeId).orElseThrow())
+                    .vacancyId(vacancyRepository.findById(vacancyId).orElseThrow())
                     .build();
             userResponseRepository.save(response);
             return true;

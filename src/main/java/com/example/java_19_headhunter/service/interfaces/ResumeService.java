@@ -29,7 +29,7 @@ public interface ResumeService {
 
     void update(@Valid ResumeUpdateDto resumeDto, Authentication authentication);
 
-    public Page<ResumeDto> getResumesWithPaging(Pageable pageable) ;
+    Page<ResumeDto> getResumesWithPaging(Pageable pageable) ;
 
     void deleteById(int id);
 

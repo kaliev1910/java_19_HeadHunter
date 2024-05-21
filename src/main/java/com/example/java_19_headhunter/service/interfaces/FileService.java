@@ -5,6 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
-    public ResponseEntity<?> getOutputFile(String fileName, String subDir, MediaType mediaType);
-    public String saveUploadedFile(MultipartFile file, String subDir);
+    ResponseEntity<?> getOutputFile(String fileName, String subDir, MediaType mediaType);
+    String saveUploadedFile(MultipartFile file, String subDir);
 }
