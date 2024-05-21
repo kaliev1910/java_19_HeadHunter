@@ -47,13 +47,12 @@ spring:
     cache: false
     servlet:
       content-type: text/html
-      enabled: true
     template-resolver-order: 1
     view-names: '*'
     check-template-location: true
 logging:
   level:
-    root: debug
+    root: info
     org.springframework.security: debug
 
   file:

@@ -40,9 +40,6 @@ public class ExperienceServiceImpl implements ExperienceService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteEducationById(int educationId) {
-        experienceRepository.deleteById(educationId);
-    }
 
     @Override
     public void deleteExperiencesByResumeId(int resumeId) {
@@ -52,7 +49,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     private Experience mapToExperience(ExperienceDto experienceDto) {
         return Experience.builder()
                 .id(experienceDto.getId())
-                .resumeId(experienceRepository.findById(experienceDto.getId()).get().getResumeId())
+                .resumeId(experienceRepository.findById(experienceDto.getId()).orElseThrow().getResumeId())
                 .companyName(experienceDto.getCompanyName())
                 .position(experienceDto.getPosition())
                 .responsibilities(experienceDto.getResponsibilities())

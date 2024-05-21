@@ -54,8 +54,8 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     private ContactInfo mapToContactInfo(ContactInfoDto contactInfoDto) {
         return ContactInfo.builder()
                 .id(contactInfoDto.getId())
-                .resumeId(contactInfoRepository.findById(contactInfoDto.getResumeId()).get().getResumeId())
-                .typeId(contactInfoRepository.findById(contactInfoDto.getTypeId()).get().getTypeId())
+                .resumeId(contactInfoRepository.findById(contactInfoDto.getResumeId()).orElseThrow().getResumeId())
+                .typeId(contactInfoRepository.findById(contactInfoDto.getTypeId()).orElseThrow().getTypeId())
                 .contactValue(contactInfoDto.getContactValue())
                 .build();
     }

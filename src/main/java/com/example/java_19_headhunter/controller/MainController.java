@@ -10,12 +10,13 @@ import com.example.java_19_headhunter.service.impl.UserImageService;
 import com.example.java_19_headhunter.service.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -29,7 +30,6 @@ public class MainController {
     private final UserImageService userImageService;
     private final ContactInfoService contactInfoService;
     private final ResponseService responseService;
-
 
 
     @GetMapping("/error")
@@ -51,8 +51,7 @@ public class MainController {
 
     @GetMapping("/profile")
     public String getUserProfile(Model model, Authentication authentication) {
-        UserDto user = userService.findByEmail(authentication.getName()).get();
-        Long userId = (long) user.getId();
+        UserDto user = userService.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException(authentication.getName()));
         List<ResumeDto> resumes = resumeService.findByUserEmail(user.getEmail());
         List<VacancyDto> vacancies = vacancyService.findByUserId(user.getId());
         if (user.getAccountType().equals(AccountType.APPLICANT.getValue())) {
@@ -61,7 +60,6 @@ public class MainController {
             model.addAttribute("responses", responses);
         }
         if (user.getAccountType().equals(AccountType.EMPLOYER.getValue())) {
-            String userAccType = AccountType.EMPLOYER.getValue();
             List<UserResponse> responses = responseService.getUserResponses(user.getEmail());
             model.addAttribute("vacancies", vacancies);
             model.addAttribute("responses", responses);
@@ -75,7 +73,7 @@ public class MainController {
 
     @GetMapping("/{email}/edit")
     public String showEditUser(@PathVariable String email, Model model, Authentication authentication) {
-        model.addAttribute("user", userService.findByEmail(authentication.getName()).get());
+        model.addAttribute("user", userService.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException(authentication.getName())));
         return "users/editUser";
     }
 
@@ -88,7 +86,6 @@ public class MainController {
 
     @PostMapping("/upload")
     public String uploadImage(UserImageDto userImageDto) {
-        UserImageDto newImage = userImageDto;
         userImageService.uploadImage(userImageDto);
         return "redirect:/profile";
     }

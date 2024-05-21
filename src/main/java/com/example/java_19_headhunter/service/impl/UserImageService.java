@@ -26,7 +26,7 @@ public class UserImageService {
     public void uploadImage(UserImageDto userImageDto) {
         try {
 
-           UserImage found=  userImageRepository.findByUserId_Id(userImageDto.getUserId()).get();
+            UserImage found = userImageRepository.findByUserId_Id(userImageDto.getUserId()).orElseThrow();
 
             userImageRepository.delete(found);
             String fileName = fileService.saveUploadedFile(userImageDto.getFile(), SUB_DIR);
@@ -34,14 +34,13 @@ public class UserImageService {
                     .userId(
                             userRepository.getUserById
                                     (
-                                            (int)     userImageDto.getUserId()
+                                            (int) userImageDto.getUserId()
                                     )
                     )
                     .fileName(fileName)
                     .build();
             log.error(String.valueOf(ui.getUserId()), ui.getImageId());
-           UserImage savedImage
-                   =  userImageRepository.save(ui);
+            userImageRepository.save(ui);
             log.info("Image uploaded successfully");
         } catch (Exception e) {
             log.error(e.getMessage(), "Image upload failed");

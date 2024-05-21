@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class VacancyDto {
+
     private int id;
 
     @NotNull

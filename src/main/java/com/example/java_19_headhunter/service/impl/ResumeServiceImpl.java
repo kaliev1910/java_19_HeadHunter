@@ -3,6 +3,7 @@ package com.example.java_19_headhunter.service.impl;
 import com.example.java_19_headhunter.dto.updateDto.ResumeUpdateDto;
 import com.example.java_19_headhunter.dto.basicDtos.ResumeDto;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
+import com.example.java_19_headhunter.exeptions.ResumeNotFoundException;
 import com.example.java_19_headhunter.models.Resume;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.repository.ResumeRepository;
@@ -76,7 +77,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public ResumeDto findById(int id) {
         try {
-            return toDto(resumeRepository.findResumeById(id).get());
+            return toDto(resumeRepository.findResumeById(id).orElseThrow(()-> new ResumeNotFoundException("resume not found")));
         } catch (Exception e) {
             log.error("Error finding Resume by id: {}", id, e);
             throw e;
@@ -106,7 +107,7 @@ public class ResumeServiceImpl implements ResumeService {
     public void update(@Valid ResumeUpdateDto resumeUpdateDto, Authentication authentication) {
         try {
             Optional<User> userOptional = userRepository.findUserByEmail(authentication.getName());
-            if (!userOptional.isPresent()) {
+            if (userOptional.isEmpty()) {
                 throw new RuntimeException("User not found: " + authentication.getName());
             }
             User user = userOptional.get();
@@ -145,8 +146,8 @@ public class ResumeServiceImpl implements ResumeService {
         User user = (User) authentication.getPrincipal();
 
         return Resume.builder()
-                .applicantEmail(userRepository.findUserByEmail(user.getEmail()).get())
-                .categoryId(resumeRepository.findResumeById(resumeDto.getCategoryId()).get().getCategoryId())
+                .applicantEmail(userRepository.findUserByEmail(user.getEmail()).orElseThrow(()-> new ResumeNotFoundException("resume not found")))
+                .categoryId(resumeRepository.findResumeById(resumeDto.getCategoryId()).orElseThrow().getCategoryId())
                 .isActive(true)
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
@@ -159,8 +160,8 @@ public class ResumeServiceImpl implements ResumeService {
         User user = (User) authentication.getPrincipal();
 
         return Resume.builder()
-                .applicantEmail(userRepository.findUserByEmail(user.getEmail()).get())
-                .categoryId(resumeRepository.findResumeById(resumeDto.getId()).get().getCategoryId())
+                .applicantEmail(userRepository.findUserByEmail(user.getEmail()).orElseThrow(()-> new ResumeNotFoundException("resume not found")))
+                .categoryId(resumeRepository.findResumeById(resumeDto.getId()).orElseThrow().getCategoryId())
                 .isActive(true)
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())
@@ -172,8 +173,8 @@ public class ResumeServiceImpl implements ResumeService {
     private Resume fromDto(ResumeDto resumeDto) {
         return Resume.builder()
 
-                .applicantEmail(resumeRepository.findResumeById(resumeDto.getId()).get().getApplicantEmail())
-                .categoryId(resumeRepository.findResumeById(resumeDto.getId()).get().getCategoryId())
+                .applicantEmail(resumeRepository.findResumeById(resumeDto.getId()).orElseThrow().getApplicantEmail())
+                .categoryId(resumeRepository.findResumeById(resumeDto.getId()).orElseThrow().getCategoryId())
                 .isActive(resumeDto.isActive())
                 .name(resumeDto.getName())
                 .expectedSalary(resumeDto.getExpectedSalary())

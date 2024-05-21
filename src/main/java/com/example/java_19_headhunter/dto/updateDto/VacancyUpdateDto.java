@@ -41,5 +41,4 @@ public class VacancyUpdateDto {
     private int expTo;
     private boolean isActive;
     private Timestamp updatedDate;
-    private List<RespondedApplicantDto> respondedApplicantDtos;
 }

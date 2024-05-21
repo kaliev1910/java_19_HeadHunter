@@ -1,9 +1,7 @@
 package com.example.java_19_headhunter.api;
 
 import com.example.java_19_headhunter.dto.basicDtos.UserDto;
-import com.example.java_19_headhunter.service.interfaces.ResumeService;
 import com.example.java_19_headhunter.service.impl.UserServiceImpl;
-import com.example.java_19_headhunter.service.impl.VacancyServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;
-    private final ResumeService resumeService;
-    private final VacancyServiceImpl vacancyService;
+
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody UserDto userDto) {
@@ -28,7 +25,7 @@ public class UserController {
     }
 
     @PutMapping("")
-    public ResponseEntity<String> updateProfile(@Valid @RequestBody UserDto userDto) throws Exception {
+    public ResponseEntity<String> updateProfile(@Valid @RequestBody UserDto userDto)  {
         userService.updateUser(userDto);
         return new ResponseEntity<>("Profile updated successfully", HttpStatus.OK);
     }

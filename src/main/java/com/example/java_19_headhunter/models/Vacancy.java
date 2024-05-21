@@ -24,6 +24,7 @@ public class Vacancy {
     @ManyToOne
     @JoinColumn(name = "category_id")
     public Category categoryId;
+    @Column(name = "salary")
     private int salary;
     @Column(name = "exp_from")
     private int expFrom;

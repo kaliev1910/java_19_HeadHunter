@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService {
             log.info("Is user an applicant: {}", isApplicant);
             return isApplicant;
         } catch (Exception e) {
-            log.error("Error while trying to retrieve user type: {}", e);
+            log.error("Error while trying to retrieve user type: {}", e.getMessage());
             throw e;
         }
     }
