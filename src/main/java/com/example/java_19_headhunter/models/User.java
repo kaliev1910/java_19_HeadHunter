@@ -35,7 +35,7 @@ public class User {
     private List<Vacancy> vacancies;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLES",
             joinColumns = @JoinColumn(name = "USER_EMAIL"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
