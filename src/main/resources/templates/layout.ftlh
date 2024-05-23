@@ -59,7 +59,6 @@
     <div class="col">
         <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
             <ol class="breadcrumb mb-0 container">
-                <li class="breadcrumb-item "><a href="/"><@spring.message 'layout.mainPage'></@spring.message></a></li>
                 <li class="breadcrumb-item "><a
                             href="/vacancies?page=1"><@spring.message 'layout.allVacancies'></@spring.message></a></li>
                 <li class="breadcrumb-item "><a
