@@ -46,6 +46,13 @@ public class GlobalExceptionHandler {
         model.addAttribute("status", HttpStatus.FORBIDDEN.value());
         model.addAttribute("reason", HttpStatus.FORBIDDEN.getReasonPhrase());
         model.addAttribute("details", request);
+        return "errors/accessDenied";
+    }
+    @ExceptionHandler(Exception.class)
+    public String defaultErrorHandler(Model model, HttpServletRequest request, Exception exception){
+        model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        model.addAttribute("reason", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        model.addAttribute("details", exception.getMessage());
         return "errors/error";
     }
 }

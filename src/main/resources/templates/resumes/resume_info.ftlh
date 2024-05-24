@@ -6,8 +6,8 @@
     <div class="border p-3">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="card-title"><@spring.message 'resume.position'></@spring.message>: ${resume.name}</h5>
-                <h6 class="card-title"><@spring.message 'resume.category'></@spring.message>: ${categories.get(resume.categoryId).name}</h6>
+                <h5 class="card-title"><@spring.message 'resume.position'/> : ${resume.name}</h5>
+                <h6 class="card-title"><@spring.message 'resume.category'/> : resume.categoryId}</h6>
             </div>
             <div class="card-body">
                 <p class="card-text"><@spring.message 'resume.expectedSalary'></@spring.message>: ${resume.expectedSalary} KGZ</p>

@@ -3,6 +3,7 @@ package com.example.java_19_headhunter.controller;
 import com.example.java_19_headhunter.dto.basicDtos.*;
 import com.example.java_19_headhunter.dto.createDto.ResumeCreateDto;
 import com.example.java_19_headhunter.dto.updateDto.ResumeUpdateDto;
+import com.example.java_19_headhunter.exeptions.DeniedException;
 import com.example.java_19_headhunter.service.interfaces.*;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class ResumeMvcController {
     @GetMapping("/myResumes")
     public String getMyResumesForm(Model model, Authentication authentication) {
 
-        UserDto user = userService.findByEmail(authentication.getName()).orElseThrow( () -> new UsernameNotFoundException("user not found"));
+        UserDto user = userService.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
         List<ResumeDto> resumesDtos = resumeService.findByUserEmail(user.getEmail());
         List<ResumeListDto> resumes = new ArrayList<>();
 
@@ -157,24 +158,31 @@ public class ResumeMvcController {
     }
 
     @GetMapping("/resumes/{resumeId}/edit")
-    public String editResume(@PathVariable int resumeId, Model model) {
+    public String editResume(@PathVariable int resumeId, Authentication authentication, Model model) {
+
+
         ResumeDto resumeDto = resumeService.findById(resumeId);
+        if (resumeDto.getApplicantEmail().equals(authentication.getName())) {
 
 
-        ResumeUpdateDto resumeUpdateDto = new ResumeUpdateDto();
+            ResumeUpdateDto resumeUpdateDto = new ResumeUpdateDto();
 
-        resumeUpdateDto.setId(resumeId);
-        resumeUpdateDto.setName(resumeDto.getName());
-        resumeUpdateDto.setExpectedSalary(resumeDto.getExpectedSalary());
-        resumeUpdateDto.setCategoryId(resumeDto.getCategoryId());
+            resumeUpdateDto.setId(resumeId);
+            resumeUpdateDto.setName(resumeDto.getName());
+            resumeUpdateDto.setExpectedSalary(resumeDto.getExpectedSalary());
+            resumeUpdateDto.setCategoryId(resumeDto.getCategoryId());
 
-        resumeUpdateDto.setEducation(educationService.findListByResumeId(resumeId));
-        resumeUpdateDto.setExperience(experienceService.findListByResumeId(resumeId));
-        resumeUpdateDto.setContactInfo(contactInfoService.findListByResumeId(resumeId));
+            resumeUpdateDto.setEducation(educationService.findListByResumeId(resumeId));
+            resumeUpdateDto.setExperience(experienceService.findListByResumeId(resumeId));
+            resumeUpdateDto.setContactInfo(contactInfoService.findListByResumeId(resumeId));
 
-        model.addAttribute("resume", resumeUpdateDto);
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "resumes/edit_resume";
+            model.addAttribute("resume", resumeUpdateDto);
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "resumes/edit_resume";
+        }
+        else {
+            throw new DeniedException("You are not allowed to edit this resume.");
+        }
     }
 
     @PostMapping("/resumes/{resumeId}/edit")

@@ -82,8 +82,8 @@
                                 <img src="/api/images/${user.id}" alt="avatar" class="rounded-circle img-fluid"
                                      style="width: 150px;">
                                 <h5 class="my-3">${user.name} ${user.surname}</h5>
-                                <p class="text-muted mb-1"><@spring.message 'profile.position'></@spring.message>: Full Stack Developer</p>
-                                <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                                <p class="text-muted mb-1"><@spring.message 'registration.age'></@spring.message>: ${user.age}</p>
+
 
                                 <!-- Кнопки редактирования и изменения фото -->
                                 <div class="d-flex justify-content-center mb-2">

@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +24,7 @@ public class SecurityConfig {
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -36,15 +36,15 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .successHandler((request, response, authentication) -> {
-                            for (GrantedAuthority authority : authentication.getAuthorities()) {
-                                if (authority.getAuthority().equals("APPLICANT")) {
-                                    response.sendRedirect("/resumes");
-                                    return;
-                                } else if (authority.getAuthority().equals("EMPLOYER")) {
-                                    response.sendRedirect("/vacancies");
-                                    return;
-                                }
-                            }
+                                    for (GrantedAuthority authority : authentication.getAuthorities()) {
+                                        if (authority.getAuthority().equals("APPLICANT")) {
+                                            response.sendRedirect("/vacancies");
+                                            return;
+                                        } else if (authority.getAuthority().equals("EMPLOYER")) {
+                                            response.sendRedirect("/resumes");
+                                            return;
+                                        }
+                                    }
                                 }
 
                         )
@@ -57,15 +57,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
 //                                .requestMatchers("/register").permitAll()
                                 .requestMatchers("/profile").authenticated()
-                                .requestMatchers("/resumes").authenticated()
                                 .requestMatchers("/resumes").hasAnyAuthority("EMPLOYER")
                                 .requestMatchers("/chat").authenticated()
 
-                        .requestMatchers(HttpMethod.GET, "/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/register").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/register").permitAll()
                                 .requestMatchers("/resume/*/edit").hasAnyAuthority("APPLICANT")
                                 .requestMatchers("/vacancy/*/edit").hasAnyAuthority("EMPLOYER")
-//                        .requestMatchers(HttpMethod.GET, "/").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .exceptionHandling(handle -> handle
