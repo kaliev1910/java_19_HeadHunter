@@ -7,6 +7,7 @@ import com.example.java_19_headhunter.exeptions.VacancyNotFoundException;
 import com.example.java_19_headhunter.models.User;
 import com.example.java_19_headhunter.models.Vacancy;
 import com.example.java_19_headhunter.repository.CategoryRepository;
+import com.example.java_19_headhunter.repository.UserRepository;
 import com.example.java_19_headhunter.repository.VacancyRepository;
 import com.example.java_19_headhunter.service.interfaces.VacancyService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     private final VacancyRepository vacancyRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<VacancyDto> findAll() {
@@ -117,8 +119,12 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     public void update(VacancyUpdateDto vacancyDto, Authentication a) {
         try {
+           Vacancy temp =  vacancyRepository.findById(vacancyDto.getId()).orElseThrow(() -> new VacancyNotFoundException("Vacancy Not Found"));
             vacancyDto.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
-            vacancyRepository.save(fromUpdateDto(vacancyDto, a));
+            Vacancy update = fromUpdateDto(vacancyDto, a);
+            update.setCreatedDate(temp.getCreatedDate());
+
+            vacancyRepository.saveAndFlush(update);
         } catch (Exception e) {
             log.error("Error updating vacancy {}", vacancyDto, e);
             throw e; // rethrow the exception
@@ -184,7 +190,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     private Vacancy fromCreateDto(VacancyCreateDto vacancyDto, Authentication authentication) {
         return Vacancy.builder()
-                .authorEmail((User) authentication.getPrincipal())
+                .authorEmail(userRepository.findUserByEmail( authentication.getName()).orElseThrow())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
                 .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).orElseThrow())
@@ -197,12 +203,15 @@ public class VacancyServiceImpl implements VacancyService {
 
     private Vacancy fromUpdateDto(VacancyUpdateDto vacancyDto, Authentication authentication) {
         return Vacancy.builder()
-                .authorEmail(vacancyRepository.findVacancyByAuthorEmail_Email(authentication.getName()).orElseThrow().getAuthorEmail())
+                .id(vacancyDto.getId())
+                .authorEmail(userRepository.findUserByEmail(authentication.getName()).orElseThrow())
                 .name(vacancyDto.getName())
                 .description(vacancyDto.getDescription())
                 .categoryId(categoryRepository.findById(vacancyDto.getCategoryId()).orElseThrow())
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
+                .expTo(vacancyDto.getExpTo())
+                .isActive(vacancyDto.isActive())
                 .createdDate(Timestamp.valueOf(LocalDateTime.now()))
                 .updatedTime(Timestamp.valueOf(LocalDateTime.now()))
                 .build();

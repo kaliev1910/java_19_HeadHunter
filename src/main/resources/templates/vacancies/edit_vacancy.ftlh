@@ -6,7 +6,8 @@
     <div class="row justify-content-around">
         <div class="card col-8 m-1 mb-5">
 
-            <form action="/vacancy/${vacancyId?c}/edit" method="post">
+            <form action="/vacancy/${vacancy.id}/edit" method="post">
+                <input type="hidden" id="id" name="id" value="${vacancy.id}">
                 <#if _csrf??>
                     <input type="hidden" name="${_csrf.parameterName?default('_csrf')}"
                            value="${_csrf.token?default('_csrf_token')}"/>
@@ -16,18 +17,24 @@
                     <label for="name"><@spring.message 'vacancy.edit.jobTitle'/></label>
                     <input type="text" id="name" name="name" class="form-control" required value="${vacancy.name}">
                 </div>
-
+                <p>${vacancy.categoryId}</p>
                 <div class="form-group">
                     <label for="categoryId"><@spring.message 'resume.category'></@spring.message>:</label>
-                    <select class="form-control" id="categoryId" name="categoryId" required  >
-                        <option disabled selected value="${vacancy.categoryId}"><@spring.message 'resume.chooseCategory'></@spring.message></option>
-                        <option value="1"><@spring.message 'resume.category.IT'></@spring.message></option>
-                        <option value="2"><@spring.message 'resume.category.WebDev'></@spring.message></option>
-                        <option value="3"><@spring.message 'resume.category.Finance'></@spring.message></option>
-                        <option value="4"><@spring.message 'resume.category.Accounting'></@spring.message></option>
-                        <option value="5"><@spring.message 'resume.category.InvestmentBanking'></@spring.message></option>
+                    <select class="form-control" id="categoryId" name="categoryId" required>
+                        <option disabled value=""><@spring.message 'resume.chooseCategory'></@spring.message></option>
+                        <option value="1"
+                                <#if vacancy.categoryId == 1>selected</#if>><@spring.message 'resume.category.IT'></@spring.message></option>
+                        <option value="2"
+                                <#if vacancy.categoryId == 2>selected</#if>><@spring.message 'resume.category.WebDev'></@spring.message></option>
+                        <option value="3"
+                                <#if vacancy.categoryId == 3>selected</#if>><@spring.message 'resume.category.Finance'></@spring.message></option>
+                        <option value="4"
+                                <#if vacancy.categoryId == 4>selected</#if>><@spring.message 'resume.category.Accounting'></@spring.message></option>
+                        <option value="5"
+                                <#if vacancy.categoryId == 5>selected</#if>><@spring.message 'resume.category.InvestmentBanking'></@spring.message></option>
                     </select>
                 </div>
+
 
                 <div class="form-group">
                     <label for="salary"><@spring.message 'vacancy.edit.salary'/></label>
@@ -53,14 +60,15 @@
                            value="${vacancy.expTo}">
                 </div>
 
-                <input type="hidden" id="id" name="id" value="${vacancy.id}">
+
                 <input type="hidden" id="authorEmail" name="authorEmail" value="${vacancy.authorEmail}">
                 <input type="hidden" id="active" name="active" value="${vacancy.active?c}">
 
-                <input type="hidden" id="updatedDate" name="updatedDate" value="${vacancy.updateTime}">
 
                 <button class="btn btn-primary" type="submit"><@spring.message 'vacancy.edit.saveChanges'/></button>
             </form>
+
+
         </div>
     </div>
 </@main.layout>
