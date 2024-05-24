@@ -38,10 +38,10 @@ public class SecurityConfig {
                         .successHandler((request, response, authentication) -> {
                                     for (GrantedAuthority authority : authentication.getAuthorities()) {
                                         if (authority.getAuthority().equals("APPLICANT")) {
-                                            response.sendRedirect("/resumes");
+                                            response.sendRedirect("/vacancies");
                                             return;
                                         } else if (authority.getAuthority().equals("EMPLOYER")) {
-                                            response.sendRedirect("/vacancies");
+                                            response.sendRedirect("/resumes");
                                             return;
                                         }
                                     }
