@@ -85,23 +85,14 @@
                                 href="/register"><@spring.message 'layout.signup'></@spring.message></a></li>
                 </#if>
 
-
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?lang=en">English</a></li>
+                    <li><a class="dropdown-item" href="?lang=ru">Русский</a></li>
+                </ul>
             </ol>
         </nav>
     </div>
-    <div class="right-buttons">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" id="lk" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                <i class="flag-united-kingdom flag m-0"></i>
-                <@spring.message 'navbar.navi.lang'/>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="?lang=en">English</a></li>
-                <li><a class="dropdown-item" href="?lang=ru">Русский</a></li>
-            </ul>
-        </div>
-    </div>
+
 </div>
 
 <div class="container">
