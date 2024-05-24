@@ -25,7 +25,7 @@
                 <#else >
                     <h6 class="card-title"><@spring.message 'vacancy.details.noContactDetails'></@spring.message> </h6>
                 </#if>
-                <#if educations?has_content>
+                <#if educations?? ?has_content>
                     <p class="font-weight-bold mt-3"><@spring.message 'resume.education'></@spring.message>: </p>
                     <div class="row justify-content-start">
                         <#list educations as education>
