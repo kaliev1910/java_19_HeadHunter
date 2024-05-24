@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,7 +64,7 @@ public class VacancyMvcController {
 
     @PostMapping("/vacancy/create")
     public String createVacancy(@Valid VacancyCreateDto vacancyDto, Authentication authentication, Model model) {
-        userService.findByEmail(authentication.getName()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        userService.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         vacancyDto.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
         vacancyDto.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         int vacancyId = vacancyService.create(vacancyDto, authentication);
@@ -92,17 +91,16 @@ public class VacancyMvcController {
 
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("vacancy", vacancyDto);
-        model.addAttribute("vacancyId",  id);
+        model.addAttribute("vacancyId", id);
         return "vacancies/edit_vacancy";
     }
 
     @PostMapping("/vacancy/{id}/edit")
-    public String updateVacancy(@PathVariable("id") String id, @Valid VacancyUpdateDto vacancyDto, BindingResult result, Authentication authentication) {
-        if (result.hasErrors()) {
-            return "vacancies/edit_vacancy";
-        }
-        vacancyService.update(vacancyDto,  authentication);
-        return "redirect:/vacancy/{id}";
+    public String updateVacancy(@PathVariable("id") String id, @Valid VacancyUpdateDto vacancyDto, Authentication authentication, Model model) {
+        vacancyDto.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
+        vacancyService.update(vacancyDto, authentication);
+        return "redirect:/vacancy/" + id;
     }
+
 
 }
